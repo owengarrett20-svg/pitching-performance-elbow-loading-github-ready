@@ -168,7 +168,9 @@ def _score_figure(scores: pd.DataFrame, plan: dict, path: Path) -> Path:
             ax.set_yticks(np.arange(len(models)), [MODEL_LABELS[model] for model in models])
             ax.invert_yaxis()
             ax.set(xlabel=f"{METRIC_LABELS[metric]} ({unit}); lower is better", title=target_name)
-            ax.set_xlim(left=0)
+            # Reserve room for the complete marker at the largest error value.
+            maximum = float(selected[metric].max())
+            ax.set_xlim(0, maximum * 1.12 if maximum > 0 else 1.0)
             ax.grid(axis="x", alpha=0.2)
             ax.spines[["top", "right"]].set_visible(False)
     fig.suptitle("Held-out athlete prediction errors: planned feature sets", fontsize=14)

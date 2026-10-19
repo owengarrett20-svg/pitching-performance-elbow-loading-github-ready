@@ -1,39 +1,197 @@
-# Reproducing Phase 1
+# Reproducing Phases 1 and 2
 
-The reproducible unit is the code revision, `uv.lock`, `source_manifest.json`, and the model specification—not a screenshot or a running server.
+The reproducible unit is the code revision, `uv.lock`, `source_manifest.json`,
+analysis plans, and saved evaluation specifications. A screenshot or running
+server is not sufficient provenance.
 
 ## Environment
 
-Use Python 3.12 and uv 0.12.23 or a compatible uv that understands this lockfile. The tested interpreter is 3.12.14. Run `uv sync --frozen --extra dev` from the checkout root. `--frozen` prevents an unnoticed dependency re-resolution. Python version selection lives in `.python-version`; dependencies and their artifact hashes live in `uv.lock`. `uv.toml` keeps the package cache in ignored `.cache/uv`. Existing user cache settings take precedence where explicitly configured.
+Use Python 3.12 and uv 0.12.23 or a compatible uv that understands this lockfile.
+The tested interpreter is 3.12.14. From the checkout root:
 
-The core tested library versions are recorded automatically in `reports/run_metadata.json`. Floating dependency bounds in `pyproject.toml` describe compatibility; use the committed lockfile for this analysis. Re-resolving dependencies is a new environment and warrants rerunning validation. Numerical output is deterministic for the pinned environment/seed; small floating-point differences across operating systems or BLAS implementations are possible. PNG rendering may differ by platform/fonts, so scientific reproduction concerns inputs, folds, predictions, and metrics rather than identical picture bytes.
+```bash
+uv sync --frozen --extra dev
+```
 
-The committed `.gitattributes` keeps source/configuration line endings consistent and preserves all bytes under `assets/`. Keep those rules when publishing: Git for Windows line-ending conversion would otherwise invalidate the bundled report and trace checksums.
+`--frozen` prevents dependency re-resolution. `.python-version` selects Python;
+`uv.lock` records the exact dependency graph and package artifact hashes.
+`uv.toml` keeps the package cache under ignored `.cache/uv`, subject to explicit
+user cache settings. Floating package bounds describe compatibility; the lockfile
+defines this analysis environment. Re-resolving dependencies warrants validation.
 
-## Data
+Completed reports record Python and library versions. Numerical calculations
+are deterministic for the pinned environment and seeds, with possible small
+floating-point differences across platforms or BLAS implementations. Scientific
+reproduction concerns source inputs, folds, predictions, and metrics; PNG bytes
+may vary with fonts or rendering libraries.
 
-1. `uv run --frozen pitching fetch` downloads nine manifest-listed small files from the pinned commit using HTTPS. Only two are measurement CSVs. Other files are schema, loader reference, datasheet, attribution, and license evidence; their total size is under 0.4 MB.
-2. Every file's bytes and SHA-256 must match `source_manifest.json`. Repeated fetches verify existing cache files without requiring a download.
-3. `uv run --frozen pitching audit` works offline. It requires unique, nonempty pitch IDs, full one-to-one coverage, shared-field agreement, valid athlete/session relationships, numeric focal measurements, and the exact pinned POI schema.
-4. `uv run --frozen pitching run --offline` generates all figures, out-of-fold predictions and metrics using only those local files.
+The committed `.gitattributes` preserves all asset bytes and consistent source
+line endings. Keep these rules on Windows: newline conversion must not invalidate
+snapshot, CSV, trace, or compressed-output checksums.
 
-Raw and derived data are ignored by Git, not licensed by the code's MIT file. Preserve the upstream attribution/noncommercial/share-alike and professional-organization restriction when sharing derived figures/tables. Source license texts are under `docs/licenses/`. Do not edit checksums simply to accept changed or corrupted data. Preserve any deliberate local edits, remove the affected cached file, and re-fetch its original bytes if corruption is diagnosed.
+## Source data and one-command reproduction
 
-## Evaluation
+```bash
+# Download and verify nine small source/schema/license files, under 0.4 MB total.
+uv run --frozen pitching fetch
 
-Features: age, mass, height, peak shoulder internal rotation velocity, peak hip–shoulder separation, peak torso axial rotation velocity. Outcomes: speed (mph) and peak internal elbow varus moment (N·m). Algorithms: training-fold mean and ridge alpha 10. Five shuffled GroupKFold partitions, seed 42, group `user`; the partition is shared across outcomes. Imputation/scaling fit within training folds. Outcomes are never imputed.
+# Validate the documented schema, shared fields, join, and missingness offline.
+uv run --frozen pitching audit
 
-`fold_assignments.csv` records each pitch's evaluation fold; `split_audit.json` records train/test athlete IDs and verifies zero overlap. `oof_predictions.csv` contains one prediction per eligible pitch, target, and model; residual is observed minus predicted. `model_metrics.csv` contains pooled MAE/RMSE/R² and equal-athlete MAE. `fold_metrics.csv` shows variation across folds; it is not a confidence interval. `model_spec.json` records exact features, settings, missing/nonfinite policies, and target exclusions.
+# Rebuild Phase 1 and all planned Phase 2 comparisons from the verified cache.
+uv run --frozen pitching phase2 --offline
 
-There is no canonical OBP benchmark split. This split estimates transfer to held-out athletes in the source cohort, not to future sessions or an external MLB population. Features are same-pitch measurements, so this is retrospective prediction. Repeatedly changing features/alpha based on these displayed results would turn the folds into model-selection data; a later tuning study needs nested athlete-grouped validation or a separate untouched evaluation set.
+# Explore locally regenerated results.
+uv run --frozen streamlit run app.py
+```
 
-## Checks and completion
+Alternatively, `uv run --frozen pitching phase2` fetches absent source files and
+verifies existing files before running both phases. No large C3D archive, footage,
+MATLAB license, or video-processing dependency is required for either analysis.
 
-Run `uv run --frozen pytest -q` after fetch to include cached real-data integration tests. Without the source cache those tests explicitly skip rather than fabricate data. Unit/UI fixtures are marked synthetic in test code and never enter reported scientific results. No test needs copyrighted footage or a private API.
+Each downloaded file must match its recorded byte count and SHA-256 digest in
+`source_manifest.json`. The cache pins OBP commit
+`44b98dae05cceb016f080ab39d105c85b8639084`. The audit requires nonempty unique
+pitch keys, complete one-to-one coverage, overlapping-field agreement, valid
+athlete/session relationships, and the exact POI schema. It stops on a mismatch.
+Do not edit manifest checksums to accept unexplained source changes.
 
-The complete workflow writes `run_metadata.json` last, recording artifact hashes, project Git revision and dirty status, source-code hashes, and installed library versions. Code hashes remain useful even before the first commit or with uncommitted edits. The success marker is removed before a refresh. The dashboard requires a completed run and matching hashes for analysis, predictions and metrics before displaying model errors, preventing stale files from masquerading as current output. Existing generated files may remain after a failure; they are not a completed result without the marker. Audit-only runs are useful for data exploration but do not establish completed modeling.
+Working source files in `data/raw/` and generated `reports/` are ignored by Git.
+They retain the upstream terms, not the original software's MIT license. The
+committed `assets/demo/reports/` snapshot is a deliberate derived publication.
+All derived tables and figures retain the attribution/noncommercial/share-alike
+terms and affiliation restriction documented in [LICENSING.md](LICENSING.md).
 
-To validate all recorded artifact hashes:
+## Command boundaries and stale-result behavior
+
+- `pitching run [--offline]` reproduces **Phase 1 only**: audit, exploratory
+  figures, training-mean/combined baseline predictions, and metrics.
+- `pitching phase2 [--offline]` first rebuilds Phase 1, then evaluates the recorded
+  Phase 2 plan and binds the complete outputs together.
+- A Phase 1-only refresh removes the completed parent's binding to older Phase 2
+  outputs. Those older files may remain on disk but cannot be shown as current
+  Phase 2 results. Run `pitching phase2` to regenerate them.
+
+This deliberate full refresh avoids comparisons with a different input table or
+an incomplete earlier run. An audit-only result does not establish completed
+model evaluation.
+
+## Evaluation settings
+
+Both phases predict speed (mph) and peak internal net elbow varus moment (N·m).
+Five shuffled `GroupKFold` folds use athlete `user`; primary seed is 42.
+Assignments are created before target-specific filtering and shared across
+outcomes and models. No athlete is present in a training fold and its held-out
+fold. Missing/nonfinite outcomes are omitted separately by target, never imputed.
+All pinned outcomes and focal predictors are observed.
+
+Training-fold median imputation, missingness indicators, and standardization
+precede ridge alpha 10. The computational fallback for a completely missing
+training feature is not treated as a measured observation. Both targets,
+identifiers, filenames, and other kinetic/energetic measures are excluded from
+the predictor groups. Filenames encode speed and therefore cannot be predictors.
+
+Phase 1 compares the training-fold mean with the six-feature combined ridge.
+Phase 2 retains those specifications and adds:
+
+| Model | Predictors |
+| --- | --- |
+| Anthropometric ridge | Age, mass, height |
+| Kinematic ridge | Peak shoulder internal rotation velocity, peak hip–shoulder separation, peak torso rotation velocity |
+| Combined ridge | All six predictors above |
+
+The [Phase 2 plan](PHASE2_ANALYSIS_PLAN.md) and
+[machine-readable specification](../analysis/phase2_plan.json) were committed
+before the new comparisons, after Phase 1 results had been viewed. The study is
+an exploratory follow-on. There is no new feature search or alpha tuning.
+
+The primary metric is equal-athlete MAE: average absolute error within athlete,
+then across athletes equally. Pooled MAE weights pitches equally; RMSE and R²
+are descriptive secondary measures. The primary contrast is combined minus
+anthropometric equal-athlete MAE for each outcome; negative values favor the
+combined model. All six planned model pairs are reported for both outcomes and
+both MAE weightings.
+
+There is no canonical OBP benchmark split. These completed-pitch predictors
+support retrospective evaluation on held-out athletes from this source setting,
+not future sessions or external MLB players. Tuning against the displayed folds
+would require a new nested grouped design or untouched evaluation data.
+
+## Conditional resampling and partition sensitivity
+
+The primary-partition intervals use 5,000 paired athlete-cluster percentile
+resamples, RNG seed 20261019, at quantiles 0.025 and 0.975. Each draw samples
+eligible athlete IDs with replacement and retains all their eligible pitches
+and draw multiplicities. Paired models use identical draws. Pooled-MAE contrasts
+retain weighted athlete pitch counts; equal-athlete contrasts average within
+athlete before weighting sampled athletes.
+
+**Predictions stay fixed within bootstrap draws.** Intervals describe saved
+errors conditional on the fitted folds and observed source cohort. They exclude
+full training-set/model-refitting, model-selection, external-cohort, and
+measurement uncertainty. Clustering does not remove dependence from overlapping
+cross-validation training sets or guarantee external-population coverage. No
+p-values, formal significance threshold, or multiplicity-adjusted confirmation
+are reported.
+
+Ten full evaluations refit imputation, scaling, means, and ridge models for seeds
+42–51. Seed 42 remains primary and is included in the ten-run summary. Saved
+per-seed scores and contrasts describe sensitivity; the same athletes recur, so
+these are not independent experiments and their spread is not a confidence
+interval. No favorable seed is substituted for the planned primary result.
+
+## Saved outputs and provenance
+
+Phase 1 outputs at `reports/` include `analysis.csv`, `fold_assignments.csv`,
+`split_audit.json`, `oof_predictions.csv`, `model_metrics.csv`, `fold_metrics.csv`,
+`model_spec.json`, figures, and the completed `run_metadata.json` marker.
+Residuals are observed minus predicted.
+
+Phase 2 outputs at `reports/phase2/` include:
+
+| Output | Contents |
+| --- | --- |
+| `phase2_model_metrics.csv` | All primary-partition model scores |
+| `phase2_oof_predictions.csv` | Per-pitch predictions, observed values, errors, athlete IDs, and folds |
+| `phase2_athlete_errors.csv` / `phase2_athlete_differences.csv` | Per-athlete model errors and paired contrasts |
+| `phase2_comparisons.csv` | All planned contrasts and conditional intervals |
+| `phase2_bootstrap_samples.csv.gz` | Reproducible saved bootstrap contrasts |
+| `phase2_sensitivity_*.csv` / `*.csv.gz` | Refit partition assignments, predictions, scores, and contrasts |
+| `phase2_split_audit.json` / `phase2_sensitivity_split_audit.json` | Train/test athlete checks |
+| `phase2_plan.json` / `phase2_model_spec.json` | Actual plan and evaluation specification |
+| `phase2_report.md` / `figures/` | Generated narrative report and research figures |
+| `run_metadata.json` / `ATTRIBUTION.md` | Input, plan, code, and output hashes; environment; source terms |
+
+The mean and combined primary predictions must reproduce Phase 1 within the
+recorded tolerance before Phase 2 is accepted. Metadata records the original
+plan's Git commit and digest, producing project revision and dirty status, code
+hashes, source/lock hashes, library versions, eligibility counts, seeds, and
+artifact hashes. The report displays rounded numbers; CSVs preserve precision.
+See [PHASE2_RESULTS.md](PHASE2_RESULTS.md) for the complete results.
+
+## Checks and atomic completion
+
+```bash
+uv run --frozen pytest -q
+uv run --frozen ruff check src tests scripts app.py streamlit_app.py
+uv run --frozen ruff format --check src tests scripts app.py streamlit_app.py
+uv run --frozen python scripts/export_requirements.py --check
+```
+
+Run tests after `pitching fetch` to include real-data integration checks. Tests
+without required cached inputs skip explicitly. Synthetic fixtures are labeled
+and never enter research results. Optional archive-dependent motion checks need
+the motion extra and raw archives; their absence does not prevent either
+analysis phase or viewing prepared assets. No private API or copyrighted footage
+is required.
+
+The workflow removes the relevant success marker before refresh. Phase 2's child
+marker is written only after its outputs; the parent marker then binds that
+marker and all child artifact hashes. The dashboard requires a completed,
+consistent parent/child set. Partial or stale Phase 2 output is rejected, while a
+valid Phase 1-only run remains usable.
+
+To check every artifact bound by the parent marker in a Bash-compatible terminal:
 
 ```bash
 uv run --frozen python - <<'PY'
@@ -48,12 +206,30 @@ print('All completed-run artifacts verified.')
 PY
 ```
 
-## Dashboard processes and reuse
+## Dashboards and the hosted reference snapshot
 
-Run `uv run --frozen streamlit run app.py --server.headless true` from the project root. The app reads reports beside `app.py`; set nonsecret `PITCHING_REPORT_DIR` to use another report folder. Changing filters does not fit or tune a model. Stop the process with Ctrl+C. A new cloud machine must start its own process; live servers do not persist through environment publication. The localhost service is for local validation/use, not a hosted public portfolio deployment.
+`uv run --frozen streamlit run app.py` reads local reports beside the app. Set
+nonsecret `PITCHING_REPORT_DIR` to select another report folder. The hosted entry
+point, `streamlit_app.py`, reads the committed `assets/demo` snapshot and verifies
+its files before display. Neither dashboard downloads data or fits models during
+browser interactions. Phase 2 cohort scores, intervals, and partition sensitivity
+do not change with sidebar filters; the athlete-detail table follows the selected
+athletes without recomputing their full-eligible-pitch errors.
 
-Each Codex cloud task is already isolated. Use its existing checkout; do not create an additional worktree unless explicitly requested. The new project is a separate local Git repository. To work in another machine, transfer this checkout or push it to a repository you control, then select that repository in your Codex environment. A local commit does not create a GitHub repository or publish a website. The older MATLAB/Octave project is a separate repository and is not needed for these commands.
+To refresh the reference snapshot deliberately:
 
-## Hosted reference snapshot
+```bash
+uv run --frozen pitching phase2
+uv run --frozen python scripts/export_demo_snapshot.py
+uv run --frozen streamlit run streamlit_app.py
+```
 
-The optional `streamlit_app.py` entry point reads the committed `assets/demo` reference reports. `scripts/export_demo_snapshot.py` is an explicit maintainer operation after a verified pipeline run; it checks the producing code, source-manifest, lockfile and output hashes before export. The hosted reader rechecks file hashes and never downloads data, retrains models, or writes into the source snapshot. See [GITHUB_PUBLISH.md](GITHUB_PUBLISH.md). This snapshot is a data-derived publication under the upstream terms, separate from ignored working `reports/`.
+The exporter verifies producing code, source manifest, lockfile, Phase 2 plan,
+and output hashes before export. Commit the snapshot and manifest together.
+The hosted reader does not modify the snapshot. Version 0.4.0 and its reference
+artifacts are local changes until published to the connected GitHub branch;
+creating local files does not update the public app. See
+[GITHUB_PUBLISH.md](GITHUB_PUBLISH.md) for deployment and repository guidance.
+
+No new cloud environment, MATLAB/Octave project, or additional Git worktree is
+needed to reproduce this Python study.

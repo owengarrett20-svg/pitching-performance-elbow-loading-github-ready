@@ -1,5 +1,12 @@
 # Publish the project to GitHub and Streamlit Community Cloud
 
+The project now has a
+[published repository](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready)
+and a [live reference dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/).
+To add the Phase 2 update to that existing project, use
+[PHASE2_UPGRADE_WINDOWS.md](PHASE2_UPGRADE_WINDOWS.md). The initial-publication
+instructions below remain useful for a new copy or permitted fork.
+
 The Streamlit message **“The app's code is not connected to a remote GitHub repository”** means that the folder running on your computer has not been published to GitHub. A downloaded ZIP is a source copy; it does not establish a remote repository.
 
 This release includes a separate hosted entry point and a verified reference-data snapshot so that a clean GitHub checkout can display the complete demonstration without downloading source CSVs or training models.
@@ -62,7 +69,7 @@ uv run --frozen pytest -q
 After a code, model, source, or dependency change, reproduce the analysis and explicitly export a new snapshot:
 
 ```powershell
-uv run --frozen pitching run
+uv run --frozen pitching phase2
 uv run --frozen python scripts/export_demo_snapshot.py
 uv run --frozen python scripts/export_requirements.py
 ```
@@ -73,4 +80,8 @@ Commit the snapshot manifest and all listed files together. The exporter verifie
 
 Original software is MIT. The published reference tables, figures, marker clips, and teaching/documentation adaptations retain OBP's data terms: CC BY-NC-SA 4.0 plus its additional professional-sports/financial-analysis affiliation exclusion. Preserve attribution and the full upstream terms. This is an independent research portfolio; the code license does not authorize restricted organizational or commercial reuse. See [LICENSING.md](LICENSING.md).
 
-These files prepare publication. A local commit, a screenshot, or a successful local preview does not establish that a remote GitHub repository, a GitHub Actions run, a Community Cloud deployment, or a public release exists. Add the actual repository and demo URLs to the README only after those steps succeed. Once stable, create a GitHub release from the tested commit; assign a DOI only through a real archival service, never by inventing one.
+The repository and dashboard URLs are recorded in the README. The prepared Phase
+2 update is local until pushed to that repository and rebuilt by the deployment.
+Check the new GitHub Actions run and deployment logs after pushing. Once stable,
+create a GitHub release from the tested commit; add an archive DOI only if an
+archival service actually issues one.

@@ -1,9 +1,13 @@
-# Open the updated pitching viewer on Windows
+# Open the Phase 2 pitching research dashboard on Windows
+
+**Updating your existing GitHub-connected project?** Follow
+[the Phase 2 upgrade instructions](docs/PHASE2_UPGRADE_WINDOWS.md). They use the
+provided Git bundle to keep your history, GitHub remote, and existing website.
 
 This release includes the prepared motion/teaching videos, traces, and a verified reference-report snapshot. Watching them does not require FFmpeg, motion-capture software, the optional ezc3d dependency, or the large source archives.
 
 1. Stop your current Streamlit server by pressing **Ctrl+C** in its VS Code terminal.
-2. Download and extract the new `pitching-performance-elbow-loading-github-ready.zip` into a **new folder**, preserving your existing working copy.
+2. Download and extract `pitching-performance-elbow-loading-phase2.zip` into a **new folder**, preserving your existing working copy.
 3. In VS Code, choose **File → Open Folder** and select the extracted folder containing `app.py`, `assets`, and this file.
 4. Choose **Terminal → New Terminal**. Run each command separately:
 
@@ -15,7 +19,18 @@ uv sync --frozen
 uv run --frozen streamlit run streamlit_app.py
 ```
 
-5. Open the **Local URL** printed by Streamlit. Select the new **Watch pitches** tab.
+5. Open the **Local URL** printed by Streamlit. Select **Phase 2 comparisons** for
+   the new study, or **Watch pitches** for the motion examples.
+
+## Read the Phase 2 study
+
+- Compare age/body-size, kinematic, and combined predictors against the mean baseline.
+- Select pitch speed or elbow moment and inspect the paired conditional intervals.
+- Review all ten refitted athlete partitions and the downloadable research report.
+- Sidebar filters leave the prespecified full-cohort comparison unchanged.
+
+Start with [the results](docs/PHASE2_RESULTS.md) and
+[the frozen analysis plan](docs/PHASE2_ANALYSIS_PLAN.md).
 
 ## First exploration
 
@@ -28,8 +43,17 @@ uv run --frozen streamlit run streamlit_app.py
 
 The study replays are animations of actual measured markers, not camera recordings. Only three prepared study pitches are included. The separate 62.7 mph camera demonstration has no verified link to the 411 study pitches, so its footage is never paired with their metrics. A single video does not directly measure elbow joint moment or injury risk.
 
-The precomputed Phase 1 reports are already included. To regenerate them later, run `uv run --frozen pitching run`, which fetches the small pinned CSV/documentation files if absent. This does not download large motion archives. See `README.md` and `docs/VIDEO_METHODS.md` for science, provenance, and licensing.
+The precomputed Phase 1 and Phase 2 reports are included. To regenerate both,
+run `uv run --frozen pitching phase2`, which fetches the small pinned source
+files if absent. This does not download large motion archives. The
+`pitching run` command reproduces Phase 1 only. See `README.md` and
+`docs/VIDEO_METHODS.md` for science, provenance, and licensing.
 
 ## Put it on GitHub and deploy
 
-See [docs/GITHUB_PUBLISH.md](docs/GITHUB_PUBLISH.md) for VS Code publication steps. Streamlit Community Cloud needs a published GitHub repository and branch. Use `main`, entry point `streamlit_app.py`, and Python 3.12. No public repository or deployment has been created by these local files.
+The existing repository is
+[owengarrett20-svg/pitching-performance-elbow-loading-github-ready](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready).
+Use [the upgrade guide](docs/PHASE2_UPGRADE_WINDOWS.md) to publish this update.
+The existing deployment continues to use `main`, `streamlit_app.py`, and Python
+3.12. Phase 2 reaches the public app after the updated branch is pushed and the
+deployment rebuild finishes.

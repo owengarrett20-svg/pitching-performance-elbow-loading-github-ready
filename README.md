@@ -3,13 +3,17 @@
 A reproducible Python biomechanics research project exploring pitching performance, rotational kinematics, and internal elbow joint loading using Driveline’s OpenBiomechanics Project.
 
 **Author:** Owen Garrett  
-**Status:** Phase 1 — exploratory analysis, athlete-grouped baseline models, and an interactive dashboard.
+**Status:** Version 0.4.0 — Phase 1 exploration and Phase 2 predictor-group comparisons with conditional athlete-level uncertainty.
 
-[Open the live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) · [Study summary](docs/STUDY_SUMMARY.md) · [Research roadmap](docs/ROADMAP.md) · [Automated checks](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready/actions)
+Phase 2 is implemented in this checkout and its verified reference snapshot. The existing public dashboard updates only after these changes are pushed to its connected GitHub branch; this README does not establish that the new version has been deployed.
+
+[Open the live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) · [Study summary](docs/STUDY_SUMMARY.md) · [Phase 2 results](docs/PHASE2_RESULTS.md) · [Research roadmap](docs/ROADMAP.md) · [Automated checks](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready/actions)
 
 ## Research question
 
-How well do anthropometric characteristics and completed-pitch kinematic summaries predict pitch speed and peak internal elbow varus moment for athletes withheld from model fitting?
+Do completed-pitch rotational summaries add predictive information beyond age, body mass, and height for pitch speed and peak internal elbow varus moment in held-out athletes?
+
+Phase 1 established the data audit and combined baseline. Phase 2 compares fixed predictor groups and quantifies conditional error contrasts. Its plan was committed before the new comparisons, after the Phase 1 results had been viewed. This is an exploratory follow-on, not a preregistered or independent confirmatory study.
 
 This project emphasizes transparent data preparation, biomechanical interpretation, reproducible analysis, and evaluation that accounts for repeated pitches from the same athlete.
 
@@ -23,8 +27,11 @@ The models describe retrospective associations. Internal elbow varus moment is a
 | Sample | 411 fastball pitches from 100 athletes |
 | Sessions | 100; one released session per athlete |
 | Outcomes | Pitch speed and peak internal elbow varus moment |
-| Baselines | Training-fold mean and ridge regression |
-| Validation | Five athlete-grouped folds |
+| Baselines | Training-fold mean; anthropometric, kinematic, and combined ridge models |
+| Validation | Five shared athlete-grouped folds; primary seed 42 |
+| Primary Phase 2 metric | Equal-athlete mean absolute error (MAE) |
+| Conditional uncertainty | 5,000 paired athlete-cluster resamples of fixed out-of-fold errors |
+| Partition sensitivity | Ten full-refit partitions, seeds 42–51; descriptive, not independent replications |
 | Dashboard | Streamlit |
 | Environment | Python 3.12 with dependencies pinned in `uv.lock` |
 
@@ -54,11 +61,12 @@ The [live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb
 - **Watch pitches:** measured marker animations, processed traces, and instructional explanations.
 - **Explore:** distributions and relationships among performance, loading, and rotational measures.
 - **Model errors:** held-out predictions, residuals, and the largest prediction errors.
+- **Phase 2 comparisons:** predictor-group scores, paired conditional error intervals, partition sensitivity, athlete-level errors, and downloadable results.
 - **Definitions and limitations:** units, measurement context, and interpretation boundaries.
 
 Athlete identifiers are pseudonymous source identifiers. Repeated pitches from one athlete are clustered observations.
 
-Dashboard filters change the displayed subset. They do not retrain models. Subset error summaries are labeled separately from the complete cross-validation results.
+Dashboard filters change displayed pitch subsets and athlete-detail tables without retraining models. Phase 2 scores, intervals, and partition-sensitivity summaries always describe the complete eligible cohort; sidebar filters do not recompute them. Subset Phase 1 error summaries are labeled separately from complete cross-validation results.
 
 ## Quick start: run the reference dashboard
 
@@ -98,8 +106,8 @@ uv run --frozen pitching fetch
 # Validate source tables, join cardinality, and missingness.
 uv run --frozen pitching audit
 
-# Generate exploratory figures and evaluate grouped baseline models.
-uv run --frozen pitching run --offline
+# Rebuild Phase 1, then run all planned Phase 2 comparisons and reports.
+uv run --frozen pitching phase2 --offline
 
 # Run tests and code checks.
 uv run --frozen pytest -q
@@ -110,13 +118,15 @@ uv run --frozen ruff format --check src tests scripts app.py streamlit_app.py
 uv run --frozen streamlit run app.py
 ```
 
-Alternatively, after installing the environment, this command fetches absent source files, verifies existing files, and runs the analysis:
+Alternatively, this command fetches absent source files, verifies the cache, and runs both phases:
 
 ```bash
-uv run --frozen pitching run
+uv run --frozen pitching phase2
 ```
 
-The analysis downloads nine small CSV/documentation/license files totaling less than 0.4 MB. The Phase 1 workflow does not require large C3D archives or camera footage.
+`pitching phase2` deliberately rebuilds Phase 1 before Phase 2. `pitching run` remains the Phase 1-only command: it removes the completed-run binding to any older Phase 2 outputs so the dashboard cannot display those as current results. To regenerate Phase 2 afterward, run `pitching phase2` again.
+
+The analysis downloads nine small CSV/documentation/license files totaling less than 0.4 MB. Neither analysis phase requires large C3D archives or camera footage.
 
 Generated analysis outputs are written to `reports/`. Downloaded source files are cached under `data/raw/`. These working directories are excluded from Git.
 
@@ -209,7 +219,7 @@ Two separate prediction tasks estimate:
 
 ### Predictors
 
-Both tasks use the same six predictors:
+The Phase 1 combined model uses six predictors:
 
 - Age.
 - Body mass.
@@ -218,7 +228,9 @@ Both tasks use the same six predictors:
 - Peak hip–shoulder separation.
 - Peak torso rotation velocity.
 
-Both outcome columns, athlete/session identifiers, and filenames are excluded from the predictor matrices. This matters because source filenames encode pitch speed.
+Phase 2 keeps these definitions and compares age/mass/height only, the three rotational measures only, and all six combined. The anthropometric group includes age as well as body-size measures.
+
+Both outcome columns, athlete/session identifiers, and filenames are excluded from every predictor matrix. This matters because source filenames encode pitch speed.
 
 ### Baseline models
 
@@ -227,7 +239,7 @@ The comparison includes:
 - **Training-fold mean:** predicts the average outcome observed in the training athletes.
 - **Ridge regression:** a regularized linear model with `alpha=10`.
 
-The feature set and ridge regularization value are fixed in the Phase 1 specification. There is no hyperparameter search against the reported validation results.
+The Phase 1 combined specification is retained unchanged. All Phase 2 ridge models use `alpha=10` with the same training-fold preprocessing and shared athlete partitions. The [Phase 2 plan](docs/PHASE2_ANALYSIS_PLAN.md) fixes predictor groups, contrasts, resampling, and sensitivity settings before the new comparisons. There is no hyperparameter search against these validation results.
 
 ### Athlete-grouped evaluation
 
@@ -241,7 +253,7 @@ Because the predictors summarize the completed pitch, this is retrospective pred
 
 See the [research plan](docs/RESEARCH_PLAN.md) for the evaluation specification.
 
-## Baseline results
+## Phase 1 baseline results
 
 Pooled out-of-fold results from 411 pitches and 100 athletes:
 
@@ -258,7 +270,35 @@ MAE and RMSE retain the outcome’s physical units.
 
 Ridge improves on the training-mean baseline in this cohort, while substantial prediction error remains. These results describe internal validation on withheld athletes from the same source setting.
 
-Fold-level variation is saved in `fold_metrics.csv`. It is not a confidence interval. No external validation, prospective forecasting, or injury prediction is claimed.
+Fold-level variation is saved in `fold_metrics.csv`. It is not a confidence interval. Phase 2 adds explicitly conditional paired error intervals, described below. No external validation, prospective forecasting, or injury prediction is claimed.
+
+## Phase 2: what do the rotational summaries add?
+
+The primary score is **equal-athlete MAE**: mean absolute error is calculated within each athlete, then averaged equally across athletes. This prevents athletes with more recorded pitches from dominating the comparison.
+
+All models use the same five athlete-grouped folds, with seed 42. Both outcomes include 411 pitches from 100 athletes. The table reports saved primary-partition results, rounded to three decimals:
+
+| Predictor group | Speed equal-athlete MAE, mph | Elbow moment equal-athlete MAE, N·m |
+| --- | ---: | ---: |
+| Training-fold mean | 3.807 | 15.662 |
+| Age, mass, height | 3.542 | 12.404 |
+| Three rotational measures | 3.530 | 15.557 |
+| Combined six predictors | 3.153 | 12.104 |
+
+The primary contrast is **combined minus anthropometric equal-athlete MAE**. Negative values favor the combined model:
+
+| Outcome | Error difference | Conditional 95% interval |
+| --- | ---: | ---: |
+| Pitch speed, mph | -0.389 | [-0.749, -0.029] |
+| Elbow moment, N·m | -0.299 | [-1.218, 0.628] |
+
+For speed, the combined model has lower observed error and its conditional interval does not include zero. For elbow moment, its smaller observed improvement has an interval that includes zero. The current analysis therefore leaves the incremental value of these rotational summaries for elbow-moment prediction uncertain. Kinematics alone also perform much worse than the anthropometric model for elbow moment in this cohort. All planned contrasts are retained, including unfavorable findings.
+
+The intervals use 5,000 paired athlete-cluster percentile resamples, seed 20261019. Each sampled athlete contributes all eligible pitches with their sampled multiplicity. Predictions are **fixed** within the resamples: these intervals exclude model-refitting, full training-set, model-selection, external-cohort, and measurement uncertainty. Overlapping cross-validation training sets further limit their sampling interpretation. They are per-comparison exploratory summaries, without multiplicity adjustment or a formal significance claim.
+
+Ten complete model evaluations refit preprocessing and models for partition seeds 42–51. The primary contrast ranges from -0.430 to -0.213 mph for speed and -0.398 to -0.037 N·m for elbow moment. These overlapping partitions reuse the same athletes; their range is descriptive sensitivity, not a confidence interval or ten independent replications.
+
+Read the [complete Phase 2 report](docs/PHASE2_RESULTS.md), [analysis plan](docs/PHASE2_ANALYSIS_PLAN.md), and [machine-readable reference outputs](assets/demo/reports/phase2). No lower prediction error establishes a causal mechanics change or an injury-risk result.
 
 ## Motion examples and measurement explanations
 
@@ -311,6 +351,9 @@ The repository includes tests for:
 - Forbidden predictor exclusion.
 - Disjoint athlete folds and training-fold preprocessing.
 - Deterministic predictions and metric calculations.
+- Shared Phase 2 folds, paired athlete resampling and duplicate-athlete weighting.
+- Reproduction of the Phase 1 mean and combined predictions.
+- Full-refit partition sensitivity and generated Phase 2 reports.
 - Dashboard filters, error handling, and stale-result protection.
 - Hosted reference-snapshot integrity.
 
@@ -354,11 +397,11 @@ Neither entry point downloads source data or fits models during a browser intera
 To deliberately refresh the published reference snapshot after an analysis change:
 
 ```bash
-uv run --frozen pitching run
+uv run --frozen pitching phase2
 uv run --frozen python scripts/export_demo_snapshot.py
 ```
 
-The exporter checks the producing inputs and output hashes before export. Commit the refreshed snapshot and manifest together.
+The exporter checks the producing code, source manifest, lockfile, Phase 2 plan, and output hashes before export. Commit the refreshed snapshot and manifest together. The parent completion marker binds the child Phase 2 metadata and artifacts; a partial run or Phase 1-only refresh cannot silently publish older Phase 2 results.
 
 See the [publication and deployment guide](docs/GITHUB_PUBLISH.md) for maintenance instructions.
 
@@ -373,17 +416,19 @@ See the [publication and deployment guide](docs/GITHUB_PUBLISH.md) for maintenan
 - No injury outcomes or validated clinical thresholds are available.
 - No causal effect of changing mechanics is estimated.
 - Camera coverage and synchronization are not assumed.
-- Current results contain no inferential confidence intervals.
+- Phase 2 intervals condition on fixed out-of-fold errors and exclude full model-training uncertainty; they do not establish external-population coverage.
+- The new comparison plan was recorded after viewing Phase 1, so the study remains exploratory.
+- Multiple related contrasts are reported without multiplicity-adjusted confirmation.
 
-## Planned research extensions
+## Next research extensions
 
-These are proposed analyses, not completed results:
+Predictor-group comparisons, conditional athlete-level intervals, and full-refit partition sensitivity are now implemented. The following remain proposed work:
 
-1. **Compare predictor groups:** anthropometrics alone, kinematics alone, and the combined model, using the same athlete partitions.
-2. **Quantify athlete-level uncertainty:** prespecify clustered resampling and distinguish uncertainty in fixed out-of-fold errors from full-pipeline uncertainty.
-3. **Evaluate generalization:** obtain an appropriately licensed external or longitudinal cohort.
-4. **Investigate time-resolved mechanics:** resolve signal conventions and verify timing before synchronized analyses.
-5. **Extend models carefully:** use nested athlete-grouped validation if tuning or model selection is introduced.
+1. **Evaluate generalization:** obtain an appropriately licensed external or longitudinal cohort and freeze the specification before evaluation.
+2. **Study broader uncertainty:** design and justify any full-pipeline resampling rather than relabeling the fixed-prediction intervals.
+3. **Investigate time-resolved mechanics:** resolve signal conventions and verify timing before synchronized analyses.
+4. **Extend models carefully:** use nested athlete-grouped validation if tuning or model selection is introduced.
+5. **Archive a checked release:** publish the actual version and citation metadata after updating the repository and hosted app; add a DOI only if issued by an archival service.
 
 The [research roadmap](docs/ROADMAP.md) defines questions and completion criteria for these extensions.
 
@@ -400,7 +445,8 @@ assets/
   traces/                 Prepared processed-signal examples
   lessons/                Instructional video and supporting assets
 
-docs/                     Methods, licensing, study summary, and roadmap
+analysis/                 Frozen machine-readable Phase 2 plan
+docs/                     Methods, Phase 2 results, licensing, and roadmap
 scripts/                  Asset preparation and deployment exporters
 src/pitching/             Data, modeling, plotting, and dashboard modules
 tests/                    Unit, integration, and dashboard tests
@@ -415,7 +461,7 @@ CITATION.cff              Software citation metadata
 CONTRIBUTING.md           Contribution guidance
 
 data/raw/                 Local source cache; ignored by Git
-reports/                  Local generated reports; ignored by Git
+reports/                  Local Phase 1 and phase2/ reports; ignored by Git
 ```
 
 ## Contributing
