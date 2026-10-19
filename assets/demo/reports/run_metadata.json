@@ -1,7 +1,7 @@
 {
   "status": "completed",
   "source_commit": "44b98dae05cceb016f080ab39d105c85b8639084",
-  "completed_utc": "2026-10-19T20:11:32.213205+00:00",
+  "completed_utc": "2026-10-19T20:16:55.784864+00:00",
   "python": "3.12.14",
   "packages": {
     "numpy": "2.5.4",
@@ -10,7 +10,7 @@
     "matplotlib": "3.11.2",
     "streamlit": "1.66.0"
   },
-  "project_git_commit": "c04f92a9408c042d238bb2d83197c5e8136cba58",
+  "project_git_commit": "c3c02ba5cbe04db6165d421a611eb67b69d89312",
   "project_git_dirty": false,
   "project_code_sha256": {
     "src/pitching/__init__.py": "bb0c7f8a0dbd822e4dca07dad0f4d479354d1bae36a168496bdf83e744829ce2",
@@ -22,7 +22,7 @@
     "src/pitching/motion_examples.py": "52c53ba1e76a37c5beb4ebb6a31da520397f6a584a53268e0ebc19dbc1f3c1b8",
     "src/pitching/phase2.py": "b94bd2ae1e2a24c7a9e36dee60ee8945e28f18b4241edbed443e9e10849a8a81",
     "src/pitching/phase2_dashboard.py": "39ea2214e6c1b79bfd34011192bca7d47c50e089a9ef1550226e6708651cc33d",
-    "src/pitching/phase2_reporting.py": "a70c02cbd0b404d355dc794667749791e9fa086cf01d46d4d2a90fa0d7bd5f12",
+    "src/pitching/phase2_reporting.py": "6fd036332a724d1cd9ad757c21c215ac4071bf080eed46c4b65e775ca23b724f",
     "src/pitching/phase2_workflow.py": "2c8c5a64280791119e00c46ba4c5c6a90e9657e25b69d26e7719461deafa4fc1",
     "src/pitching/plots.py": "383ba63ee286983e4e4fb4b95ccbb47ce4b0c99066a2a69ddb895da41b620be2",
     "src/pitching/runtime.py": "a8fb08fb4fd4d65557ec9869bc64ee424396f227e678eb70016b92793d1f8574",
@@ -74,10 +74,10 @@
     "phase2/phase2_plan.json": "0ebcca896685f6f8c3e678a567c2ee00dc9352240544b53c93a7acbb86184863",
     "phase2/ATTRIBUTION.md": "21dbde8ad8cc24c460c39997742bdbbbb0311c37f48e9976089386f12f888107",
     "phase2/phase2_report.md": "26563a690d656bdc4eb1ac85b46e89e592e65e28da8e19496ee7b2da91a49a5b",
-    "phase2/figures/phase2_model_scores.png": "2b318a9cfca3f922adda224ea2ce0e34a293403af9645b1e27cce44b81f4ecdc",
+    "phase2/figures/phase2_model_scores.png": "dc28a60ac85405ba826c79eb84cfd616d674f6aa4a95ea596b17392e44b46f42",
     "phase2/figures/phase2_paired_contrasts.png": "c52107ef304e949d3679d2f885ec4c8008a365046130f9921a3143c09a24d1db",
     "phase2/figures/phase2_partition_sensitivity.png": "cbc744d9987d85a656b3304ee7e608aaa78121196302d0f7f07ec7b3677f81c8",
-    "phase2/run_metadata.json": "bdc9d74a0b51f3566d6e1f5f22437d1f611f4cd2470ac24caf8f1c8346d372fa"
+    "phase2/run_metadata.json": "bd8546fc97d3dde6d1ec95b160f9b5c9d3cd729687bd05f664aea4def60886ed"
   },
   "interpretation": "Retrospective athlete-held-out prediction; no injury or causal claims.",
   "data_terms": "See docs/LICENSING.md; data-derived outputs retain upstream restrictions.",
