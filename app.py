@@ -1,4 +1,4 @@
-"""Explore local Phase 1 reports; never fetch data or fit models on rerun."""
+"""Explore verified research reports; never fetch data or fit models on rerun."""
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+from pitching.phase2_dashboard import render_phase2
 from pitching.runtime import configure_plot_cache
 from pitching.trace_viewer import render_trace_lesson
 from pitching.video_lab import render_video_lab
@@ -382,7 +383,14 @@ def main(report_dir_override: Path | None = None, bundled_demo: bool = False) ->
         st.info("No pitches match both sidebar filters. Clear a selection to continue.")
         return
     tabs = st.tabs(
-        ["Overview", "Watch pitches", "Explore", "Model errors", "Definitions and limitations"]
+        [
+            "Overview",
+            "Watch pitches",
+            "Explore",
+            "Model errors",
+            "Phase 2 comparisons",
+            "Definitions and limitations",
+        ]
     )
     try:
         with tabs[0]:
@@ -396,6 +404,8 @@ def main(report_dir_override: Path | None = None, bundled_demo: bool = False) ->
         with tabs[3]:
             errors(subset, report_dir)
         with tabs[4]:
+            render_phase2(report_dir, subset["session_pitch"].tolist())
+        with tabs[5]:
             definitions()
     except (OSError, ValueError, pd.errors.ParserError, pd.errors.EmptyDataError) as error:
         st.error(f"A local report could not be displayed: {error}")

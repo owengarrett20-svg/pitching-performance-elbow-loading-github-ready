@@ -1,4 +1,4 @@
-"""One small, auditable Phase 1 workflow, usable without Jupyter."""
+"""Auditable Phase 1 and Phase 2 research workflows, usable without Jupyter."""
 
 from __future__ import annotations
 
@@ -164,7 +164,7 @@ def run_workflow(
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Pitching Performance and Elbow Loading, Phase 1")
+    parser = argparse.ArgumentParser(description="Pitching Performance and Elbow Loading")
     parser.add_argument(
         "--project-dir",
         type=Path,
@@ -188,6 +188,12 @@ def main(argv: list[str] | None = None) -> int:
     )
     run.add_argument("--folds", type=int, default=5)
     run.add_argument("--seed", type=int, default=42)
+    phase2 = subparsers.add_parser(
+        "phase2", help="Reproduce Phase 1 and the committed Phase 2 comparison/uncertainty plan"
+    )
+    phase2.add_argument(
+        "--offline", action="store_true", help="Verify local cache without network access"
+    )
     args = parser.parse_args(argv)
     root = args.project_dir.resolve()
     data_dir = args.data_dir.resolve() if args.data_dir else root / "data/raw"
@@ -198,10 +204,14 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Verified {len(source['files'])} files at OBP {COMMIT} in {data_dir}")
         elif args.command == "audit":
             _write_audit(root, data_dir, output)
+        elif args.command == "phase2":
+            from pitching.phase2_workflow import run_phase2_workflow
+
+            run_phase2_workflow(root, data_dir, output, offline=args.offline)
         else:
             run_workflow(root, data_dir, output, args.folds, args.seed, args.offline)
     except (DataValidationError, ValueError, OSError) as exc:
-        print(f"Phase 1 stopped: {exc}", file=sys.stderr)
+        print(f"Research workflow stopped: {exc}", file=sys.stderr)
         return 1
     return 0
 

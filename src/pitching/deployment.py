@@ -103,6 +103,10 @@ def _verify_run_inputs(root: Path, metadata: dict) -> None:
         "source_manifest.json": metadata.get("input_manifest_sha256"),
         "uv.lock": metadata.get("uv_lock_sha256"),
     }
+    analysis_inputs = metadata.get("analysis_inputs_sha256", {})
+    if not isinstance(analysis_inputs, dict):
+        raise ValueError("Pipeline analysis input checksums must be an object.")  # noqa: TRY004
+    expected_files.update(analysis_inputs)
     for name, expected in expected_files.items():
         if _digest(_safe_path(root, name).read_bytes()) != expected:
             raise ValueError(f"Pipeline input checksum mismatch: {name}. Regenerate reports.")

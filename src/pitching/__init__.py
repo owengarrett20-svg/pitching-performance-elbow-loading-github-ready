@@ -1,3 +1,3 @@
-"""Pitching Performance and Elbow Loading: Phase 1 research workflow."""
+"""Pitching Performance and Elbow Loading: reproducible biomechanics research."""
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"

@@ -7,6 +7,9 @@ message: >-
   the separate terms described in docs/LICENSING.md.
 type: software
 title: "Pitching Performance and Elbow Loading"
+version: "0.4.0"
+repository-code: "https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready"
+url: "https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/"
 authors:
   - family-names: Garrett
     given-names: Owen
@@ -15,7 +18,8 @@ abstract: >-
   A reproducible exploratory Python study of pitching performance and peak
   internal elbow varus moment using Driveline's OpenBiomechanics Project.
   Includes validated pitch-level joins, missingness audits, descriptive figures,
-  athlete-grouped baseline models, and an educational Streamlit viewer.
+  athlete-grouped predictor comparisons, conditional paired athlete-cluster
+  bootstrap intervals, partition sensitivity, and an educational Streamlit viewer.
   The analysis estimates retrospective associations, not injury risk or causal
   effects of changing mechanics.
 keywords:
