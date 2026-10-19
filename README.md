@@ -1,92 +1,173 @@
 # Pitching Performance and Elbow Loading
 
-A reproducible Python research portfolio project using Driveline Baseball Research & Development's [OpenBiomechanics Project (OBP)](https://github.com/drivelineresearch/openbiomechanics). **Phase 1** builds a trustworthy pitch-level table, explores performance and internal elbow joint moment, and evaluates simple models on athletes excluded from model fitting.
+A reproducible Python biomechanics research project exploring pitching performance, rotational kinematics, and internal elbow joint loading using Driveline’s OpenBiomechanics Project.
 
-**Research question:** How well do a small set of anthropometric and completed-pitch kinematic summaries predict pitch speed and peak internal elbow varus moment for held-out athletes in this dataset?
+**Author:** Owen Garrett  
+**Status:** Phase 1 — exploratory analysis, athlete-grouped baseline models, and an interactive dashboard.
 
-This is retrospective exploratory research. Net joint moment is not UCL force, injury probability, or evidence that changing a movement will prevent injury. There are no injury labels in this analysis.
+[Open the live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) · [Study summary](docs/STUDY_SUMMARY.md) · [Research roadmap](docs/ROADMAP.md) · [Automated checks](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready/actions)
 
-**Licensing matters for a professional-sports portfolio.** Original project code is MIT. OBP data, biomechanics documentation, and derived figures/tables have **CC BY-NC-SA 4.0 plus an additional professional-organization exclusion**. Upstream specifically requires a separate written paid license for use by employees, contractors, associates, or significant shareholders of professional sports organizations or financial-analysis firms. Do not present this as an unrestricted open-data product or carry it into team work without checking those terms. Full text and attribution: [docs/LICENSING.md](docs/LICENSING.md).
+## Research question
+
+How well do anthropometric characteristics and completed-pitch kinematic summaries predict pitch speed and peak internal elbow varus moment for athletes withheld from model fitting?
+
+This project emphasizes transparent data preparation, biomechanical interpretation, reproducible analysis, and evaluation that accounts for repeated pitches from the same athlete.
+
+The models describe retrospective associations. Internal elbow varus moment is a joint-loading measure, not UCL force or injury probability. The dataset contains no injury outcomes.
 
 ## Study at a glance
 
-- A verified one-to-one join preserves **411 fastballs from 100 athletes**.
-- Athlete-held-out ridge MAE is **3.04 mph** for speed and **12.40 N·m** for elbow moment, compared with mean-baseline errors of 3.83 mph and 15.64 N·m.
-- Marker replays and source traces explain measurement concepts while keeping recorded camera footage, processed signals, and schematic lessons distinct.
+| Item | Description |
+| --- | --- |
+| Data source | Driveline’s OpenBiomechanics Project |
+| Sample | 411 fastball pitches from 100 athletes |
+| Sessions | 100; one released session per athlete |
+| Outcomes | Pitch speed and peak internal elbow varus moment |
+| Baselines | Training-fold mean and ridge regression |
+| Validation | Five athlete-grouped folds |
+| Dashboard | Streamlit |
+| Environment | Python 3.12 with dependencies pinned in `uv.lock` |
 
-![Descriptive pitch-level and athlete-mean performance/loading associations](docs/images/performance_loading.png)
+The cohort is primarily collegiate, with recorded pitch speeds from 69.5 to 94.4 mph. Results should not be assumed to represent MLB pitchers or other populations.
 
-*Example output, not a causal or injury-risk analysis. Source: Driveline Baseball Research & Development, OBP; figure adapted by this project under the data terms above.*
+![Pitch-level and athlete-mean associations between pitch speed and elbow varus moment](docs/images/performance_loading.png)
 
-Read the [one-page study summary](docs/STUDY_SUMMARY.md), [research roadmap](docs/ROADMAP.md), and [publication/deployment guide](docs/GITHUB_PUBLISH.md). Citation metadata for this software is in [CITATION.cff](CITATION.cff); dataset attribution remains separate.
+*Descriptive associations, without causal or injury-risk interpretation. Source: Driveline Baseball Research & Development, OpenBiomechanics Project. Figure adapted by this project under the data terms described below.*
 
-## Open the reference demonstration
+## Licensing and permitted use
 
-From a clean checkout, the bundled reference snapshot works without source downloads or model fitting:
+Original project software is licensed under the [MIT License](LICENSE).
+
+OBP data, source definitions, and derived material—including reference reports, figures, traces, and marker animations—retain **CC BY-NC-SA 4.0 plus an additional professional-sports/financial-analysis affiliation restriction**.
+
+Upstream restricts use by employees, contractors, associates, and significant shareholders of professional sports organizations or financial-analysis firms. Such use requires a specific written paid license from the licensor.
+
+The software’s MIT license does not override these data restrictions. Review the [licensing notes and retained upstream terms](docs/LICENSING.md) before reuse, redistribution, commercial activity, or professional-team work.
+
+This is an independent research portfolio project and does not imply endorsement by Driveline.
+
+## Explore the dashboard
+
+The [live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) provides:
+
+- **Overview:** pitch-level tables, data-quality reports, and source provenance.
+- **Watch pitches:** measured marker animations, processed traces, and instructional explanations.
+- **Explore:** distributions and relationships among performance, loading, and rotational measures.
+- **Model errors:** held-out predictions, residuals, and the largest prediction errors.
+- **Definitions and limitations:** units, measurement context, and interpretation boundaries.
+
+Athlete identifiers are pseudonymous source identifiers. Repeated pitches from one athlete are clustered observations.
+
+Dashboard filters change the displayed subset. They do not retrain models. Subset error summaries are labeled separately from the complete cross-validation results.
+
+## Quick start: run the reference dashboard
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then clone the repository:
+
+```bash
+git clone https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready.git
+cd pitching-performance-elbow-loading-github-ready
+```
+
+Install the locked environment and start the reference dashboard:
 
 ```bash
 uv sync --frozen
 uv run --frozen streamlit run streamlit_app.py
 ```
 
-For Streamlit Community Cloud, publish this repository to GitHub, select your published branch (normally `main`), use **`streamlit_app.py`** as the main file, and choose **Python 3.12**. The snapshot is verified on read. The [deployment guide](docs/GITHUB_PUBLISH.md) explains the Windows publication steps and the “not connected to a remote GitHub repository” message. No public repository/demo URL is claimed until you actually publish it.
+Open the local URL printed in the terminal.
 
-## Reproduce the study
+The reference dashboard uses a bundled, checksum-verified snapshot. It requires no source-data download, model fitting, MATLAB installation, or large motion-capture archive.
 
-Use **Python 3.12** and **uv** (tested with Python 3.12.14 and uv 0.12.23). The exact dependency graph and package hashes are saved in `uv.lock`; `.python-version` selects Python 3.12. Install uv using its [official instructions](https://docs.astral.sh/uv/getting-started/installation/) if it is not already available.
+Prepared visual assets are included. Viewing them does not require FFmpeg or the optional motion-processing dependencies.
 
-From this repository's root:
+## Reproduce the analysis
+
+The analysis environment uses **Python 3.12**, tested with Python 3.12.14 and uv 0.12.23. The exact dependency graph and package hashes are recorded in `uv.lock`.
+
+Run these commands from the repository root:
 
 ```bash
+# Install analysis and development dependencies.
 uv sync --frozen --extra dev
 
-# Smallest milestone: fetch immutable files, then validate the join and missingness.
+# Download and verify the small pinned source files.
 uv run --frozen pitching fetch
+
+# Validate source tables, join cardinality, and missingness.
 uv run --frozen pitching audit
 
-# Complete Phase 1: verify cache, create figures, and evaluate grouped baselines.
+# Generate exploratory figures and evaluate grouped baseline models.
 uv run --frozen pitching run --offline
 
-# Tests include real-data checks after fetch, with no network calls during tests.
+# Run tests and code checks.
 uv run --frozen pytest -q
 uv run --frozen ruff check src tests scripts app.py streamlit_app.py
+uv run --frozen ruff format --check src tests scripts app.py streamlit_app.py
 
-# Explore the data and held-out model errors.
-uv run --frozen streamlit run app.py --server.headless true
+# Open the dashboard using the locally regenerated reports.
+uv run --frozen streamlit run app.py
 ```
 
-`uv run --frozen pitching run` also fetches absent files and verifies existing files, so it is a single-command workflow after environment installation. No MATLAB, large C3D archive, full-signal data, video, database credentials, or GitHub token is needed. `uv.toml` keeps the package cache local; plotting uses a writable temporary cache when the cloud home folder is read-only.
-
-Commands default to the current directory as project root. To call the CLI elsewhere:
+Alternatively, after installing the environment, this command fetches absent source files, verifies existing files, and runs the analysis:
 
 ```bash
-uv run --project /path/to/project pitching --project-dir /path/to/project run --offline
+uv run --frozen pitching run
 ```
 
-Use the displayed command in a terminal on a machine that has this checkout. A localhost dashboard process runs on that machine; this repository does not create a hosted dashboard or a Codex web preview. See [reproducibility notes](docs/REPRODUCIBILITY.md) for portable setup and artifact validation.
+The analysis downloads nine small CSV/documentation/license files totaling less than 0.4 MB. The Phase 1 workflow does not require large C3D archives or camera footage.
 
-## Data provenance and first milestone
+Generated analysis outputs are written to `reports/`. Downloaded source files are cached under `data/raw/`. These working directories are excluded from Git.
 
-The source is pinned to OBP commit [`44b98dae05cceb016f080ab39d105c85b8639084`](https://github.com/drivelineresearch/openbiomechanics/tree/44b98dae05cceb016f080ab39d105c85b8639084). `source_manifest.json` records paths, sizes, and SHA-256 hashes for the two CSVs and their schema/license references. Downloads use HTTPS with normal TLS verification. Existing cache files must match; analysis stops on unexplained changes rather than changing the expected hashes.
+See [reproducibility notes](docs/REPRODUCIBILITY.md) and the [Windows guide](START_HERE_WINDOWS.md) for additional setup information.
 
-The original `obp.load_poi("pitching")` and `obp.load_metadata("pitching")` use `pandas.read_csv`. This project uses their **documented schema directly**, retaining the official paths:
+## Data source and provenance
 
-- `baseball_pitching/data/poi/poi_metrics.csv`
-- `baseball_pitching/data/metadata.csv`
+The analysis uses Driveline Baseball Research & Development’s [OpenBiomechanics Project](https://github.com/drivelineresearch/openbiomechanics), pinned to:
 
-`session_pitch` is a pitch identifier; `user` identifies the athlete. The join rejects empty or duplicate pitch keys, unmatched coverage, conflicting shared session IDs or observed pitch speeds, and sessions assigned to multiple athletes. `merge(validate="one_to_one")` prevents accidental row multiplication. The full POI column set is checked against the pinned official data dictionary. Missing targets are never filled from metadata's duplicate speed field.
+```text
+44b98dae05cceb016f080ab39d105c85b8639084
+```
 
-Verified source composition:
+The primary source files are:
 
-- **411 fastball pitches, 100 athletes, 100 sessions**; 2–5 pitches per athlete.
-- Both source tables have 411 unique pitch IDs; all match one-to-one.
-- No missing observations in the five focal variables or six model predictors.
-- **25 other POI columns each have eight missing observations.** Missingness is reported by column in POI, metadata, and merged tables. These are not invented zeros or repaired observations.
-- Mostly collegiate athletes; pitch speed spans **69.5–94.4 mph**. This is not an MLB-representative cohort.
+```text
+baseball_pitching/data/poi/poi_metrics.csv
+baseball_pitching/data/metadata.csv
+```
 
-The first milestone's outputs are `reports/audit.json`, `reports/audit.md`, `reports/missingness.csv`, and `reports/analysis.csv`.
+The official POI and metadata loaders use `pandas.read_csv`. This project loads the files using their documented schema directly.
 
-## Biomechanical measures and exploratory plots
+`source_manifest.json` records source paths, sizes, and SHA-256 checksums. Downloads use HTTPS with normal TLS verification. A checksum mismatch stops the workflow.
+
+### Join validation
+
+The tables are joined using `session_pitch`, with athlete grouping identified by `user`.
+
+Validation checks include:
+
+- Nonempty, unique pitch identifiers in both tables.
+- Complete matching coverage between POI and metadata.
+- A one-to-one join without row multiplication.
+- Agreement between overlapping session and observed-speed fields.
+- Consistent athlete assignments within sessions.
+- Conformance with the pinned POI data dictionary.
+
+Missing target values are never filled from metadata’s duplicate pitch-speed field.
+
+### Missing-data findings
+
+For the pinned source:
+
+- Both tables contain 411 unique pitch identifiers.
+- All 411 pitches match one-to-one.
+- There are no missing observations in the five focal measures or six model predictors.
+- Twenty-five other POI columns each contain eight missing observations.
+
+Missingness is reported by column for the source and merged tables. Missing measurements remain missing in the analysis tables.
+
+## Biomechanical variables
 
 | Source variable | Interpretation | Units |
 | --- | --- | --- |
@@ -94,87 +175,263 @@ The first milestone's outputs are `reports/audit.json`, `reports/audit.md`, `rep
 | `elbow_varus_moment` | Peak internal net elbow varus moment | N·m |
 | `max_shoulder_internal_rotational_velo` | Peak shoulder internal rotation angular velocity | deg/s |
 | `max_rotation_hip_shoulder_separation` | Peak thorax–pelvis separation angle | deg |
-| `max_torso_rotational_velo` | Peak torso axial (Z) angular velocity | deg/s |
+| `max_torso_rotational_velo` | Peak torso axial rotation velocity | deg/s |
 
-Peak hip–shoulder separation differs from the separate foot-plant variable. Peaks can occur at different instants; they cannot reconstruct a kinematic sequence or establish energy transfer. Absolute joint moment is affected partly by body size and biomechanical model assumptions. See [variable definitions](docs/VARIABLES.md) for conventions and source references.
+Peak hip–shoulder separation differs from separation measured specifically at foot plant.
 
-Generated figures:
+These peaks can occur at different instants. Their magnitudes alone cannot establish the timing of a kinematic sequence or quantify energy transfer between segments.
 
-- `reports/figures/distributions.png`: observed distributions for all five measures, with units and missing counts.
-- `reports/figures/velocity_elbow.png`: pitch-level speed/moment association alongside athlete means.
-- `reports/figures/kinematics_vs_outcomes.png`: three rotational summaries against both outcomes.
-- Two `errors_*.png` figures: athlete-held-out ridge predictions and residuals.
+Internal net elbow moment depends on the source biomechanical model and its assumptions. It does not isolate tissue-specific loading or establish a safe threshold.
 
-Repeated pitches are clustered within athletes. These are descriptive plots, without independent-pitch significance tests or causal coaching recommendations. All measured values, including unusual observations, are retained.
+See [variable definitions](docs/VARIABLES.md) for source references and measurement conventions.
 
-## Models and statistical reasoning
+## Exploratory analysis
 
-Two tasks predict **pitch speed** and **peak internal elbow varus moment** separately. Both use the same six prespecified predictors: age, mass, height, peak shoulder internal rotation velocity, peak hip–shoulder separation, and peak torso rotation velocity.
+The workflow produces:
 
-The comparison is a training-fold mean predictor against **ridge regression with alpha fixed at 10**. Ridge is a modest regularized linear baseline for potentially correlated rotational summaries. Alpha and features were fixed before inspecting these model scores; there is no hyperparameter search or selection on validation performance.
+- Distributions of all five focal variables.
+- Pitch-level speed–moment associations alongside athlete means.
+- Rotational measures plotted against both outcomes.
+- Held-out observed-versus-predicted plots and residual plots.
 
-Five-fold shuffled `GroupKFold`, grouped by athlete `user` with seed 42, assigns each athlete's pitches to one held-out fold. The same partition is used for both targets. Each fold contains 20 held-out athletes; pitch counts differ. Identifiers and filenames are excluded from predictors: filenames encode pitch speed, and metadata repeats it. Both outcome columns are excluded from both feature matrices.
+Measured values, including unusual observations, are retained.
 
-The ridge pipeline fits median imputation, missingness indicators, and standardization **inside each training fold**. Imputed predictors are computational estimates, not observed measurements; no outcomes are imputed. The pinned focal data need no such filling. No full-data feature selection or normalization is performed before splitting. See [the research plan](docs/RESEARCH_PLAN.md) and `reports/model_spec.json` for exact rules and technical handling of wholly missing training features.
+The plots are descriptive. Repeated pitches are not treated as independent observations for significance testing, and associations are not converted into causal coaching recommendations.
+
+## Modeling approach
+
+### Outcomes
+
+Two separate prediction tasks estimate:
+
+1. Pitch speed in mph.
+2. Peak internal elbow varus moment in N·m.
+
+### Predictors
+
+Both tasks use the same six predictors:
+
+- Age.
+- Body mass.
+- Height.
+- Peak shoulder internal rotation velocity.
+- Peak hip–shoulder separation.
+- Peak torso rotation velocity.
+
+Both outcome columns, athlete/session identifiers, and filenames are excluded from the predictor matrices. This matters because source filenames encode pitch speed.
+
+### Baseline models
+
+The comparison includes:
+
+- **Training-fold mean:** predicts the average outcome observed in the training athletes.
+- **Ridge regression:** a regularized linear model with `alpha=10`.
+
+The feature set and ridge regularization value are fixed in the Phase 1 specification. There is no hyperparameter search against the reported validation results.
+
+### Athlete-grouped evaluation
+
+Five-fold shuffled `GroupKFold` uses athlete identifier `user` and random seed 42.
+
+Every athlete’s pitches remain together in one held-out fold. Each fold contains 20 held-out athletes, while pitch counts vary. Both prediction tasks use the same athlete partitions.
+
+Median imputation, missingness indicators, and standardization are fitted inside each training fold. Outcomes are never imputed. The focal pinned data contain no missing model predictors; the imputation procedure defines behavior for eligible missing predictors without treating estimates as measured data.
+
+Because the predictors summarize the completed pitch, this is retrospective prediction. It does not forecast performance before the delivery.
+
+See the [research plan](docs/RESEARCH_PLAN.md) for the evaluation specification.
 
 ## Baseline results
 
-Pooled out-of-fold results from the pinned data, five athlete-grouped folds, seed 42:
+Pooled out-of-fold results from 411 pitches and 100 athletes:
 
 | Outcome | Model | MAE | RMSE | R² | Equal-athlete MAE |
 | --- | --- | ---: | ---: | ---: | ---: |
-| Speed (mph) | Training mean | 3.828 | 4.735 | -0.010 | 3.807 |
-| Speed (mph) | Ridge | 3.037 | 3.876 | 0.323 | 3.153 |
-| Elbow moment (N·m) | Training mean | 15.636 | 19.791 | -0.017 | 15.662 |
-| Elbow moment (N·m) | Ridge | 12.395 | 15.885 | 0.345 | 12.104 |
+| Speed, mph | Training mean | 3.828 | 4.735 | -0.010 | 3.807 |
+| Speed, mph | Ridge | 3.037 | 3.876 | 0.323 | 3.153 |
+| Elbow moment, N·m | Training mean | 15.636 | 19.791 | -0.017 | 15.662 |
+| Elbow moment, N·m | Ridge | 12.395 | 15.885 | 0.345 | 12.104 |
 
-All four rows use 411 observed outcomes from 100 athletes. MAE/RMSE retain the outcome's units. Equal-athlete MAE averages each athlete's mean absolute error equally; pooled MAE weights pitches equally. The saved `fold_metrics.csv` exposes fold variation. These scores are internal descriptive validation, not confidence intervals, independent experiments, clinical thresholds, or an external benchmark.
+MAE and RMSE retain the outcome’s physical units.
 
-Ridge improves over the mean baseline here, while substantial error remains. Same-pitch kinematic peaks are measured during the delivery: the models do not predict performance from pre-pitch information. Neither outcome is an injury label. No causal mechanism or injury-risk reduction follows from these scores. Results are descriptive of this dataset and need independent validation before broader scientific claims.
+**Pooled MAE** weights every pitch equally. **Equal-athlete MAE** first averages absolute errors within each athlete, then weights athletes equally.
 
-## Dashboard
+Ridge improves on the training-mean baseline in this cohort, while substantial prediction error remains. These results describe internal validation on withheld athletes from the same source setting.
 
-The **Watch pitches** tab now includes three real metadata-linked C3D marker animations at half speed, an optional paused-frame inspector, released angle/velocity/moment traces with event markers, a 15-second instructional video, and five measurement lessons. It also links a separate official OBP-CV camera recording without claiming it belongs to a selected study pitch. Read [video methods and provenance](docs/VIDEO_METHODS.md).
+Fold-level variation is saved in `fold_metrics.csv`. It is not a confidence interval. No external validation, prospective forecasting, or injury prediction is claimed.
 
-Prepared visual assets are bundled. You do not need to install motion-processing extras or download the large archives to use the dashboard. These examples do not introduce automatic video pose estimation or a video-to-elbow-loading calculation.
+## Motion examples and measurement explanations
 
-The research entry point (`app.py`) reads locally regenerated reports. The hosted entry point (`streamlit_app.py`) reads a verified committed reference snapshot. Neither fetches data or retrains models on a browser interaction. Filter by athlete or playing level; explore distributions and pairwise associations; choose a target and model to inspect out-of-fold observed/predicted values, residuals, and the largest errors.
+The **Watch pitches** tab includes three prepared study examples with recorded speeds of 69.5, 85.3, and 94.4 mph.
 
-Subset error summaries are recomputed for the selected pitches and clearly separated from the saved full-CV metrics. A completion marker and hashes protect against mixing an old prediction file with a partially refreshed dataset. The data can be explored after the audit-only milestone, while model errors require a completed pipeline run.
+### Measured marker animations
 
-## Tests and reproducibility
+The animations are derived from released C3D skin-marker observations and linked to study pitches through source metadata.
 
-Tests use clearly labeled synthetic fixtures to check malformed joins, conflicts, target preservation, missingness counts, checksum failures, train-only preprocessing, forbidden predictor exclusion, disjoint athlete folds, deterministic predictions, and error metrics. Streamlit AppTest exercises filters, errors, missing/invalid artifacts, and stale-result protection. A cached real-data integration check runs the complete offline workflow and verifies reports and plot files. On a checkout without downloaded data, real-data integration tests explicitly skip; run `pitching fetch` first to execute them.
+They include:
 
-`reports/run_metadata.json` records source revision, project Git revision/dirty status, code/manifest/lock hashes, Python/library versions, split settings, and generated-artifact checksums. `split_audit.json`, `fold_assignments.csv`, and `oof_predictions.csv` make the evaluation inspectable. No serialized model is required to reproduce the reported scores. Raw caches, environments, and working reports are ignored by Git. The intentionally exported `assets/demo` reference snapshot is tracked and retains the upstream data terms. Retain `reports/ATTRIBUTION.md` with any redistributed plots or tables.
+- Half-speed playback.
+- A paused-frame inspector.
+- Source and preparation provenance.
+- Explanations of the limits of marker-based visualization.
 
-## Limitations and next research steps
+These are marker animations rather than camera recordings or independently validated joint-center skeletons. Missing marker observations are not interpolated.
 
-This sample is small, fastball-only, primarily collegiate, and collected in one source setting. There is one released session per athlete, no prospective temporal holdout, no injury outcome, and no assumed synchronized-video coverage. Marker-based kinematics and inverse-dynamics joint moments depend on preprocessing, segment models, soft-tissue artifact, and measurement conventions. No copyrighted MLB footage is downloaded.
+### Processed signal traces
 
-For the next portfolio review, explain the join audit, compare ridge with the mean baseline in physical units, and inspect athlete-level errors without changing the model to chase the displayed folds. Write a short interpretation of the speed/moment association and what the model cannot establish. Keep a separate list of later hypotheses—body-size normalization, time-resolved kinematic sequence, external cohorts, and richer models with nested athlete-grouped tuning. Those belong to later phases, after a prespecified analysis plan and any necessary data permission.
+Released angle, angular-velocity, and moment traces are linked to the same three example pitches.
 
-## Repository layout
+The viewer allows selection of a time interval and comparison of its maximum with the published POI value. Four full-trace maxima agree numerically with the corresponding POI values for these examples. This agreement does not independently validate the upstream kinematic or inverse-dynamics pipeline.
 
-```text
-app.py                   local research reports and Watch pitches tab
-streamlit_app.py         read-only hosted reference demo
-assets/demo/             checksum-verified reference reports for clean clones
-.github/workflows/       automated reproduction/tests on GitHub
-assets/                  prepared motion, signal, and instructional examples
-src/pitching/video_lab.py verified media viewer and five measurement lessons
-src/pitching/data.py     pinned downloads, schema checks, join, missingness
-src/pitching/plots.py    exploratory and held-out error figures
-src/pitching/models.py   fixed features and athlete-grouped baselines
-src/pitching/cli.py      fetch / audit / run commands
-source_manifest.json    pinned original files and SHA-256 checksums
-pyproject.toml, uv.lock  Python environment and exact dependency resolution
-tests/                   synthetic unit/UI tests and real-data integration checks
-docs/                    licensing, definitions, research plan, reproducibility
-reports/                 generated locally; ignored by Git
-data/raw/                immutable-source local cache; ignored by Git
+The native shoulder-velocity signal is preserved. A documented ambiguity between generic upstream angle signs and the released velocity convention remains unresolved.
+
+Marker-frame and processed-signal clocks have not been independently aligned. The viewer does not claim synchronized event frames or overlays.
+
+### Instructional video
+
+A short original schematic animation and five measurement lessons explain the concepts behind the focal variables. The schematic is labeled as instructional material and does not represent another measured pitch.
+
+### Separate camera example
+
+The dashboard links an official 62.7 mph OBP-CV camera demonstration. It has no verified crosswalk to the 411-pitch study table and is kept separate from study-pitch metrics.
+
+External playback depends on the source’s availability and sharing settings. No synchronized camera coverage is assumed for the dataset.
+
+This project does not scrape or redistribute copyrighted MLB footage or calculate elbow joint moments directly from a single video.
+
+See [video methods and provenance](docs/VIDEO_METHODS.md) for details.
+
+## Reproducibility and automated checks
+
+The repository includes tests for:
+
+- Join cardinality, duplicate keys, and conflicting metadata.
+- Target preservation and missing-data summaries.
+- Source and artifact checksum validation.
+- Forbidden predictor exclusion.
+- Disjoint athlete folds and training-fold preprocessing.
+- Deterministic predictions and metric calculations.
+- Dashboard filters, error handling, and stale-result protection.
+- Hosted reference-snapshot integrity.
+
+Synthetic test fixtures are labeled and never enter the reported research results.
+
+Real-data integration tests require the verified source cache; run `pitching fetch` before testing. Some archive-dependent motion checks require optional dependencies and source archives and skip when those inputs are unavailable.
+
+GitHub Actions installs the locked environment, fetches the small pinned sources, checks formatting and dependencies, and runs tests.
+
+Each completed local analysis records:
+
+- Source revision.
+- Producing project Git revision and working-tree status.
+- Code, source-manifest, and lockfile hashes.
+- Python and library versions.
+- Evaluation settings.
+- Generated-artifact checksums.
+
+A completion marker and artifact hashes prevent partially refreshed reports from being displayed as a completed model evaluation.
+
+The `.gitattributes` rules preserve checksummed asset bytes across operating systems, including Windows Git checkouts.
+
+## Hosted dashboard
+
+The deployed dashboard uses:
+
+| Setting | Value |
+| --- | --- |
+| Repository | `owengarrett20-svg/pitching-performance-elbow-loading-github-ready` |
+| Branch | `main` |
+| Entry point | `streamlit_app.py` |
+| Python | 3.12 |
+
+Two entry points support different workflows:
+
+- **`streamlit_app.py`:** reads the committed, verified reference snapshot in `assets/demo`.
+- **`app.py`:** reads locally regenerated reports.
+
+Neither entry point downloads source data or fits models during a browser interaction.
+
+To deliberately refresh the published reference snapshot after an analysis change:
+
+```bash
+uv run --frozen pitching run
+uv run --frozen python scripts/export_demo_snapshot.py
 ```
 
-## Attribution
+The exporter checks the producing inputs and output hashes before export. Commit the refreshed snapshot and manifest together.
 
-Driveline Baseball Research & Development and Kyle Boddy, *The OpenBiomechanics Project*. Dataset citation is retained in [docs/licenses/UPSTREAM-CITATION.cff](docs/licenses/UPSTREAM-CITATION.cff); the analysis source revision is linked above. This project joins source tables and adds summaries, figures, and models; it does not imply Driveline endorsement. This research README adapts source definitions and reports data-derived results; those portions retain the [upstream data/documentation terms](docs/LICENSING.md). Original software is separately MIT-licensed.
+See the [publication and deployment guide](docs/GITHUB_PUBLISH.md) for maintenance instructions.
+
+## Limitations
+
+- The sample is small, fastball-only, primarily collegiate, and drawn from one source setting.
+- One released session per athlete prevents evaluation on future sessions within this dataset.
+- Same-pitch kinematic summaries do not establish pre-pitch forecasting.
+- Held-out-athlete evaluation within this source does not establish external validity.
+- Marker-based kinematics and inverse-dynamics moments depend on filtering, segment models, coordinate conventions, and soft-tissue artifact.
+- Individual peaks do not reconstruct movement sequencing.
+- No injury outcomes or validated clinical thresholds are available.
+- No causal effect of changing mechanics is estimated.
+- Camera coverage and synchronization are not assumed.
+- Current results contain no inferential confidence intervals.
+
+## Planned research extensions
+
+These are proposed analyses, not completed results:
+
+1. **Compare predictor groups:** anthropometrics alone, kinematics alone, and the combined model, using the same athlete partitions.
+2. **Quantify athlete-level uncertainty:** prespecify clustered resampling and distinguish uncertainty in fixed out-of-fold errors from full-pipeline uncertainty.
+3. **Evaluate generalization:** obtain an appropriately licensed external or longitudinal cohort.
+4. **Investigate time-resolved mechanics:** resolve signal conventions and verify timing before synchronized analyses.
+5. **Extend models carefully:** use nested athlete-grouped validation if tuning or model selection is introduced.
+
+The [research roadmap](docs/ROADMAP.md) defines questions and completion criteria for these extensions.
+
+## Repository structure
+
+```text
+.github/
+  workflows/              Automated checks
+  ISSUE_TEMPLATE/         Bug and research-question templates
+
+assets/
+  demo/                   Verified reference reports
+  motion/                 Prepared measured-marker examples
+  traces/                 Prepared processed-signal examples
+  lessons/                Instructional video and supporting assets
+
+docs/                     Methods, licensing, study summary, and roadmap
+scripts/                  Asset preparation and deployment exporters
+src/pitching/             Data, modeling, plotting, and dashboard modules
+tests/                    Unit, integration, and dashboard tests
+
+app.py                    Local research dashboard
+streamlit_app.py          Hosted reference dashboard
+source_manifest.json      Pinned source paths and checksums
+pyproject.toml            Package and dependency specification
+uv.lock                   Locked dependency graph
+requirements.txt          Generated runtime installation fallback
+CITATION.cff              Software citation metadata
+CONTRIBUTING.md           Contribution guidance
+
+data/raw/                 Local source cache; ignored by Git
+reports/                  Local generated reports; ignored by Git
+```
+
+## Contributing
+
+Bug reports, reproducibility findings, and carefully framed research questions are welcome.
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting changes. Include relevant source references, units, assumptions, and tests. Changes to features, validation, or interpretation should explain the scientific question and any implications for previously reported results.
+
+## Citation and attribution
+
+For this independently authored software, use [CITATION.cff](CITATION.cff).
+
+For the source data and definitions, also cite:
+
+**Driveline Baseball Research & Development and Kyle Boddy. The OpenBiomechanics Project.**
+
+The retained upstream citation is available in [docs/licenses/UPSTREAM-CITATION.cff](docs/licenses/UPSTREAM-CITATION.cff). The source revision used for this analysis is [44b98dae05cceb016f080ab39d105c85b8639084](https://github.com/drivelineresearch/openbiomechanics/tree/44b98dae05cceb016f080ab39d105c85b8639084).
+
+This project adds data validation, joins, summaries, visualizations, baseline models, and educational adaptations. Source-derived material retains the upstream data/documentation terms; original project software is separately MIT-licensed.
