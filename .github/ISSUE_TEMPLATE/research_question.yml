@@ -1,0 +1,45 @@
+name: Research question
+description: Propose a focused, testable biomechanics or statistical extension.
+title: "[Research] "
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Start with the research plan and roadmap. Joint loading is not an injury
+        label. Do not post identifiable athlete information, private videos, or
+        credentials; describe available data and permissions without sharing them.
+  - type: textarea
+    id: question
+    attributes:
+      label: Question and rationale
+      description: What specific question would this analysis address, and why does it matter?
+    validations:
+      required: true
+  - type: textarea
+    id: measurements
+    attributes:
+      label: Measurements and source evidence
+      description: >-
+        Identify variables, units, definitions, cohort, and source references.
+        Distinguish available observations from additional data you would need.
+    validations:
+      required: true
+  - type: textarea
+    id: design
+    attributes:
+      label: Proposed evaluation
+      description: >-
+        Describe the comparison, athlete grouping, missing-data policy, leakage
+        controls, and planned outputs. Note choices informed by current results.
+    validations:
+      required: true
+  - type: textarea
+    id: limits
+    attributes:
+      label: Limitations and permissions
+      description: >-
+        What would the result establish, and what would remain uncertain? Note
+        licensing or consent requirements, especially for new data or media and
+        professional-sports/financial-analysis affiliation.
+    validations:
+      required: true

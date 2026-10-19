@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling>=1.26,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pitching-performance-elbow-loading"
+version = "0.3.0"
+description = "Reproducible, athlete-grouped exploration of OpenBiomechanics pitching POI data"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "MIT"
+dependencies = [
+  "numpy>=2.0,<3",
+  "pandas>=2.2,<3",
+  "matplotlib>=3.9,<4",
+  "scikit-learn>=1.6,<2",
+  "streamlit>=1.66,<2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "ruff>=0.11,<1"]
+motion = [
+    "ezc3d>=1.5,<2",
+]
+
+[project.scripts]
+pitching = "pitching.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pitching"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = ["integration: checks that use the real, checksum-verified OBP cache"]
+
+[tool.ruff]
+line-length = 100
+

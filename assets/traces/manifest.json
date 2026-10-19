@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "source_commit": "44b98dae05cceb016f080ab39d105c85b8639084",
+  "release_tag": "dataset-v1",
+  "archives": [
+    {
+      "file": "pitching_joint_angles.zip",
+      "sha256": "b4c4854ffcc52a0f757e0b3a3c86acdc4a2fc2e50516a76e62aabdb916afed46",
+      "csv": "joint_angles.csv",
+      "bytes": 35646848,
+      "url": "https://github.com/drivelineresearch/openbiomechanics/releases/download/dataset-v1/pitching_joint_angles.zip"
+    },
+    {
+      "file": "pitching_joint_velos.zip",
+      "sha256": "5752f571b40acc4f02afc42dcfdb4b9eb191fcffd5fb25bc3c585e149941fb69",
+      "csv": "joint_velos.csv",
+      "bytes": 37316141,
+      "url": "https://github.com/drivelineresearch/openbiomechanics/releases/download/dataset-v1/pitching_joint_velos.zip"
+    },
+    {
+      "file": "pitching_forces_moments.zip",
+      "sha256": "ff96d23cfccd3a43473c591166fab1c4317019cd0aec999611e8dc8401246a02",
+      "csv": "forces_moments.csv",
+      "bytes": 87265297,
+      "url": "https://github.com/drivelineresearch/openbiomechanics/releases/download/dataset-v1/pitching_forces_moments.zip"
+    }
+  ],
+  "signals": {
+    "max_rotation_hip_shoulder_separation": {
+      "column": "hip_shoulder_separation_deg",
+      "raw_column": "torso_pelvis_angle_z",
+      "sign": 1,
+      "label": "Hip\u2013shoulder separation",
+      "unit": "deg"
+    },
+    "max_shoulder_internal_rotational_velo": {
+      "column": "shoulder_internal_rotation_velocity_deg_s",
+      "raw_column": "shoulder_velo_z",
+      "sign": 1,
+      "label": "Canonical shoulder z rotation velocity",
+      "unit": "deg/s"
+    },
+    "max_torso_rotational_velo": {
+      "column": "torso_rotation_velocity_deg_s",
+      "raw_column": "torso_velo_z",
+      "sign": 1,
+      "label": "Torso axial rotation velocity",
+      "unit": "deg/s"
+    },
+    "elbow_varus_moment": {
+      "column": "elbow_varus_moment_nm",
+      "raw_column": "elbow_moment_y",
+      "sign": 1,
+      "label": "Internal elbow varus moment",
+      "unit": "N\u00b7m"
+    }
+  },
+  "examples": [
+    {
+      "session_pitch": "1393_3",
+      "user": "919",
+      "file": "1393_3.csv",
+      "sha256": "fd599223c2a7a88c94a9cccae56d756aebbb25ea26957d3b7b6875314af28a0b",
+      "n_samples": 540,
+      "events": {
+        "pkh_time": 0.1972,
+        "fp_10_time": 0.8806,
+        "fp_100_time": 0.9083,
+        "MER_time": 1.0028,
+        "BR_time": 1.0361,
+        "MIR_time": 1.0667
+      },
+      "comparison": [
+        {
+          "metric": "max_rotation_hip_shoulder_separation",
+          "source_column": "torso_pelvis_angle_z",
+          "display_column": "hip_shoulder_separation_deg",
+          "sign": 1,
+          "unit": "deg",
+          "published_poi": 15.9429,
+          "trace_max": 15.9429,
+          "n_missing": 0,
+          "selection": "Maximum finite value over the entire released trace; not a claimed POI window reconstruction."
+        },
+        {
+          "metric": "max_shoulder_internal_rotational_velo",
+          "source_column": "shoulder_velo_z",
+          "display_column": "shoulder_internal_rotation_velocity_deg_s",
+          "sign": 1,
+          "unit": "deg/s",
+          "published_poi": 4320.9953,
+          "trace_max": 4320.9953,
+          "n_missing": 2,
+          "selection": "Maximum finite value over the entire released trace; not a claimed POI window reconstruction."
+        },
+        {
+          "metric": "max_torso_rotational_velo",
+          "source_column": "torso_velo_z",
+          "display_column": "torso_rotation_velocity_deg_s",
+          "sign": 1,
+          "unit": "deg/s",
+          "published_poi": 968.5634,
+          "trace_max": 968.5634,
+          "n_missing": 2,
+          "selection": "Maximum finite value over the entire released trace; not a claimed POI window reconstruction."
+        },
+        {
+          "metric": "elbow_varus_moment",
+          "source_column": "elbow_moment_y",
+          "display_column": "elbow_varus_moment_nm",
+          "sign": 1,
+          "unit": "N\u00b7m",
+          "published_poi": 91.9207,
+          "trace_max": 91.9207,
+          "n_missing": 4,
+          "selection": "Maximum finite value over the entire released trace; not a claimed POI window reconstruction."
+        }
+      ]
+    },
+    {
+      "session_pitch": "1623_3",
+      "user": "970",
+      "file": "1623_3.csv",
+      "sha256": "d4b196ec31412818288385e190e16aff9479ce542c4b294af74389c42eb8dc40",
+      "n_samples": 806,
+      "events": {
+        "pkh_time": 0.9722,
+        "fp_10_time": 1.6917,
+        "fp_100_time": 1.7056,
+        "MER_time": 1.8139,
+        "BR_time": 1.8444,
+        "MIR_time": 1.8806
+      },
+      "comparison": [
+        {
+          "metric": "max_rotation_hip_shoulder_separation",
+          "source_column": "torso_pelvis_angle_z",
+          "display_column": "hip_shoulder_separation_deg",
+          "sign": 1,
+          "unit": "deg",
+          "published_poi": 21.0338,
+          "trace_max": 21.0338,
+          "n_missing": 0,
+          "selection": "Maximum finite value over the entire released trace; not a claimed POI window reconstruction."
+        },
+        {
+          "metric": "max_shoulder_internal_rotational_velo",
+          "source_column": "shoulder_velo_z",
+          "display_column": "shoulder_internal_rotation_velocity_deg_s",
+          "sign": 1,
+          "unit": "deg/s",
+          "published_poi": 4100.657,
+          "trace_max": 4100.657,
+          "n_missing": 2,
+          "selection": "Maximum finite value over the entire released trace; not a claimed POI window reconstruction."
+        },
+        {
+          "metric": "max_torso_rotational_velo",
+          "source_column": "torso_velo_z",
+          "display_column": "torso_rotation_velocity_deg_s",
+          "sign": 1,
+          "unit": "deg/s",
+          "published_poi": 1006.1412,
+          "trace_max": 1006.1412,
+          "n_missing": 2,
+          "selection": "Maximum finite value over the entire released trace; not a claimed POI window reconstruction."
+        },
+        {
+          "metric": "elbow_varus_moment",
+          "source_column": "elbow_moment_y",
+          "display_column": "elbow_varus_moment_nm",
+          "sign": 1,
+          "unit": "N\u00b7m",
+          "published_poi": 96.9136,
+          "trace_max": 96.9136,
+          "n_missing": 4,
+          "selection": "Maximum finite value over the entire released trace; not a claimed POI window reconstruction."
+        }
+      ]
+    },
+    {
+      "session_pitch": "2916_4",
+      "user": "1596",
+      "file": "2916_4.csv",
+      "sha256": "dca73ccb655020ce68155a81ea8672ce5b39bf22c5de41977036c9d067ed82e3",
+      "n_samples": 406,
+      "events": {
+        "pkh_time": 0.3333,
+        "fp_10_time": 0.8333,
+        "fp_100_time": 0.85,
+        "MER_time": 0.9556,
+        "BR_time": 0.9861,
+        "MIR_time": 1.0111
+      },
+      "comparison": [
+        {
+          "metric": "max_rotation_hip_shoulder_separation",
+          "source_column": "torso_pelvis_angle_z",
+          "display_column": "hip_shoulder_separation_deg",
+          "sign": 1,
+          "unit": "deg",
+          "published_poi": 36.1736,
+          "trace_max": 36.1736,
+          "n_missing": 0,
+          "selection": "Maximum finite value over the entire released trace; not a claimed POI window reconstruction."
+        },
+        {
+          "metric": "max_shoulder_internal_rotational_velo",
+          "source_column": "shoulder_velo_z",
+          "display_column": "shoulder_internal_rotation_velocity_deg_s",
+          "sign": 1,
+          "unit": "deg/s",
+          "published_poi": 5192.6458,
+          "trace_max": 5192.6458,
+          "n_missing": 2,
+          "selection": "Maximum finite value over the entire released trace; not a claimed POI window reconstruction."
+        },
+        {
+          "metric": "max_torso_rotational_velo",
+          "source_column": "torso_velo_z",
+          "display_column": "torso_rotation_velocity_deg_s",
+          "sign": 1,
+          "unit": "deg/s",
+          "published_poi": 1322.9304,
+          "trace_max": 1322.9304,
+          "n_missing": 2,
+          "selection": "Maximum finite value over the entire released trace; not a claimed POI window reconstruction."
+        },
+        {
+          "metric": "elbow_varus_moment",
+          "source_column": "elbow_moment_y",
+          "display_column": "elbow_varus_moment_nm",
+          "sign": 1,
+          "unit": "N\u00b7m",
+          "published_poi": 130.0088,
+          "trace_max": 130.0088,
+          "n_missing": 4,
+          "selection": "Maximum finite value over the entire released trace; not a claimed POI window reconstruction."
+        }
+      ]
+    }
+  ],
+  "time_basis": "Original processed CSV time in seconds; no verified raw-C3D or camera synchronization is asserted.",
+  "scope": "Released processed signals only. This project does not independently recompute Visual3D joint dynamics.",
+  "shoulder_convention_note": "shoulder_velo_z is retained as released, without negation. Its positive maximum matches the published internal-rotation POI in all three prepared examples. The generic README external(+)/internal(-) kinematic label does not document the complete export sign-adjustment pipeline; do not infer an Euler-angle derivative or silently flip this trace.",
+  "license_url": "https://github.com/drivelineresearch/openbiomechanics/blob/44b98dae05cceb016f080ab39d105c85b8639084/LICENSE-DATA.md"
+}

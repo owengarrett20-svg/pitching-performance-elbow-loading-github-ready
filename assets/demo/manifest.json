@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "generator": "pitching.deployment.export_demo_snapshot",
+  "source_repository": "https://github.com/drivelineresearch/openbiomechanics",
+  "source_commit": "44b98dae05cceb016f080ab39d105c85b8639084",
+  "report_directory": "reports",
+  "description": "Verified reference reports from the pinned OpenBiomechanics pitching dataset. Hosted viewing is read-only; no data are downloaded and no models are fitted. Use the local pipeline to reproduce or regenerate these derived artifacts.",
+  "license_url": "https://github.com/drivelineresearch/openbiomechanics/blob/44b98dae05cceb016f080ab39d105c85b8639084/LICENSE-DATA.md",
+  "attribution": "Driveline Baseball Research & Development, OpenBiomechanics Project. Derived tables, figures, and athlete-held-out model results retain upstream CC BY-NC-SA 4.0 and additional professional-organization restrictions; see reports/ATTRIBUTION.md and docs/LICENSING.md.",
+  "files": {
+    "reports/ATTRIBUTION.md": {
+      "sha256": "128ccc8ea214d2ab16be14b386e87500397135937727f122aaac6ac390a2a37b",
+      "bytes": 721
+    },
+    "reports/analysis.csv": {
+      "sha256": "83c751ae903ce5f62a12e0678159c275e456c004f88c1f164caa191cf63b0b14",
+      "bytes": 305279
+    },
+    "reports/audit.json": {
+      "sha256": "69d0d7b293c32f4b3c359461e1f944f243e9a4d35a6dcfe05704eaf5b7902e17",
+      "bytes": 1434
+    },
+    "reports/audit.md": {
+      "sha256": "648b791a4e5cf271fb5c01c9ce9552ccd5da79592bf6be68497d03f7be509eea",
+      "bytes": 925
+    },
+    "reports/descriptive_summary.csv": {
+      "sha256": "3fb10423df682b3616d407d1280847cbc05c772d5c1d7d9bd2270850e4c5bac7",
+      "bytes": 853
+    },
+    "reports/figures/distributions.png": {
+      "sha256": "a607ef28e8d365022cbe18226570d50d067981399655ca429f2d42d187aac7ad",
+      "bytes": 178383
+    },
+    "reports/figures/errors_elbow_varus_moment.png": {
+      "sha256": "40675da4098dd84f59e05e6a79f93971fd3cb4aead7dbb8bb6f07a4b1667c9f0",
+      "bytes": 192120
+    },
+    "reports/figures/errors_pitch_speed_mph.png": {
+      "sha256": "37f31f36e0c94d771ffef065c214fce48cf82862392e01156b0c3b9ed3b513ef",
+      "bytes": 185001
+    },
+    "reports/figures/kinematics_vs_outcomes.png": {
+      "sha256": "4858cd734e831d43bbeeeaab6f39c30ea611243201430ad76e44579ecbf415cc",
+      "bytes": 517456
+    },
+    "reports/figures/velocity_elbow.png": {
+      "sha256": "54ae546d2143bad1fbd0d391d9a645eaa6e1f9c6ae1ea0a310b6d9263e0caf5a",
+      "bytes": 178075
+    },
+    "reports/fold_assignments.csv": {
+      "sha256": "325e882c7059cad6c1a2767a8ca847d33f3966620171149a69afec773099c8ad",
+      "bytes": 5604
+    },
+    "reports/fold_metrics.csv": {
+      "sha256": "c7c20a4edef4310c95b519ca33f09146824b30ff83c217fbe459e08408adcd9b",
+      "bytes": 2264
+    },
+    "reports/missingness.csv": {
+      "sha256": "c72d0a2291c2d90386702a36435ae0c87e9f9954ac6d9cd9dfa4fa8b4b3181ef",
+      "bytes": 8155
+    },
+    "reports/model_metrics.csv": {
+      "sha256": "dc25bda2350b591c71a460702939676119c89adc6cb5ac90d2c5abb2e248aa15",
+      "bytes": 499
+    },
+    "reports/model_spec.json": {
+      "sha256": "f3c5da89639dbde2e4ed8eb388a9c16d5ae711af41f4e209976db6d8d90aca8f",
+      "bytes": 2165
+    },
+    "reports/oof_predictions.csv": {
+      "sha256": "1d97e0ae3f842ec408e125ff85b1a9923bcdbcbc3bbca0511dfe8ff19106b573",
+      "bytes": 167937
+    },
+    "reports/run_metadata.json": {
+      "sha256": "1d9f99eaeac3fb88db91045a62676bf64894e16a0407f8cd2b6256c996ef11bb",
+      "bytes": 3815
+    },
+    "reports/split_audit.json": {
+      "sha256": "94902f0646b51a2b11e6e4f2fcb85d84ae3c57dc8973d0c5c37dbf13a98fdc79",
+      "bytes": 9383
+    }
+  }
+}

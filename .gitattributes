@@ -1,0 +1,11 @@
+# Keep source/configuration bytes stable across operating systems.
+* text=auto eol=lf
+
+# Manifests verify these files byte-for-byte, including text report assets.
+# Preserve their original line endings when committing and checking out.
+assets/** -text
+
+*.png binary
+*.jpg binary
+*.mp4 binary
+*.npz binary

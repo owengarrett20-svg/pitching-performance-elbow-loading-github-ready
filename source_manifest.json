@@ -1,0 +1,52 @@
+{
+  "repository": "https://github.com/drivelineresearch/openbiomechanics",
+  "commit": "44b98dae05cceb016f080ab39d105c85b8639084",
+  "license": "CC BY-NC-SA 4.0 with additional professional-organization exclusion (data/docs); MIT (code)",
+  "files": [
+    {
+      "path": "baseball_pitching/data/poi/poi_metrics.csv",
+      "sha256": "5ba2ac8536fba1d6997ebd81d7b1956c73fbb2e141b9c6156cd76f66265f391e",
+      "bytes": 266651
+    },
+    {
+      "path": "baseball_pitching/data/metadata.csv",
+      "sha256": "ec5686fef140e728193d4ce4bb16aa116751e716963bb2aedca11111b03816e3",
+      "bytes": 45653
+    },
+    {
+      "path": "baseball_pitching/data/data_dictionary.csv",
+      "sha256": "3a87194c690b8118bc2175a688668ca996d699e5b35eafd1155b94e1f9efb817",
+      "bytes": 10080
+    },
+    {
+      "path": "baseball_pitching/README.md",
+      "sha256": "1993d60a63dd751b1eab5138f5698edcdaa0a1a15e30699e2dc767ee45e49587",
+      "bytes": 17175
+    },
+    {
+      "path": "obp/core.py",
+      "sha256": "922caadabd7da73a32882ebdcf0f494d3e610712b509f91fb8939906eacf0ef3",
+      "bytes": 5106
+    },
+    {
+      "path": "DATASHEET.md",
+      "sha256": "5256a2c1665cdc0057f91edeab4156dadbd2e1942205221e91755dee735b015c",
+      "bytes": 15134
+    },
+    {
+      "path": "LICENSE-DATA.md",
+      "sha256": "19b1e9bedd22c36f02cdccd67b7c4dd561e2379f96b540006ad0c6dc9c49cc50",
+      "bytes": 2839
+    },
+    {
+      "path": "LICENSE-CODE.md",
+      "sha256": "425055d90434fc55c0a875b11d6ece7e21c7c9beec08b9085fdefb142d28ea37",
+      "bytes": 1603
+    },
+    {
+      "path": "CITATION.cff",
+      "sha256": "58ece7dac5f051968b02db0b1ddb74fb80e828d66b843affbb1f75899fd239c9",
+      "bytes": 1357
+    }
+  ]
+}

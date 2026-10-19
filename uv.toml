@@ -1,0 +1,2 @@
+# Keep the package cache writable in cloud machines with a read-only home.
+cache-dir = ".cache/uv"

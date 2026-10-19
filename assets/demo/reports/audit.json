@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "join_key": "session_pitch",
+  "cardinality": "one_to_one",
+  "poi": {
+    "n_rows": 411,
+    "invalid_key_rows": 0,
+    "duplicate_key_rows": 0,
+    "duplicate_keys": []
+  },
+  "metadata": {
+    "n_rows": 411,
+    "invalid_key_rows": 0,
+    "duplicate_key_rows": 0,
+    "duplicate_keys": []
+  },
+  "poi_only_keys": [],
+  "metadata_only_keys": [],
+  "duplicate_speed_conflicts": 0,
+  "duplicate_speed_missing_pairs": 0,
+  "n_joined_pitches": 411,
+  "n_athletes": 100,
+  "n_sessions": 100,
+  "pitch_types": {
+    "FF": 411
+  },
+  "pitch_hand": {
+    "R": 328,
+    "L": 83
+  },
+  "pitches_per_athlete": {
+    "count": 100.0,
+    "mean": 4.11,
+    "std": 1.0530858934530931,
+    "min": 2.0,
+    "25%": 3.0,
+    "50%": 5.0,
+    "75%": 5.0,
+    "max": 5.0
+  },
+  "target_policy": "POI outcomes retained; metadata does not fill missing targets.",
+  "schema_reference": "baseball_pitching/data/data_dictionary.csv",
+  "source_commit": "44b98dae05cceb016f080ab39d105c85b8639084",
+  "columns_with_missing_poi": 25,
+  "requested_variables_missing": {
+    "pitch_speed_mph": 0,
+    "max_shoulder_internal_rotational_velo": 0,
+    "max_torso_rotational_velo": 0,
+    "max_rotation_hip_shoulder_separation": 0,
+    "elbow_varus_moment": 0
+  },
+  "source": {
+    "repository": "https://github.com/drivelineresearch/openbiomechanics",
+    "commit": "44b98dae05cceb016f080ab39d105c85b8639084",
+    "verified_files": 9
+  }
+}

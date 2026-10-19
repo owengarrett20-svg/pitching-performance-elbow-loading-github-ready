@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: >-
+  Cite this entry for the independently authored software. Also cite Driveline's
+  OpenBiomechanics Project for the dataset and source definitions, using the
+  retained upstream citation in docs/licenses/UPSTREAM-CITATION.cff. The MIT
+  license below covers original software only; data and derived material retain
+  the separate terms described in docs/LICENSING.md.
+type: software
+title: "Pitching Performance and Elbow Loading"
+authors:
+  - family-names: Garrett
+    given-names: Owen
+license: MIT
+abstract: >-
+  A reproducible exploratory Python study of pitching performance and peak
+  internal elbow varus moment using Driveline's OpenBiomechanics Project.
+  Includes validated pitch-level joins, missingness audits, descriptive figures,
+  athlete-grouped baseline models, and an educational Streamlit viewer.
+  The analysis estimates retrospective associations, not injury risk or causal
+  effects of changing mechanics.
+keywords:
+  - biomechanics
+  - baseball
+  - pitching
+  - reproducible research
+  - grouped cross-validation
+references:
+  - type: data
+    title: "The OpenBiomechanics Project (OBP)"
+    authors:
+      - name: "Driveline Baseball Research and Development"
+      - family-names: Boddy
+        given-names: Kyle
+    repository-code: "https://github.com/drivelineresearch/openbiomechanics"
+    url: "https://openbiomechanics.org"
+    version: "44b98dae05cceb016f080ab39d105c85b8639084"
+    license: CC-BY-NC-SA-4.0
+    abstract: >-
+      Source data and biomechanics documentation. The upstream license includes
+      an additional professional-sports/financial-analysis affiliation exclusion;
+      the full pinned LICENSE-DATA.md and project docs/LICENSING.md govern reuse.

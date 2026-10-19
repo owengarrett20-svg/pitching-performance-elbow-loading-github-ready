@@ -1,0 +1,50 @@
+name: Bug report
+description: Report a reproducible software, data-validation, or dashboard failure.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Please include a minimal non-sensitive example. Do not post secrets,
+        license credentials, identifiable athlete information, or athlete videos.
+        Use a research-question issue for a new scientific analysis.
+  - type: textarea
+    id: failure
+    attributes:
+      label: What happened?
+      description: Describe the observed behavior and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include exact commands, dashboard actions, and relevant filters.
+      placeholder: |
+        1. Run ...
+        2. Select ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and revision
+      description: >-
+        Include OS, Python and uv versions, project commit/version, and whether
+        you used uv sync --frozen. Omit usernames or private filesystem paths.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant error output
+      description: Paste the relevant traceback or validation message after removing secrets.
+      render: text
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Data and privacy
+      options:
+        - label: I removed credentials and identifiable or unlicensed athlete material.
+          required: true

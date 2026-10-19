@@ -1,0 +1,63 @@
+{
+  "features": [
+    "age_yrs",
+    "session_mass_kg",
+    "session_height_m",
+    "max_shoulder_internal_rotational_velo",
+    "max_rotation_hip_shoulder_separation",
+    "max_torso_rotational_velo"
+  ],
+  "targets": [
+    "pitch_speed_mph",
+    "elbow_varus_moment"
+  ],
+  "models": {
+    "dummy_mean": {
+      "strategy": "training_fold_mean"
+    },
+    "ridge": {
+      "alpha": 10.0,
+      "tuning": "none; fixed a priori"
+    }
+  },
+  "splitter": "GroupKFold",
+  "group": "user",
+  "n_splits": 5,
+  "shuffle": true,
+  "seed": 42,
+  "shared_target_folds": true,
+  "feature_preprocessing": {
+    "nonfinite": "replace positive/negative infinity with missing",
+    "imputation": "training-fold median with missingness indicators",
+    "all_missing_training_feature": "keep feature; impute zero as technical fallback",
+    "scaling": "training-fold StandardScaler after imputation",
+    "fit_scope": "training rows with finite target only, within each fold"
+  },
+  "nonfinite_feature_counts": {
+    "age_yrs": 0,
+    "session_mass_kg": 0,
+    "session_height_m": 0,
+    "max_shoulder_internal_rotational_velo": 0,
+    "max_rotation_hip_shoulder_separation": 0,
+    "max_torso_rotational_velo": 0
+  },
+  "target_policy": "exclude missing/nonfinite targets separately; never impute outcomes",
+  "excluded_target_rows": {
+    "pitch_speed_mph": 0,
+    "elbow_varus_moment": 0
+  },
+  "metrics": {
+    "residual": "observed minus predicted",
+    "mae": "pooled held-out pitch mean absolute error",
+    "rmse": "pooled held-out pitch root mean squared error",
+    "r2": "pooled held-out R\u00b2; undefined for fewer than two or constant observations",
+    "athlete_mae": "unweighted mean of per-athlete held-out MAE"
+  },
+  "excluded_predictors": [
+    "athlete/session/pitch identifiers",
+    "filenames and paths",
+    "both outcome columns, including duplicated metadata pitch speed",
+    "unlisted source measurements"
+  ],
+  "interpretation": "Same-pitch post-motion descriptive associations, not pre-pitch forecasts. Joint moment is not an injury probability or a validated injury predictor. No causal inference or synchronized video availability is assumed."
+}

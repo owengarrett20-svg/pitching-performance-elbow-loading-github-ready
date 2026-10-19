@@ -1,0 +1,43 @@
+{
+  "artifact": "measurement_explainer.mp4",
+  "poster": "measurement_explainer.jpg",
+  "sha256": "1f7258d05d3753c27e225b17624517aea001e2e8cf50534f4b0e6f5ee6967ba2",
+  "bytes": 289535,
+  "duration_seconds": 15,
+  "fps": 24,
+  "resolution": [
+    1280,
+    720
+  ],
+  "type": "original_instructional_schematic",
+  "contains_measured_pitch_data": false,
+  "contains_athlete_footage": false,
+  "on_every_frame": "Instructional schematic \u2014 not measured pitch data",
+  "chapters": [
+    {
+      "start_seconds": 0,
+      "end_seconds": 5,
+      "title": "Relative orientation"
+    },
+    {
+      "start_seconds": 5,
+      "end_seconds": 10,
+      "title": "Planar angle-time derivative"
+    },
+    {
+      "start_seconds": 10,
+      "end_seconds": 15,
+      "title": "Rigid-segment dynamics concept"
+    }
+  ],
+  "attribution": "Definitions adapted from Driveline Baseball Research & Development's OpenBiomechanics Project. Diagrams and pedagogical text are original project adaptations.",
+  "source_commit": "44b98dae05cceb016f080ab39d105c85b8639084",
+  "sources": {
+    "Pitching definitions and conventions": "https://github.com/drivelineresearch/openbiomechanics/blob/44b98dae05cceb016f080ab39d105c85b8639084/baseball_pitching/README.md",
+    "Data dictionary": "https://github.com/drivelineresearch/openbiomechanics/blob/44b98dae05cceb016f080ab39d105c85b8639084/baseball_pitching/data/data_dictionary.csv",
+    "Data and documentation license": "https://github.com/drivelineresearch/openbiomechanics/blob/44b98dae05cceb016f080ab39d105c85b8639084/LICENSE-DATA.md"
+  },
+  "documentation_license": "CC BY-NC-SA 4.0 with upstream additional professional-sports / financial-analysis affiliation restriction; see the pinned data/documentation license.",
+  "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "render_command": "uv run python scripts/render_measurement_explainer.py"
+}
