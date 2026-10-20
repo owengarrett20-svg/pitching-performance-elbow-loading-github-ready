@@ -63,6 +63,13 @@ disabled and without raw-data or working-report directories. The source ZIP
 contains tracked project files and prepared public assets, excluding Git state,
 environments, caches, private studies, and working source downloads.
 
+The final local reproduction used clean producing source `6d30e53`.
+All 43 snapshot files verified; the 41 scientific/reference artifacts other than
+the two provenance metadata files are byte-identical to the published Phase 3
+snapshot. The original analysis plan, numerical settings, predictions, intervals,
+tables, and figures are unchanged. Only producing provenance and its binding
+manifest were refreshed.
+
 ## Evidence limits
 
 Marker and processed-signal time origins remain unverified. Reports summarize a

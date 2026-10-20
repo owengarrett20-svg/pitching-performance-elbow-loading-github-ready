@@ -9,6 +9,9 @@ Phase 3 has been pushed to the public repository at `edf5c05`. Phase 4 adds moti
 
 [Open the live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) · [Study summary](docs/STUDY_SUMMARY.md) · [Phase 2 results](docs/PHASE2_RESULTS.md) · [Research roadmap](docs/ROADMAP.md) · [Automated checks](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready/actions)
 
+[Phase 4 release verification](docs/PHASE4_VALIDATION.md) records local test,
+browser, and reproducibility evidence; publication and deployment remain separate.
+
 ## Research question
 
 Do completed-pitch rotational summaries add predictive information beyond age, body mass, and height for pitch speed and peak internal elbow varus moment in held-out athletes?
