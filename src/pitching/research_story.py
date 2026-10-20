@@ -306,7 +306,7 @@ def _score_chart(reports: Phase2Reports, summary: StorySummary, include_all: boo
         .encode(
             x=alt.X(
                 "athlete_mae:Q",
-                title=f"Average prediction error ({summary.unit}) · lower is closer",
+                title=f"Error ({summary.unit})",
                 scale=alt.Scale(zero=True),
             ),
             y=alt.Y(
@@ -361,6 +361,9 @@ def render_study_story(report_dir: Path) -> None:
     )
     _summary_cards(summary)
     include_all = st.toggle("Include all four models", key="study_story_all_models")
+    st.caption(
+        "Average prediction error per athlete; lower values are closer to observed measurements."
+    )
     _score_chart(reports, summary, include_all)
     if target == "elbow_varus_moment":
         st.caption(
