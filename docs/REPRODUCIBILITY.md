@@ -1,4 +1,4 @@
-# Reproducing Phases 1 and 2
+# Reproducing the study and guided research site
 
 The reproducible unit is the code revision, `uv.lock`, `source_manifest.json`,
 analysis plans, and saved evaluation specifications. A screenshot or running
@@ -24,6 +24,10 @@ are deterministic for the pinned environment and seeds, with possible small
 floating-point differences across platforms or BLAS implementations. Scientific
 reproduction concerns source inputs, folds, predictions, and metrics; PNG bytes
 may vary with fonts or rendering libraries.
+
+Altair is a direct runtime dependency for the Phase 3 interactive charts. Its
+version is pinned in the same lockfile; the presentation update does not change
+the fixed Phase 1/2 model definitions or introduce another dataset.
 
 The committed `.gitattributes` preserves all asset bytes and consistent source
 line endings. Keep these rules on Windows: newline conversion must not invalidate
@@ -226,10 +230,44 @@ uv run --frozen streamlit run streamlit_app.py
 
 The exporter verifies producing code, source manifest, lockfile, Phase 2 plan,
 and output hashes before export. Commit the snapshot and manifest together.
-The hosted reader does not modify the snapshot. Version 0.4.0 and its reference
-artifacts are local changes until published to the connected GitHub branch;
-creating local files does not update the public app. See
-[GITHUB_PUBLISH.md](GITHUB_PUBLISH.md) for deployment and repository guidance.
+The hosted reader does not modify the snapshot. Phase 2 version 0.4.0 has been
+pushed to the connected branch. The prepared Phase 3 version 0.5.0 update remains
+local until pushed and rebuilt; creating local files does not update the public
+app. See [PHASE3_UPGRADE_WINDOWS.md](PHASE3_UPGRADE_WINDOWS.md) and
+[GITHUB_PUBLISH.md](GITHUB_PUBLISH.md) for upgrade and deployment guidance.
+
+## Guided views and interactive release checks
+
+Phase 3 uses five routes: **Start here**, **Explore pitches**, **Watch motion**,
+**Study results**, and **Methods & collaboration**. Only the active route is
+rendered. The default study view uses average absolute prediction error per
+athlete; the detailed mode retains all planned contrasts and the saved audit.
+
+Explorer charts use observed measurements. In athlete-average mode, each point
+averages complete selected-axis pitch pairs for one athlete; it is not an
+individual pitch or a time-averaged movement trace. The A/B table calculates
+B-minus-A differences from two actual recorded rows and retains missing values.
+Filters change the displayed observations and athlete-detail tables, not the
+full-cohort study comparisons or conditional intervals.
+
+A link such as `?page=explore&pitch=1623_3` names a view and a recorded pitch.
+The router allowlists view names and checks identifiers against the analysis
+rows. Motion links identify the example actually displayed; unavailable replays
+are explained instead of being silently paired with another pitch's metrics.
+
+Application checks should cover an opening visit, both study outcomes, chart and
+dropdown selection, consecutive selection changes, athlete-average mode, filters,
+recorded-pitch links, and stale-result handling. Check desktop and phone-width
+layouts for clipped text, chart rendering, keyboard/touch selection, and page
+overflow. Browser layout review complements the automated unit and Streamlit
+checks; it is not an external scientific validation.
+
+The [experience notes](PHASE3_EXPERIENCE.md) and
+[collaboration guide](COLLABORATION.md) state the presentation and data-use
+boundaries. The public introduction link accepts a non-sensitive description
+only; it does not create an authorized channel for player files or supply a
+confidential upload service. New data require permission, compatible definitions,
+a reviewed adapter, and a separately frozen external evaluation plan.
 
 No new cloud environment, MATLAB/Octave project, or additional Git worktree is
 needed to reproduce this Python study.

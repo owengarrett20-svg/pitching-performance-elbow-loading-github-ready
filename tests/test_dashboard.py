@@ -98,6 +98,12 @@ def metric_values(app):
     return {metric.label: metric.value for metric in app.metric}
 
 
+def open_error_view(app):
+    app.radio(key="app_page").set_value("Study results").run()
+    app.radio(key="study_mode").set_value("Prediction errors").run()
+    return app
+
+
 def test_missing_reports_gives_runnable_command(tmp_path, monkeypatch):
     monkeypatch.setenv("PITCHING_REPORT_DIR", str(tmp_path))
     app = AppTest.from_file(str(APP), default_timeout=20).run()
@@ -108,7 +114,7 @@ def test_missing_reports_gives_runnable_command(tmp_path, monkeypatch):
 
 
 def test_ready_dashboard_filters_pitches_and_held_out_errors(reports):
-    app = AppTest.from_file(str(APP), default_timeout=20).run()
+    app = open_error_view(AppTest.from_file(str(APP), default_timeout=20).run())
     assert not app.exception
     assert metric_values(app)["Pitches"] == "4"
     assert metric_values(app)["Athletes"] == "2"
@@ -136,6 +142,7 @@ def test_ready_dashboard_filters_pitches_and_held_out_errors(reports):
 
 def test_incompatible_sidebar_filters_show_empty_state(reports):
     app = AppTest.from_file(str(APP), default_timeout=20).run()
+    app.radio(key="app_page").set_value("Explore pitches").run()
     app.multiselect(key="athlete_filter").select("athlete-a").run()
     app.multiselect(key="level_filter").select("College").run()
     assert not app.exception
@@ -155,7 +162,7 @@ def test_duplicate_pitch_report_does_not_render_a_multiplying_join(reports):
 
 def test_interrupted_run_does_not_display_old_model_errors(reports):
     (reports / "run_metadata.json").unlink()
-    app = AppTest.from_file(str(APP), default_timeout=20).run()
+    app = open_error_view(AppTest.from_file(str(APP), default_timeout=20).run())
     assert not app.exception
     assert any("No completed modeling run" in item.value for item in app.info)
     assert "Subset MAE" not in metric_values(app)
@@ -165,7 +172,7 @@ def test_changed_artifacts_do_not_display_stale_model_errors(reports):
     predictions = pd.read_csv(reports / "oof_predictions.csv")
     predictions.loc[0, "predicted"] = 123456
     predictions.to_csv(reports / "oof_predictions.csv", index=False)
-    app = AppTest.from_file(str(APP), default_timeout=20).run()
+    app = open_error_view(AppTest.from_file(str(APP), default_timeout=20).run())
     assert not app.exception
     assert any("stale or incomplete" in item.value for item in app.warning)
     assert "Subset MAE" not in metric_values(app)

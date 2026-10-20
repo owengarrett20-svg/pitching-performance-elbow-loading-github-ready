@@ -3,9 +3,9 @@
 A reproducible Python biomechanics research project exploring pitching performance, rotational kinematics, and internal elbow joint loading using Driveline’s OpenBiomechanics Project.
 
 **Author:** Owen Garrett  
-**Status:** Version 0.4.0 — Phase 1 exploration and Phase 2 predictor-group comparisons with conditional athlete-level uncertainty.
+**Status:** Version 0.5.0 — a guided, interactive research showcase built on the completed Phase 1 and Phase 2 analyses.
 
-Phase 2 is implemented in this checkout and its verified reference snapshot. The existing public dashboard updates only after these changes are pushed to its connected GitHub branch; this README does not establish that the new version has been deployed.
+Phase 2 has been pushed to the public repository. Phase 3 adds a clearer opening story, recorded-pitch exploration, and a research-collaboration introduction. This version reaches the existing public dashboard after the update is pushed and Streamlit rebuilds; the scientific comparisons are unchanged.
 
 [Open the live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) · [Study summary](docs/STUDY_SUMMARY.md) · [Phase 2 results](docs/PHASE2_RESULTS.md) · [Research roadmap](docs/ROADMAP.md) · [Automated checks](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready/actions)
 
@@ -55,18 +55,38 @@ This is an independent research portfolio project and does not imply endorsement
 
 ## Explore the dashboard
 
+![Phase 3 opening view with research question, exploration controls, and a measured-marker replay](docs/images/dashboard-overview.png)
+
+*Local Phase 3 preview. [Phone-width preview](docs/images/dashboard-mobile.png).
+The marker replay is derived from OBP and retains the data terms above.*
+
 The [live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) provides:
 
-- **Overview:** pitch-level tables, data-quality reports, and source provenance.
-- **Watch pitches:** measured marker animations, processed traces, and instructional explanations.
-- **Explore:** distributions and relationships among performance, loading, and rotational measures.
-- **Model errors:** held-out predictions, residuals, and the largest prediction errors.
-- **Phase 2 comparisons:** predictor-group scores, paired conditional error intervals, partition sensitivity, athlete-level errors, and downloadable results.
-- **Definitions and limitations:** units, measurement context, and interpretation boundaries.
+- **Start here:** the research question, a genuine marker replay, and the main finding in plain language.
+- **Explore pitches:** hoverable and clickable charts, keyboard-accessible recorded-pitch selection, athlete averages, A/B observation comparisons, and source-attributed CSV downloads.
+- **Watch motion:** the three prepared measured-marker examples, paused-frame inspection, processed traces, and expandable measurement lessons.
+- **Study results:** a readable average-error comparison, outcome and model controls, prediction errors, and the detailed research audit.
+- **Methods & collaboration:** the author and evaluation process, data-quality reports, definitions, and a public introduction route for a future authorized study.
 
 Athlete identifiers are pseudonymous source identifiers. Repeated pitches from one athlete are clustered observations.
 
 Dashboard filters change displayed pitch subsets and athlete-detail tables without retraining models. Phase 2 scores, intervals, and partition-sensitivity summaries always describe the complete eligible cohort; sidebar filters do not recompute them. Subset Phase 1 error summaries are labeled separately from complete cross-validation results.
+
+Only the active view is rendered. The opening keeps research tables behind deliberate navigation, while the full methods and uncertain findings remain available.
+
+In **Explore pitches**, a point can represent either one recorded pitch or an athlete average. An athlete average summarizes paired observed pitches and is not a single delivery or a time-averaged motion trace. A/B comparisons calculate differences between measured observations; they do not simulate a mechanics change, rank technique quality, or prescribe an intervention. Missing measurements remain missing.
+
+Recorded selections can be shared through a page address such as `?page=explore&pitch=1623_3`. URL values are checked against actual recorded identifiers. Prepared motion is shown only for matching pitch and athlete identities; the address reflects the replay actually displayed.
+
+Read the [Phase 3 experience notes](docs/PHASE3_EXPERIENCE.md) or [Windows upgrade guide](docs/PHASE3_UPGRADE_WINDOWS.md) to install the update. The existing repository and Streamlit URL are retained.
+
+### Interested in a research collaboration?
+
+Start with a focused question, measurement definitions, units, collection protocol, and approximate cohort/session counts. The [collaboration guide](docs/COLLABORATION.md) describes a proposed evaluation process for independently authorized data.
+
+The site's introduction link opens a **public GitHub issue**. Share only a non-sensitive project introduction there. Agree a private communication channel, data rights, and an approved analysis environment before any athlete-data transfer. This public demonstration provides no confidential upload service and makes no claim of an existing team partnership or external benchmark.
+
+OBP's professional-sports/financial-analysis affiliation restriction still applies. The original software's MIT license does not grant permission to use OBP material in team work.
 
 ## Quick start: run the reference dashboard
 
@@ -302,7 +322,7 @@ Read the [complete Phase 2 report](docs/PHASE2_RESULTS.md), [analysis plan](docs
 
 ## Motion examples and measurement explanations
 
-The **Watch pitches** tab includes three prepared study examples with recorded speeds of 69.5, 85.3, and 94.4 mph.
+The **Watch motion** view includes three prepared study examples with recorded speeds of 69.5, 85.3, and 94.4 mph.
 
 ### Measured marker animations
 
@@ -356,6 +376,8 @@ The repository includes tests for:
 - Full-refit partition sensitivity and generated Phase 2 reports.
 - Dashboard filters, error handling, and stale-result protection.
 - Hosted reference-snapshot integrity.
+- Allowlisted share links, recorded-pitch selection, filter/selection state, observed A/B arithmetic, athlete-average units, and readable verified findings.
+- Non-sensitive collaboration links and clear data-use boundaries.
 
 Synthetic test fixtures are labeled and never enter the reported research results.
 
@@ -392,7 +414,7 @@ Two entry points support different workflows:
 - **`streamlit_app.py`:** reads the committed, verified reference snapshot in `assets/demo`.
 - **`app.py`:** reads locally regenerated reports.
 
-Neither entry point downloads source data or fits models during a browser interaction.
+Neither entry point downloads source data, fits models, or bootstraps data during a browser interaction. Altair supports the interactive charts; its runtime version is pinned alongside the analysis dependencies.
 
 To deliberately refresh the published reference snapshot after an analysis change:
 
@@ -437,7 +459,7 @@ The [research roadmap](docs/ROADMAP.md) defines questions and completion criteri
 ```text
 .github/
   workflows/              Automated checks
-  ISSUE_TEMPLATE/         Bug and research-question templates
+  ISSUE_TEMPLATE/         Bug, research-question, and collaboration introductions
 
 assets/
   demo/                   Verified reference reports
@@ -448,7 +470,7 @@ assets/
 analysis/                 Frozen machine-readable Phase 2 plan
 docs/                     Methods, Phase 2 results, licensing, and roadmap
 scripts/                  Asset preparation and deployment exporters
-src/pitching/             Data, modeling, plotting, and dashboard modules
+src/pitching/             Research workflows, guided views, and interactive charts
 tests/                    Unit, integration, and dashboard tests
 
 app.py                    Local research dashboard

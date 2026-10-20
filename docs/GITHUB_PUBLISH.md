@@ -3,9 +3,12 @@
 The project now has a
 [published repository](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready)
 and a [live reference dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/).
-To add the Phase 2 update to that existing project, use
-[PHASE2_UPGRADE_WINDOWS.md](PHASE2_UPGRADE_WINDOWS.md). The initial-publication
-instructions below remain useful for a new copy or permitted fork.
+Phase 2 is already published at commit `a2f339e`. To add the Phase 3 version
+0.5.0 experience update to that existing project, use
+[PHASE3_UPGRADE_WINDOWS.md](PHASE3_UPGRADE_WINDOWS.md) with
+`pitching-phase3-update.bundle`. Keep the same repository, remote, and Streamlit
+app. The initial-publication instructions below remain useful for a new copy or
+permitted fork; the historical Phase 2 guide remains available separately.
 
 The Streamlit message **“The app's code is not connected to a remote GitHub repository”** means that the folder running on your computer has not been published to GitHub. A downloaded ZIP is a source copy; it does not establish a remote repository.
 
@@ -13,7 +16,7 @@ This release includes a separate hosted entry point and a verified reference-dat
 
 ## Windows: publish from VS Code
 
-1. Download and extract the GitHub-ready project into a new folder so your existing working copy is preserved. Open the folder containing `app.py`, `streamlit_app.py`, `pyproject.toml`, and `assets` in VS Code.
+1. Download and extract `pitching-performance-elbow-loading-phase3.zip` into a new folder so your existing working copy is preserved. This source ZIP contains no Git history or configured remote. Open the folder containing `app.py`, `streamlit_app.py`, `pyproject.toml`, and `assets` in VS Code.
 2. In **Terminal → New Terminal**, run `git --version`. If Git is missing, install Git for Windows with `winget install --id Git.Git --exact --source winget`, then fully restart VS Code.
 3. Open **Source Control** with **Ctrl+Shift+G**. Choose **Initialize Repository** if offered. If a Git repository already exists, continue with it.
 4. Commit the project files with a descriptive message. The supplied `.gitignore` excludes environments, source archives, local reports, caches, and secrets. The small `assets/demo` snapshot is intentionally included. If Git asks for your identity, use your own name and GitHub-verified email or the private noreply address GitHub supplies in your account email settings.
@@ -45,7 +48,7 @@ In Streamlit Community Cloud, create an app from the GitHub repository:
 
 Select **Deploy**. Keep `uv.lock`, `pyproject.toml`, and the generated `requirements.txt` in the repository root. The lockfile specifies the analysis environment; the requirements export provides pinned runtime dependencies plus the local package for pip-based installation. The entry point also makes the source directory explicit.
 
-The hosted entry point verifies all `assets/demo` snapshot hashes before opening the dashboard. It displays 411 source pitches, 100 athletes, the same baseline results, and the bundled motion/teaching assets. It does not need your local `reports/` or `data/` directories and does not fetch data or retrain on a page interaction. The optional external Google Drive recording still depends on its source availability and sharing settings.
+The hosted entry point verifies all `assets/demo` snapshot hashes before opening the dashboard. It displays 411 source pitches, 100 athletes, the unchanged Phase 1/2 findings, and the bundled motion/teaching assets through five focused views. Only the active view renders. It does not need your local `reports/` or `data/` directories and does not fetch data or retrain on a page interaction. The optional external Google Drive recording still depends on its source availability and sharing settings.
 
 The normal `app.py` remains the research entry point for regenerated local reports. This distinction keeps a stable public reference demonstration separate from new analyses you run locally.
 
@@ -80,8 +83,17 @@ Commit the snapshot manifest and all listed files together. The exporter verifie
 
 Original software is MIT. The published reference tables, figures, marker clips, and teaching/documentation adaptations retain OBP's data terms: CC BY-NC-SA 4.0 plus its additional professional-sports/financial-analysis affiliation exclusion. Preserve attribution and the full upstream terms. This is an independent research portfolio; the code license does not authorize restricted organizational or commercial reuse. See [LICENSING.md](LICENSING.md).
 
-The repository and dashboard URLs are recorded in the README. The prepared Phase
-2 update is local until pushed to that repository and rebuilt by the deployment.
-Check the new GitHub Actions run and deployment logs after pushing. Once stable,
-create a GitHub release from the tested commit; add an archive DOI only if an
-archival service actually issues one.
+The repository and dashboard URLs are recorded in the README. Phase 2 has been
+pushed; the prepared Phase 3 version 0.5.0 update remains local until pushed to
+that repository and rebuilt by the deployment. Check the new GitHub Actions run
+and deployment logs after pushing, then inspect all five views, the study
+findings, and shared pitch links. A successful local run does not establish that
+remote CI or deployment has passed. Once stable, create a GitHub release from
+the tested commit; add an archive DOI only if an archival service actually
+issues one.
+
+Read [PHASE3_EXPERIENCE.md](PHASE3_EXPERIENCE.md) for interaction and presentation
+checks. The [collaboration guide](COLLABORATION.md) describes the future
+authorized-data workflow. The public introduction route provides no confidential
+player-data upload service; it does not establish a team partnership or extend
+OBP data-use permissions.

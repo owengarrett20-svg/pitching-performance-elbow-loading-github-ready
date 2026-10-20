@@ -21,11 +21,28 @@ def test_hosted_demo_reads_verified_snapshot_without_fetching_or_fitting(monkeyp
     assert not app.exception, [item.value for item in app.exception]
     assert not app.error, [item.value for item in app.error]
     metrics = {item.label: item.value for item in app.metric}
-    assert metrics["Pitches"] == "411" and metrics["Athletes"] == "100"
-    assert "Subset MAE" in metrics
-    assert len(app.get("video")) == 2
+    assert any("411 recorded pitches · 100 athletes" in item.value for item in app.markdown)
+    assert "Subset MAE" not in metrics  # Technical errors are deliberately another route.
+    assert len(app.get("video")) == 1
     assert any("Reference demonstration" in item.value for item in app.caption)
+    app.radio(key="app_page").set_value("Explore pitches").run()
+    assert not app.exception, [item.value for item in app.exception]
+    assert app.selectbox(key="explorer_pitch").value
+    app.radio(key="app_page").set_value("Watch motion").run()
+    assert not app.exception, [item.value for item in app.exception]
+    assert len(app.get("video")) == 2
+    app.radio(key="app_page").set_value("Study results").run()
+    assert not app.exception, [item.value for item in app.exception]
     if (ROOT / "assets/demo/reports/phase2/run_metadata.json").is_file():
+        assert app.radio(key="study_story_target").value == "pitch_speed_mph"
+        app.radio(key="study_story_target").set_value("elbow_varus_moment").run()
+        assert any("remains uncertain" in item.value for item in app.markdown)
+        app.radio(key="study_mode").set_value("Detailed audit").run()
         assert app.selectbox(key="phase2_target").value == "pitch_speed_mph"
         assert any("Full-cohort exploratory follow-on" in item.value for item in app.caption)
         assert not any("stale, incomplete, or invalid" in item.value for item in app.warning)
+    app.radio(key="study_mode").set_value("Prediction errors").run()
+    assert any(metric.label == "Subset MAE" for metric in app.metric)
+    app.radio(key="app_page").set_value("Methods & collaboration").run()
+    assert not app.exception, [item.value for item in app.exception]
+    assert not app.get("file_uploader")

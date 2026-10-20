@@ -54,23 +54,50 @@ training-set uncertainty. They do not supply external validation, exact coverage
 guarantees, or multiplicity-adjusted confirmation. A broader uncertainty target
 would require a separately justified design and explicit full-pipeline refitting.
 
-## 4. Publish and archive the Phase 2 release — pending
+## 4. Publish and archive the research release — partially complete
 
-Version 0.4.0 and its verified reference snapshot are implemented locally. Update
-the existing repository and hosted app, run automated checks on the published
-revision, and verify the Phase 2 dashboard against the saved report. Preserve
-the current live URL, source attribution, and data restrictions.
+Phase 2 version 0.4.0 has been pushed to the existing public repository at commit
+`a2f339e`. The source and prepared snapshot are available through the connected
+branch. Check the published Actions run and the rebuilt app when reviewing a
+release; a Git push alone does not independently verify those services.
 
-Then create a tagged software release with the actual version and repository
-URLs. Add a DOI only if an archival service issues one. A local commit or release
-package does not establish that these publication steps have happened.
+A tagged software release and archival DOI remain separate steps. Publish an
+actual tag only from a checked revision, and add a DOI only if an archival
+service issues one. Preserve attribution and the data-use restrictions.
 
-**Done when:** a fresh checkout reproduces both phases, public CI passes on the
-release revision, the hosted app shows matching results, and another researcher
-can identify the units, sample, evaluation unit, and licensing limits from the
-README and study summary.
+## 5. Phase 3: readable, interactive research experience — implemented locally
 
-## 5. Establish external or temporal validation — proposed
+**Question:** Can a first-time visitor understand the study and inspect its
+observations without first reading research tables or application code?
+
+The new version 0.5.0 separates **Start here**, **Explore pitches**, **Watch motion**,
+**Study results**, and **Methods & collaboration**. Only the active view is
+rendered. The opening pairs a verified marker example with the research question
+and saved findings. Interactive charts, keyboard-accessible recorded-pitch
+selection, observed A/B comparisons, and checked share links make the existing
+cohort easier to inspect.
+
+Study scores and conditional intervals remain full-cohort results regardless of
+explorer filters. Athlete means remain a different observation unit from pitches.
+The interface introduces no new data, injury score, mechanics intervention,
+video synchronization, or external validation. Its scientific definitions and
+models remain those of Phases 1 and 2.
+
+The [experience notes](PHASE3_EXPERIENCE.md) describe the scope and release checks.
+Use [PHASE3_UPGRADE_WINDOWS.md](PHASE3_UPGRADE_WINDOWS.md) to update the existing
+repository and website. The new experience is local until pushed and rebuilt.
+
+The [collaboration guide](COLLABORATION.md) offers a proposed path from a
+non-sensitive research introduction to independently authorized data and an
+approved analysis environment. The public site does not accept confidential
+athlete data. OBP professional-affiliation restrictions remain explicit.
+
+**Done when:** desktop and phone-width visitors can navigate, inspect real
+observations, read the uncertain elbow finding, locate methods, and understand
+the contact/data-use boundaries. This presentation milestone does not complete
+the next scientific validation milestone.
+
+## 6. Phase 4: external or temporal validation — proposed
 
 **Question:** Do the fixed definitions and model generalize to a genuinely new
 cohort or later assessment sessions?
@@ -85,7 +112,7 @@ athletes. Revisit permissions before professional-team or commercial use.
 errors are reported, including declines. The current one-session-per-athlete
 sample cannot supply future-session validation. No external cohort is claimed.
 
-## 6. Study time-resolved mechanics with verified alignment — proposed
+## 7. Study time-resolved mechanics with verified alignment — proposed
 
 **Question:** What temporal relationships can released marker and processed
 signals support beyond isolated peaks?
@@ -104,7 +131,7 @@ be relabeled as internal joint moments or injury scores.
 **Done when:** quantities and alignment have been validated and uncertainty is
 reported. The Phase 2 statistical extension does not complete these checks.
 
-## 7. Consider broader model development — proposed
+## 8. Consider broader model development — proposed
 
 Change model complexity only for a stated scientific question and a defensible
 evaluation design. Tuning or model selection requires nested athlete-grouped

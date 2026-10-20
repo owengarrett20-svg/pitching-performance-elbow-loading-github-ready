@@ -13,6 +13,7 @@ import streamlit as st
 
 from pitching.phase2_dashboard import render_phase2
 from pitching.runtime import configure_plot_cache
+from pitching.site_navigation import PAGE_SLUGS, PAGES, resolve_location
 from pitching.trace_viewer import render_trace_lesson
 from pitching.video_lab import render_video_lab
 
@@ -300,23 +301,96 @@ def definitions() -> None:
     )
 
 
+def navigate(page: str) -> None:
+    """Button/radio callback; runs before the next render of the route widget."""
+    if page not in PAGES:
+        return
+    st.session_state["app_page"] = page
+    st.query_params["page"] = PAGE_SLUGS[page]
+    st.session_state["_last_query_page"] = PAGE_SLUGS[page]
+
+
+def _navigation_changed() -> None:
+    navigate(st.session_state["app_page"])
+
+
+def _remember_filters() -> None:
+    for name in ("level_filter", "athlete_filter"):
+        if name in st.session_state:
+            st.session_state[f"saved_{name}"] = list(st.session_state[name])
+
+
+def _filter_pitches(frame: pd.DataFrame) -> pd.DataFrame:
+    """Preserve filter choices between routes without changing the study cohort."""
+    levels = sorted(frame["playing_level"].dropna().unique())
+    athletes = sorted(frame["user"].unique())
+    for key, available in (("level_filter", levels), ("athlete_filter", athletes)):
+        if key not in st.session_state:
+            st.session_state[key] = [
+                value for value in st.session_state.get(f"saved_{key}", []) if value in available
+            ]
+    st.sidebar.header("Explore the recorded pitches")
+    st.sidebar.multiselect("Playing level", levels, key="level_filter", on_change=_remember_filters)
+    st.sidebar.multiselect(
+        "Athlete ID", athletes, key="athlete_filter", on_change=_remember_filters
+    )
+    st.sidebar.caption(
+        "Leave a selection empty to include everyone. IDs are pseudonymous. "
+        "Study findings always use the full eligible cohort."
+    )
+    subset = frame.copy()
+    if st.session_state["level_filter"]:
+        subset = subset[subset["playing_level"].isin(st.session_state["level_filter"])]
+    if st.session_state["athlete_filter"]:
+        subset = subset[subset["user"].isin(st.session_state["athlete_filter"])]
+    return subset
+
+
+def _selected_counts(frame: pd.DataFrame, total: int) -> None:
+    first, second = st.columns(2)
+    first.metric("Pitches", str(len(frame)))
+    second.metric("Athletes", str(frame["user"].nunique()))
+    st.caption(f"Showing {len(frame)} of {total} recorded pitches.")
+
+
+def _initialize_location(frame: pd.DataFrame) -> None:
+    query_page, query_pitch = st.query_params.get("page"), st.query_params.get("pitch")
+    page, pitch = resolve_location(query_page, query_pitch, frame["session_pitch"])
+    if "app_page" not in st.session_state or query_page != st.session_state.get("_last_query_page"):
+        st.session_state["app_page"] = page
+        st.session_state["_last_query_page"] = query_page
+    if st.session_state["app_page"] not in PAGES:
+        st.session_state["app_page"] = PAGES[0]
+    if query_pitch != st.session_state.get("_last_query_pitch"):
+        st.session_state["active_pitch"] = pitch
+        st.session_state["_last_query_pitch"] = query_pitch
+        if pitch is not None:
+            # An explicitly opened recorded-pitch link should be visible.
+            for key in ("level_filter", "athlete_filter"):
+                st.session_state[f"saved_{key}"] = []
+                st.session_state.pop(key, None)
+
+
 def main(report_dir_override: Path | None = None, bundled_demo: bool = False) -> None:
-    st.set_page_config(page_title="Pitching Performance and Elbow Loading", layout="wide")
+    st.set_page_config(
+        page_title="Pitching Performance and Elbow Loading",
+        page_icon="⚾",
+        layout="wide",
+    )
+    st.markdown(
+        """<style>
+        [data-testid="stMainBlockContainer"] {max-width: 1220px; padding-top: 3.8rem;}
+        h1 {letter-spacing: -.025em;}
+        [data-testid="stCaptionContainer"] {line-height: 1.5;}
+        @media (max-width: 640px) {
+          [data-testid="stMainBlockContainer"] {padding-left: 1rem; padding-right: 1rem;}
+          h1 {font-size: 1.9rem !important; line-height: 1.15 !important;}
+        }
+        </style>""",
+        unsafe_allow_html=True,
+    )
     st.title("Pitching Performance and Elbow Loading")
-    st.caption("OpenBiomechanics Project · Pitching data, motion examples, and measurement methods")
-    if bundled_demo:
-        st.caption(
-            "Reference demonstration: checksum-verified, precomputed study outputs. "
-            "Browser interactions do not download source data or retrain models."
-        )
-    st.info(
-        "Elbow varus moment describes joint-level loading. This dashboard does not predict injury or provide clinical advice."
-    )
-    st.caption(
-        f"Data: Driveline's OpenBiomechanics Project, CC BY-NC-SA 4.0 with an additional "
-        f"professional-sports / financial-analysis affiliation restriction. Such use requires a specific "
-        f"written paid license. [Read the pinned data license]({SOURCE_URL}/LICENSE-DATA.md)."
-    )
+    st.caption("Explore recorded movement, compare prediction errors, and follow the evidence.")
     report_dir = (
         Path(
             report_dir_override
@@ -358,58 +432,129 @@ def main(report_dir_override: Path | None = None, bundled_demo: bool = False) ->
             "Analysis report must contain one row per nonmissing pitch identifier and a nonmissing athlete identifier. Review the join audit."
         )
         return
-    st.sidebar.header("Filter recorded pitches")
-    levels = st.sidebar.multiselect(
-        "Playing level", sorted(frame["playing_level"].dropna().unique()), key="level_filter"
+    _initialize_location(frame)
+    page = st.radio(
+        "Choose a research view",
+        PAGES,
+        key="app_page",
+        horizontal=True,
+        on_change=_navigation_changed,
+        label_visibility="collapsed",
     )
-    athletes = st.sidebar.multiselect(
-        "Athlete ID", sorted(frame["user"].unique()), key="athlete_filter"
-    )
-    st.sidebar.caption(
-        "An empty selection includes all values. Athlete IDs are pseudonymous source identifiers."
-    )
-    subset = frame.copy()
-    if levels:
-        subset = subset[subset["playing_level"].isin(levels)]
-    if athletes:
-        subset = subset[subset["user"].isin(athletes)]
-    first, second = st.columns(2)
-    first.metric("Pitches", str(len(subset)))
-    second.metric("Athletes", str(subset["user"].nunique()))
     st.caption(
-        f"Selected {len(subset)} of {len(frame)} pitches. Data are read from local pipeline artifacts; this app does not download data or fit models."
+        f"**Data use:** OBP restricts use by professional-sports and financial-analysis "
+        f"affiliates; a specific written paid license is required. "
+        f"[Full source terms]({SOURCE_URL}/LICENSE-DATA.md)."
     )
-    if subset.empty:
-        st.info("No pitches match both sidebar filters. Clear a selection to continue.")
-        return
-    tabs = st.tabs(
-        [
-            "Overview",
-            "Watch pitches",
-            "Explore",
-            "Model errors",
-            "Phase 2 comparisons",
-            "Definitions and limitations",
-        ]
+    subset = (
+        _filter_pitches(frame)
+        if page in {"Explore pitches", "Watch motion", "Study results"}
+        else frame
     )
     try:
-        with tabs[0]:
-            overview(subset, report_dir)
-        with tabs[1]:
-            selected_pitch = render_video_lab(subset, PROJECT_ROOT)
+        if page == "Start here":
+            from pitching.research_story import render_start
+
+            render_start(frame, PROJECT_ROOT, report_dir, navigate)
+        elif page == "Explore pitches":
+            from pitching.pitch_explorer import render_pitch_explorer
+
+            if subset.empty:
+                _selected_counts(subset, len(frame))
+                st.info("No pitches match both sidebar filters. Clear a selection to continue.")
+                return
+            chosen = render_pitch_explorer(
+                subset,
+                full_frame=frame,
+                selected_pitch_id=st.session_state.get("active_pitch"),
+            )
+            if chosen is not None:
+                st.session_state["active_pitch"] = chosen
+                st.session_state["_last_query_pitch"] = chosen
+                st.query_params["pitch"] = chosen
+                st.caption(
+                    "To share this recorded selection, copy the page address from your browser."
+                )
+                st.button(
+                    "See available motion examples", on_click=navigate, args=("Watch motion",)
+                )
+        elif page == "Watch motion":
+            _selected_counts(subset, len(frame))
+            if subset.empty:
+                st.info("No pitches match both sidebar filters. Clear a selection to continue.")
+                return
+            from pitching.video_lab import MotionAssetError, load_motion_manifest, matching_examples
+
+            requested = st.session_state.get("active_pitch")
+            if requested is not None and requested != st.session_state.get("_motion_requested"):
+                try:
+                    _, manifest = load_motion_manifest(PROJECT_ROOT)
+                    available = matching_examples(subset, manifest["examples"])
+                    match = [entry for entry in available if entry["session_pitch"] == requested]
+                    if match:
+                        st.session_state["motion_study_pitch"] = match[0]
+                    else:
+                        st.info(
+                            f"Pitch {requested} has no prepared marker replay in this view. "
+                            "The player below identifies one of the available recorded examples."
+                        )
+                except MotionAssetError:
+                    pass  # The viewer supplies the specific asset message.
+                st.session_state["_motion_requested"] = requested
+            selected_pitch = render_video_lab(subset, PROJECT_ROOT, compact=True)
             if selected_pitch is not None:
+                st.session_state["active_pitch"] = selected_pitch
+                st.session_state["_motion_requested"] = selected_pitch
+                st.session_state["_last_query_pitch"] = selected_pitch
+                st.query_params["pitch"] = selected_pitch
                 render_trace_lesson(PROJECT_ROOT, selected_pitch)
-        with tabs[2]:
-            explore(subset)
-        with tabs[3]:
-            errors(subset, report_dir)
-        with tabs[4]:
-            render_phase2(report_dir, subset["session_pitch"].tolist())
-        with tabs[5]:
-            definitions()
+        elif page == "Study results":
+            mode = st.radio(
+                "Study depth",
+                ["What changed?", "Prediction errors", "Detailed audit"],
+                key="study_mode",
+                horizontal=True,
+            )
+            if mode == "What changed?":
+                from pitching.research_story import render_study_story
+
+                render_study_story(report_dir)
+            elif mode == "Prediction errors":
+                _selected_counts(subset, len(frame))
+                if subset.empty:
+                    st.info("No pitches match both sidebar filters. Clear a selection to continue.")
+                    return
+                errors(subset, report_dir)
+            else:
+                render_phase2(report_dir, subset["session_pitch"].tolist())
+        else:
+            from pitching.collaboration_view import render_collaboration_methods
+
+            render_collaboration_methods(report_dir, PROJECT_ROOT)
+            with st.expander("Variable definitions and measurement conventions"):
+                definitions()
+            with st.expander("Data-quality reports and source tables"):
+                overview(frame, report_dir)
     except (OSError, ValueError, pd.errors.ParserError, pd.errors.EmptyDataError) as error:
         st.error(f"A local report could not be displayed: {error}")
         require_reports("Check the reports and regenerate them if incomplete.")
+    st.divider()
+    st.caption(
+        "Retrospective research. Elbow moment describes joint loading; injury risk is outside "
+        "this study. Peaks do not establish causal movement effects."
+    )
+    st.caption(
+        "Source: Driveline OpenBiomechanics Project. Original code: MIT. "
+        "Data and derivatives: CC BY-NC-SA 4.0 plus the source affiliation restriction. "
+        "[Research code](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready) "
+        "· [Study report](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready/blob/main/docs/PHASE2_RESULTS.md)"
+    )
+    if bundled_demo:
+        with st.expander("About this reference demonstration"):
+            st.caption(
+                "Reference demonstration: checksum-verified, precomputed study outputs. "
+                "Browser interactions do not download source data, fit models, or resample athletes."
+            )
 
 
 if __name__ == "__main__":

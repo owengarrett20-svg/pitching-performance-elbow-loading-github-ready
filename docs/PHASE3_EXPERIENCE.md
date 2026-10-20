@@ -62,6 +62,23 @@ demonstration is not a confidential upload service.
 - Desktop and phone-width browser checks cover navigation, text readability,
   charts, and horizontal overflow.
 
+## Local verification
+
+The development suite passed 201 tests; an additional replay-navigation
+regression passed separately, for 202 passing tests in total. Lint, formatting,
+and the locked deployment-dependency export also pass.
+
+Real Chromium checks at 1440×1000 and 390×844 covered all five views, genuine
+chart-point clicks, consecutive pitch selections, prepared-motion deep links,
+outcome/model toggles, and explicit missing-replay states. No JavaScript
+exceptions or document-level horizontal overflow were observed. The phone's
+opening exploration control is visible in the first screen. Desktop and phone
+captures are retained in `docs/images/dashboard-overview.png` and
+`docs/images/dashboard-mobile.png`.
+
+These are local release checks, not verification of a newly deployed public
+version, usability research with coaches, peer review, or external validation.
+
 The next scientific milestone remains an appropriately licensed external or
 longitudinal validation study. Improving the presentation does not complete that
 research milestone.

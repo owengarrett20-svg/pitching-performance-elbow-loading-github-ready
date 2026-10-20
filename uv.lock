@@ -421,9 +421,10 @@ wheels = [
 
 [[package]]
 name = "pitching-performance-elbow-loading"
-version = "0.4.0"
+version = "0.5.0"
 source = { editable = "." }
 dependencies = [
+    { name = "altair" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "pandas" },
@@ -442,6 +443,7 @@ motion = [
 
 [package.metadata]
 requires-dist = [
+    { name = "altair", specifier = ">=6,<7" },
     { name = "ezc3d", marker = "extra == 'motion'", specifier = ">=1.5,<2" },
     { name = "matplotlib", specifier = ">=3.9,<4" },
     { name = "numpy", specifier = ">=2.0,<3" },

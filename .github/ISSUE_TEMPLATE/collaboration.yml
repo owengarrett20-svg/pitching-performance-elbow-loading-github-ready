@@ -1,0 +1,59 @@
+name: Research collaboration introduction
+description: Introduce a research question and arrange a private scoping conversation.
+title: "[Collaboration] "
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        This issue is public. Share a non-sensitive introduction only. Keep player
+        names, individual measurements, player identifiers, videos, medical
+        information, raw files, credentials, and confidential organizational
+        details out of the issue and its attachments. Agree a private contact
+        channel and an approved environment before any data transfer. The current
+        app provides no team-data upload service. OBP material retains its
+        professional-sports/financial-analysis affiliation restriction; future
+        work needs independently authorized data and agreed permissions.
+  - type: textarea
+    id: question
+    attributes:
+      label: Research question and intended decision
+      description: What would you like to understand, and what decision would the result inform?
+      placeholder: Describe the question without athlete-level or confidential details.
+    validations:
+      required: true
+  - type: textarea
+    id: measurements
+    attributes:
+      label: Broad measurement types and collection setting
+      description: >-
+        Describe measurement types, units or protocol at a public-safe level.
+        Approximate athlete/session counts are optional. Do not attach data or footage.
+    validations:
+      required: true
+  - type: textarea
+    id: permissions
+    attributes:
+      label: Permission and scoping availability
+      description: >-
+        Can the authorized owner arrange a review of data rights, scope, and an
+        approved analysis environment? Summarize availability only; do not post
+        agreements, private names, access links, or credentials.
+    validations:
+      required: true
+  - type: textarea
+    id: next_contact
+    attributes:
+      label: Arrange the next conversation
+      description: >-
+        State that you would like a private contact route arranged, or point to
+        contact information already intended for public use. Keep private contact
+        details out of this public issue.
+    validations:
+      required: true
+  - type: checkboxes
+    id: public_scope
+    attributes:
+      label: Public introduction
+      options:
+        - label: This introduction contains no athlete-level data, files, footage, credentials, or confidential details.
+          required: true

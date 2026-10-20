@@ -3,7 +3,18 @@
 These entries describe local project development. They do not establish that a
 version has been published as a GitHub release or archived with a DOI.
 
-## 0.4.0 — Phase 2 implementation; publication pending
+## 0.5.0 — Phase 3 experience update; publication pending
+
+- Add five focused views with a short research opening and active-view rendering.
+- Present verified outcome comparisons in plain language while retaining the detailed audit.
+- Add interactive recorded-pitch charts, accessible selection, athlete averages, and observed A/B comparisons.
+- Add checked, shareable page/pitch links and source-attributed CSV downloads.
+- Keep the existing measured-marker examples and place additional motion explanations behind expandable controls.
+- Add a non-sensitive collaboration introduction and guidance for future independently authorized data.
+- Declare Altair as a direct dependency without changing the fixed scientific models or source data.
+- Preserve conditional interval scope, uncertain elbow findings, source identities, and data-use restrictions.
+
+## 0.4.0 — Phase 2 code published to the connected branch
 
 - Freeze an exploratory follow-on analysis plan before computing new model comparisons.
 - Compare age/body-size, rotational kinematics, and combined ridge predictors on shared athlete folds.
@@ -12,6 +23,7 @@ version has been published as a GitHub release or archived with a DOI.
 - Add Phase 2 dashboard views, a generated research report, three figures, and auditable outputs.
 - Bind the producing analysis plan and every study artifact to verified hosted snapshots.
 - Preserve the existing Phase 1, motion examples, upstream attribution, and data-use restrictions.
+- Publish the Phase 2 update at commit `a2f339e`; a tagged archival release remains a separate step.
 
 ## 0.3.0 — GitHub and hosted demonstration
 

@@ -355,9 +355,17 @@ def _render_measurement_lessons(project_root: Path) -> None:
     )
 
 
-def render_video_lab(frame: pd.DataFrame, project_root: Path) -> str | None:
+def render_video_lab(
+    frame: pd.DataFrame, project_root: Path, *, compact: bool = False
+) -> str | None:
     """Render the OBP-only teaching tab; return the successfully displayed study pitch ID."""
     selected = _render_motion(frame, project_root)
-    _render_camera_example()
-    _render_measurement_lessons(project_root)
+    if compact:
+        with st.expander("How the measurements work"):
+            _render_measurement_lessons(project_root)
+        with st.expander("Separate official camera demonstration"):
+            _render_camera_example()
+    else:
+        _render_camera_example()
+        _render_measurement_lessons(project_root)
     return selected

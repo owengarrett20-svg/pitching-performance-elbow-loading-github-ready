@@ -1,7 +1,9 @@
 # Generated from uv.lock by scripts/export_requirements.py; do not edit by hand.
 # Runtime-only pip fallback; uv.lock is the authoritative analysis environment.
 altair==6.3.0
-    # via streamlit
+    # via
+    #   pitching-performance-elbow-loading
+    #   streamlit
 anyio==4.15.1
     # via
     #   starlette
