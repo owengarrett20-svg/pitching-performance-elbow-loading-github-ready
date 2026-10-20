@@ -1,7 +1,7 @@
 {
   "status": "completed",
   "source_commit": "44b98dae05cceb016f080ab39d105c85b8639084",
-  "completed_utc": "2026-10-19T20:16:55.784864+00:00",
+  "completed_utc": "2026-10-20T14:04:25.787408+00:00",
   "python": "3.12.14",
   "packages": {
     "numpy": "2.5.4",
@@ -10,11 +10,12 @@
     "matplotlib": "3.11.2",
     "streamlit": "1.66.0"
   },
-  "project_git_commit": "c3c02ba5cbe04db6165d421a611eb67b69d89312",
+  "project_git_commit": "c03b8dc06e0edc2913262c6998d21a22c64f3250",
   "project_git_dirty": false,
   "project_code_sha256": {
-    "src/pitching/__init__.py": "bb0c7f8a0dbd822e4dca07dad0f4d479354d1bae36a168496bdf83e744829ce2",
+    "src/pitching/__init__.py": "dde46d526d3fffa61588486faeecdfcef190ef5b1dc86be5290c9beb33123a35",
     "src/pitching/cli.py": "e1fd9429490164dc2d167d69ac7e97c8cd9640819e76aaf47e002eee2388b454",
+    "src/pitching/collaboration_view.py": "fb16a88054957978b6a8daf4a8f8cbddc38713de9e257afe0b474c99e45ee085",
     "src/pitching/data.py": "bdb001b465d1d9bf7e406bb6ee630d0fe54772ebc6a12e293120fbf2f5773b71",
     "src/pitching/deployment.py": "0645c0041d8d8d2fef201a1cfc94b81c969f45b777508aa7c8eac64ddcae85bb",
     "src/pitching/measurement_lessons.py": "428269187e8114ef1408714c415e73172406f8ff1205a6fa9555247125e06fc8",
@@ -24,19 +25,22 @@
     "src/pitching/phase2_dashboard.py": "39ea2214e6c1b79bfd34011192bca7d47c50e089a9ef1550226e6708651cc33d",
     "src/pitching/phase2_reporting.py": "6fd036332a724d1cd9ad757c21c215ac4071bf080eed46c4b65e775ca23b724f",
     "src/pitching/phase2_workflow.py": "2c8c5a64280791119e00c46ba4c5c6a90e9657e25b69d26e7719461deafa4fc1",
+    "src/pitching/pitch_explorer.py": "65677035c743b55113dd50707735a93cd05410c2f6701f46b0476567f6011143",
     "src/pitching/plots.py": "383ba63ee286983e4e4fb4b95ccbb47ce4b0c99066a2a69ddb895da41b620be2",
+    "src/pitching/research_story.py": "9fed3db8a20439041c24c1798f2e22531ad9f4b37d839032e64a05cecf2cd608",
     "src/pitching/runtime.py": "a8fb08fb4fd4d65557ec9869bc64ee424396f227e678eb70016b92793d1f8574",
+    "src/pitching/site_navigation.py": "140f3168ce3a49df440dbab9bfa7251aa8826e1a4b0a7ebd595e7c36f12ca4ba",
     "src/pitching/trace_examples.py": "ac95d0247413abc5194beb910ac511aa22f7c031bd716b48a86157f0586f5237",
     "src/pitching/trace_viewer.py": "396c7a31cc132d18f7578d41fe324bfec560644fa453aa8acf7c3e2ab06c39ad",
-    "src/pitching/video_lab.py": "962454e81f49deaf73e7883b38c04bf45289a9608f424d5e1ef331ddb142a633",
-    "app.py": "bf7f7c20a85a31b1d90b7bf0f9af582a172f8fa0843ec4f86099f1306216ea49",
-    "pyproject.toml": "0c6e3cac8505a0ceefea5502abd228d1585942422da03c07babbf23469552f67",
+    "src/pitching/video_lab.py": "726bad9b3dd6ea1bf701dad8e681d64f9e0468db954f0b18d7202a0da8838b95",
+    "app.py": "21d5412daf02d8631bf7e0c97f29b8ec7164f2e2d7cac3de2e0e6a4908bfcf2f",
+    "pyproject.toml": "b54d49573c3b467ac71400bf74640e3a8b82bf119103483115056bd2737c1ac6",
     "streamlit_app.py": "13a22f50ba329f206d69e86b7948dcedca4dd91f0f0817d24c995ac4a534f8a1"
   },
   "seed": 42,
   "n_splits": 5,
   "input_manifest_sha256": "d2b21a5c3761859cf6be39fe3ef47b208d2b1ef5f674af3c3dff45d0042e80be",
-  "uv_lock_sha256": "777afa9c31a139d12e077a821eeccf7916d2d4b890353105f98906ead738452d",
+  "uv_lock_sha256": "c37f2b24654b4fa674b6a81f4e97b788a99fb1777664ec9d84efe8b88b955b76",
   "artifacts_sha256": {
     "analysis.csv": "83c751ae903ce5f62a12e0678159c275e456c004f88c1f164caa191cf63b0b14",
     "audit.json": "69d0d7b293c32f4b3c359461e1f944f243e9a4d35a6dcfe05704eaf5b7902e17",
@@ -77,7 +81,7 @@
     "phase2/figures/phase2_model_scores.png": "dc28a60ac85405ba826c79eb84cfd616d674f6aa4a95ea596b17392e44b46f42",
     "phase2/figures/phase2_paired_contrasts.png": "c52107ef304e949d3679d2f885ec4c8008a365046130f9921a3143c09a24d1db",
     "phase2/figures/phase2_partition_sensitivity.png": "cbc744d9987d85a656b3304ee7e608aaa78121196302d0f7f07ec7b3677f81c8",
-    "phase2/run_metadata.json": "bd8546fc97d3dde6d1ec95b160f9b5c9d3cd729687bd05f664aea4def60886ed"
+    "phase2/run_metadata.json": "c21593865398668042047747662dd2ecbe1dc48fd2b7c0c7e45aeb8130d5a940"
   },
   "interpretation": "Retrospective athlete-held-out prediction; no injury or causal claims.",
   "data_terms": "See docs/LICENSING.md; data-derived outputs retain upstream restrictions.",
