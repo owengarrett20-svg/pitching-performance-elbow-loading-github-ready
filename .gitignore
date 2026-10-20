@@ -9,6 +9,7 @@ build/
 dist/
 /data/
 /reports/
+/local_studies/
 .streamlit/secrets.toml
 .env
 .env.*
