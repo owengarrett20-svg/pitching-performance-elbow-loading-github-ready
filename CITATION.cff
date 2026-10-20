@@ -7,7 +7,7 @@ message: >-
   the separate terms described in docs/LICENSING.md.
 type: software
 title: "Pitching Performance and Elbow Loading"
-version: "0.5.0"
+version: "0.6.0"
 repository-code: "https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready"
 url: "https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/"
 authors:
@@ -20,6 +20,9 @@ abstract: >-
   Includes validated pitch-level joins, missingness audits, descriptive figures,
   athlete-grouped predictor comparisons, conditional paired athlete-cluster
   bootstrap intervals, partition sensitivity, and an educational Streamlit viewer.
+  Includes an interactive measured-marker lab, printable athlete research
+  reports, and a local audit/freeze/evaluate workflow for authorized new data.
+  No independent external cohort has been evaluated in this release.
   The analysis estimates retrospective associations, not injury risk or causal
   effects of changing mechanics.
 keywords:

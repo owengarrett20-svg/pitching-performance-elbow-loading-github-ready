@@ -164,6 +164,15 @@ def run_workflow(
 
 
 def main(argv: list[str] | None = None) -> int:
+    commands = list(sys.argv[1:] if argv is None else argv)
+    if commands and commands[0] == "new-data":
+        from pitching.new_data import main as new_data_main
+
+        return new_data_main(commands[1:])
+    if commands and commands[0] == "external":
+        from pitching.external_validation import main as external_main
+
+        return external_main(commands[1:])
     parser = argparse.ArgumentParser(description="Pitching Performance and Elbow Loading")
     parser.add_argument(
         "--project-dir",
@@ -194,12 +203,24 @@ def main(argv: list[str] | None = None) -> int:
     phase2.add_argument(
         "--offline", action="store_true", help="Verify local cache without network access"
     )
+    for command, help_text in (
+        ("new-data", "Audit an authorized local CSV with an explicit measurement mapping"),
+        ("external", "Freeze development models, then evaluate an independent local cohort"),
+    ):
+        kit = subparsers.add_parser(command, help=help_text, add_help=False)
+        kit.add_argument("kit_args", nargs=argparse.REMAINDER)
     args = parser.parse_args(argv)
     root = args.project_dir.resolve()
     data_dir = args.data_dir.resolve() if args.data_dir else root / "data/raw"
     output = args.output_dir.resolve() if args.output_dir else root / "reports"
     try:
-        if args.command == "fetch":
+        if args.command in {"new-data", "external"}:
+            if args.command == "new-data":
+                from pitching.new_data import main as kit_main
+            else:
+                from pitching.external_validation import main as kit_main
+            return kit_main(args.kit_args)
+        elif args.command == "fetch":
             source = fetch_source(root / "source_manifest.json", data_dir)
             print(f"Verified {len(source['files'])} files at OBP {COMMIT} in {data_dir}")
         elif args.command == "audit":

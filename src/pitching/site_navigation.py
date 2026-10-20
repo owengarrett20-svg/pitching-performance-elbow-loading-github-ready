@@ -8,10 +8,14 @@ PAGES = (
     "Start here",
     "Explore pitches",
     "Watch motion",
+    "Athlete reports",
     "Study results",
+    "New-data lab",
     "Methods & collaboration",
 )
-PAGE_SLUGS = dict(zip(PAGES, ("start", "explore", "motion", "study", "methods")))
+PAGE_SLUGS = dict(
+    zip(PAGES, ("start", "explore", "motion", "reports", "study", "new-data", "methods"))
+)
 SLUG_PAGES = {slug: page for page, slug in PAGE_SLUGS.items()}
 
 

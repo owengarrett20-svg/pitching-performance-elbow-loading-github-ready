@@ -314,6 +314,11 @@ def _navigation_changed() -> None:
     navigate(st.session_state["app_page"])
 
 
+def _open_athlete_report(athlete_id: str) -> None:
+    st.session_state["report_requested_athlete"] = str(athlete_id)
+    navigate("Athlete reports")
+
+
 def _remember_filters() -> None:
     for name in ("level_filter", "athlete_filter"):
         if name in st.session_state:
@@ -475,39 +480,87 @@ def main(report_dir_override: Path | None = None, bundled_demo: bool = False) ->
                 st.caption(
                     "To share this recorded selection, copy the page address from your browser."
                 )
-                st.button(
+                motion_action, report_action = st.columns(2)
+                motion_action.button(
                     "See available motion examples", on_click=navigate, args=("Watch motion",)
                 )
+                athlete = frame.loc[frame.session_pitch.eq(chosen), "user"].iloc[0]
+                report_action.button(
+                    "Create this athlete's report",
+                    on_click=_open_athlete_report,
+                    args=(str(athlete),),
+                )
         elif page == "Watch motion":
-            _selected_counts(subset, len(frame))
             if subset.empty:
                 st.info("No pitches match both sidebar filters. Clear a selection to continue.")
                 return
-            from pitching.video_lab import MotionAssetError, load_motion_manifest, matching_examples
-
             requested = st.session_state.get("active_pitch")
-            if requested is not None and requested != st.session_state.get("_motion_requested"):
-                try:
-                    _, manifest = load_motion_manifest(PROJECT_ROOT)
-                    available = matching_examples(subset, manifest["examples"])
-                    match = [entry for entry in available if entry["session_pitch"] == requested]
-                    if match:
-                        st.session_state["motion_study_pitch"] = match[0]
-                    else:
-                        st.info(
-                            f"Pitch {requested} has no prepared marker replay in this view. "
-                            "The player below identifies one of the available recorded examples."
-                        )
-                except MotionAssetError:
-                    pass  # The viewer supplies the specific asset message.
-                st.session_state["_motion_requested"] = requested
-            selected_pitch = render_video_lab(subset, PROJECT_ROOT, compact=True)
+            motion_view = st.radio(
+                "Motion view",
+                ["Interactive lab", "Video & measurement lessons"],
+                key="motion_view",
+                horizontal=True,
+            )
+            if motion_view == "Interactive lab":
+                from pitching.motion_lab import render_motion_lab
+
+                selected_pitch = render_motion_lab(subset, PROJECT_ROOT, requested)
+            else:
+                from pitching.video_lab import (
+                    MotionAssetError,
+                    load_motion_manifest,
+                    matching_examples,
+                )
+
+                if requested is not None and requested != st.session_state.get("_motion_requested"):
+                    try:
+                        _, manifest = load_motion_manifest(PROJECT_ROOT)
+                        available = matching_examples(subset, manifest["examples"])
+                        match = [
+                            entry for entry in available if entry["session_pitch"] == requested
+                        ]
+                        if match:
+                            st.session_state["motion_study_pitch"] = match[0]
+                        else:
+                            st.info(
+                                f"Pitch {requested} has no prepared marker replay in this view. "
+                                "The player below identifies one of the available recorded examples."
+                            )
+                    except MotionAssetError:
+                        pass  # The viewer supplies the specific asset message.
+                    st.session_state["_motion_requested"] = requested
+                selected_pitch = render_video_lab(subset, PROJECT_ROOT, compact=True)
+                if selected_pitch is not None:
+                    st.session_state["_motion_requested"] = selected_pitch
+                    render_trace_lesson(PROJECT_ROOT, selected_pitch)
             if selected_pitch is not None:
                 st.session_state["active_pitch"] = selected_pitch
-                st.session_state["_motion_requested"] = selected_pitch
                 st.session_state["_last_query_pitch"] = selected_pitch
                 st.query_params["pitch"] = selected_pitch
-                render_trace_lesson(PROJECT_ROOT, selected_pitch)
+        elif page == "Athlete reports":
+            from pitching.report_dashboard import render_report_builder
+
+            requested = st.session_state.get("active_pitch")
+            if requested is not None and requested != st.session_state.get("_reports_link_pitch"):
+                match = frame.loc[frame.session_pitch.eq(requested), "user"]
+                if len(match) == 1:
+                    st.session_state["report_requested_athlete"] = str(match.iloc[0])
+                st.session_state["_reports_link_pitch"] = requested
+            render_report_builder(frame, report_dir, PROJECT_ROOT)
+            athlete = st.session_state.get("report_athlete")
+            pitches = frame.loc[frame.user.astype(str).eq(str(athlete)), "session_pitch"].astype(
+                str
+            )
+            if not pitches.empty:
+                actual = requested if requested in set(pitches) else min(pitches)
+                st.session_state["active_pitch"] = actual
+                st.session_state["_reports_link_pitch"] = actual
+                st.session_state["_last_query_pitch"] = actual
+                st.query_params["pitch"] = actual
+        elif page == "New-data lab":
+            from pitching.new_data_lab import render_new_data_lab
+
+            render_new_data_lab(PROJECT_ROOT)
         elif page == "Study results":
             mode = st.radio(
                 "Study depth",

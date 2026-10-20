@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "study_id": "",
+  "research_question": "",
+  "intended_external_population": "",
+  "evaluation_design": "independent_new_athletes",
+  "prediction_context": "same_pitch_post_motion",
+  "development_identity_namespace": "",
+  "external_identity_namespace": "",
+  "external_athletes_disjoint_attested": false,
+  "external_outcomes_unseen_at_freeze_attested": false,
+  "measurement_compatibility_reviewed": false
+}

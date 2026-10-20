@@ -1,21 +1,22 @@
-# Open the Phase 3 pitching research dashboard on Windows
+# Open the Phase 4 pitching research dashboard on Windows
 
 **Updating your existing GitHub-connected project?** Follow
-[the Phase 3 upgrade instructions](docs/PHASE3_UPGRADE_WINDOWS.md). They use
-`pitching-phase3-update.bundle` to preserve your history, GitHub remote, and
-existing website. Phase 2 is already published; this version 0.5.0 update changes
-the research experience while preserving its models, data, and findings.
+[the Phase 4 upgrade instructions](docs/PHASE4_UPGRADE_WINDOWS.md). They verify
+`pitching-phase4-update.bundle` before fetching it, then preserve your Git
+history, GitHub remote, and existing website. Phase 3 is published at `edf5c05`;
+this version 0.6.0 update adds motion/reporting and new-data tools while retaining
+the Phase 1/2 data and scientific findings.
 
-This release includes the prepared motion/teaching videos, traces, and a verified
-reference-report snapshot. Viewing the demonstration does not require FFmpeg,
-motion-capture software, the optional ezc3d dependency, or the large source archives.
+The release includes the prepared motion/teaching assets and a verified
+reference-report snapshot. Viewing it requires no FFmpeg, MATLAB installation,
+optional ezc3d dependency, or large motion archive.
 
 ## Open a fresh source copy
 
-1. Stop your current Streamlit server by pressing **Ctrl+C** in its VS Code terminal.
-2. Download and extract `pitching-performance-elbow-loading-phase3.zip` into a **new folder**, preserving your existing working copy.
+1. Stop your current Streamlit server with **Ctrl+C** in its VS Code terminal.
+2. Download and extract `pitching-performance-elbow-loading-phase4.zip` into a **new folder**, preserving your existing working copy.
 3. In VS Code, choose **File → Open Folder** and select the extracted folder containing `app.py`, `assets`, and this file.
-4. Choose **Terminal → New Terminal**. Run each command separately:
+4. Choose **Terminal → New Terminal**. Run each command separately, stopping if one fails:
 
 ```powershell
 uv sync --frozen
@@ -27,60 +28,68 @@ uv run --frozen streamlit run streamlit_app.py
 
 5. Open the **Local URL** printed by Streamlit. Begin with **Start here**.
 
-The ZIP is a source copy without Git history or a configured remote. For an
-existing connected project, use the bundle upgrade guide above instead.
+The ZIP is a source copy without Git history or a configured remote. Use the
+bundle guide above to update an existing connected project. Before fetching,
+`Test-Path` must find the bundle and `git bundle verify` must say it is okay.
 
-## Explore the five views
+## Explore the seven views
 
-- **Start here:** read the research question, watch a measured-marker replay, and inspect the main findings.
-- **Explore pitches:** hover or select recorded pitches, change axes, switch to athlete averages, compare two observations, and share a checked pitch link.
-- **Watch motion:** inspect the three prepared marker replays, paused frames, processed traces, and expandable measurement explanations.
-- **Study results:** select pitch speed or elbow moment, compare average prediction errors, and open the detailed audit and conditional intervals.
-- **Methods & collaboration:** read the definitions, data-quality reports, limitations, and guidance for a non-sensitive research introduction.
+- **Start here:** research question, measured-marker replay, and main findings.
+- **Explore pitches:** hover/select recorded pitches, change axes, inspect athlete averages, compare observations, and share checked pitch links.
+- **Watch motion:** inspect measured markers in 3D and move the independent frame and processed-signal controls. Open the existing replays and measurement lessons when useful.
+- **Athlete reports:** select an athlete and download an illustrated, printable research report or source-attributed tables/metadata. Open the HTML in a browser and use **Print → Save as PDF** for a PDF copy.
+- **Study results:** compare saved errors for speed or elbow moment, then inspect the detailed audit and conditional intervals.
+- **New-data lab:** review templates and local preparation/freezing/evaluation steps for an independently authorized study. The public app accepts no athlete-data uploads.
+- **Methods & collaboration:** definitions, data-quality reports, limitations, and guidance for a non-sensitive research introduction.
 
-Only the active view renders. Sidebar filters change displayed observations;
-they leave the planned full-cohort study comparisons and intervals unchanged.
-An athlete average summarizes released pitch measurements, not a single delivery
-or a time-averaged movement trace. Differences between observed pitches do not
-predict the effect of changing mechanics.
+Only the active view renders. Explorer filters change displayed observations;
+they do not recompute the full-cohort study comparisons or intervals. Athlete
+reports describe the available sample, rather than an athlete's complete career,
+longitudinal development, or reliable consistency.
 
-## Inspect the motion evidence
+## Understand the motion evidence
 
-- In **Watch motion**, choose a recorded example at 69.5, 85.3, or 94.4 mph.
-- Expand **Inspect a paused marker frame** and enable the frame inspector to move through the observed motion.
-- Open the instructional animation or one of the five measurement explanations.
-- Inspect the processed trace and its selected interval alongside the published peak, without assuming alignment with the marker replay.
-- Use **Open the official OBP-CV camera example** for the separate camera demonstration. The optional Google Drive embed depends on source availability, public sharing settings, and your connection.
+The three prepared study pitches have observed speeds of 69.5, 85.3, and
+94.4 mph. Their visualizations use measured skin markers, not camera footage or
+a validated anatomical joint-center model. The marker and processed-signal clocks
+have no verified alignment, so the controls remain independent. Matching grids
+or published peaks does not validate synchronization or inverse dynamics.
 
-The study replays animate measured skin markers. Only three prepared study
-pitches are included. The separate 62.7 mph camera demonstration has no verified
-link to the 411 study pitches; its footage is never paired with their metrics.
-Marker and processed-trace clocks have no verified alignment. A single video
+The separate official 62.7 mph OBP-CV camera example has no verified identity link
+to the 411 study pitches. Its playback depends on source sharing settings and
+availability. No camera coverage is assumed for all pitches. A single video
 does not directly measure elbow joint moment or injury risk.
 
-## Read or reproduce the research
+See [MOTION_LAB.md](docs/MOTION_LAB.md),
+[ATHLETE_REPORTS.md](docs/ATHLETE_REPORTS.md), and
+[VIDEO_METHODS.md](docs/VIDEO_METHODS.md) for definitions and provenance.
+
+## Reproduce the existing research or prepare a new study
 
 Start with [the study summary](docs/STUDY_SUMMARY.md),
 [the Phase 2 results](docs/PHASE2_RESULTS.md), and
 [the frozen analysis plan](docs/PHASE2_ANALYSIS_PLAN.md).
+The supplied reports are derived from the existing 411-pitch cohort. Run
+`uv run --frozen pitching phase2` to regenerate both phases from the small
+pinned source files; `pitching run` remains Phase 1 only. Follow
+[REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md) for checks and output provenance.
 
-The precomputed Phase 1 and Phase 2 reports are included. To regenerate both,
-run `uv run --frozen pitching phase2`, which fetches the small pinned source
-files if absent. This does not download large motion archives. The
-`pitching run` command reproduces Phase 1 only. Follow
-[the reproducibility guide](docs/REPRODUCIBILITY.md) for complete checks.
+For a new cohort, follow [NEW_DATA_GUIDE.md](docs/NEW_DATA_GUIDE.md) and
+[EXTERNAL_VALIDATION.md](docs/EXTERNAL_VALIDATION.md). Keep approved data and
+outputs local or in the agreed organizational environment; `local_studies/` is
+ignored by Git. The freeze/evaluate workflow is implemented, but this release
+contains no actual external-validation study or result.
 
-## Update the same GitHub repository and website
+## Update the same website
 
-The existing repository is
-[owengarrett20-svg/pitching-performance-elbow-loading-github-ready](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready).
-Use [the Phase 3 upgrade guide](docs/PHASE3_UPGRADE_WINDOWS.md) to publish this
-update. Keep the existing deployment configured for `main`, `streamlit_app.py`,
-and Python 3.12. The public app updates after the branch is pushed and the
-Streamlit rebuild finishes; check Actions and deployment logs.
+Keep the existing repository
+[owengarrett20-svg/pitching-performance-elbow-loading-github-ready](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready)
+and deployment configuration: `main`, `streamlit_app.py`, Python 3.12. Use
+[the Phase 4 guide](docs/PHASE4_UPGRADE_WINDOWS.md) to publish this update; check
+Actions and deployment logs after the push.
 
-The [Phase 3 experience notes](docs/PHASE3_EXPERIENCE.md) explain the presentation
-scope. The [collaboration guide](docs/COLLABORATION.md) describes future work on
-independently authorized data. A public introduction must contain no confidential
-athlete data. OBP's additional professional-sports affiliation restriction still
-applies; the software's MIT license does not grant restricted data rights.
+A public collaboration introduction must contain no confidential athlete data.
+OBP's additional professional-sports/financial-analysis affiliation restriction
+continues to govern its data and derivatives; the original software's MIT
+license does not grant those data rights. See
+[LICENSING.md](docs/LICENSING.md) and [COLLABORATION.md](docs/COLLABORATION.md).

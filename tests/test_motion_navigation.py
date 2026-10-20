@@ -18,6 +18,7 @@ def test_replay_bookmark_and_consecutive_changes_keep_player_and_url_in_agreemen
     app.run()
     assert not app.exception, [item.value for item in app.exception]
     assert app.radio(key="app_page").value == "Watch motion"
+    app.radio(key="motion_view").set_value("Video & measurement lessons").run()
     assert app.selectbox(key="motion_study_pitch").value["session_pitch"] == "1623_3"
     for identifier in ["2916_4", "1393_3", "1623_3"]:
         app.selectbox(key="motion_study_pitch").set_value(examples[identifier]).run()

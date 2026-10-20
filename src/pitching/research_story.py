@@ -250,7 +250,7 @@ def render_start(
         )
         st.markdown(f"**{len(frame):,} recorded pitches · {frame.user.nunique():,} athletes**")
         st.button(
-            "Watch measured motion",
+            "Open the 3D motion lab",
             on_click=navigate,
             args=("Watch motion",),
             key="story_open_motion",
@@ -285,11 +285,27 @@ def render_start(
         st.warning(f"The saved finding cannot be summarized consistently: {error}.")
         return
     _summary_cards(summary)
-    st.button(
+    study, report, new_data = st.columns(3)
+    study.button(
         "See the study results",
         on_click=navigate,
         args=("Study results",),
         key="story_open_study",
+        width="stretch",
+    )
+    report.button(
+        "Build an athlete report",
+        on_click=navigate,
+        args=("Athlete reports",),
+        key="story_open_report",
+        width="stretch",
+    )
+    new_data.button(
+        "Plan a new-data study",
+        on_click=navigate,
+        args=("New-data lab",),
+        key="story_open_new_data",
+        width="stretch",
     )
 
 

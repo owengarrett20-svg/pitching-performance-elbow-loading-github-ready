@@ -56,21 +56,21 @@ would require a separately justified design and explicit full-pipeline refitting
 
 ## 4. Publish and archive the research release — partially complete
 
-Phase 2 version 0.4.0 has been pushed to the existing public repository at commit
-`a2f339e`. The source and prepared snapshot are available through the connected
-branch. Check the published Actions run and the rebuilt app when reviewing a
+Phase 2 version 0.4.0 (`a2f339e`) and Phase 3 version 0.5.0 (`edf5c05`) have
+been pushed to the existing public repository. Their source and prepared snapshot
+are available through the connected branch. Check the published Actions run and the rebuilt app when reviewing a
 release; a Git push alone does not independently verify those services.
 
 A tagged software release and archival DOI remain separate steps. Publish an
 actual tag only from a checked revision, and add a DOI only if an archival
 service issues one. Preserve attribution and the data-use restrictions.
 
-## 5. Phase 3: readable, interactive research experience — implemented locally
+## 5. Phase 3: readable, interactive research experience — published code
 
 **Question:** Can a first-time visitor understand the study and inspect its
 observations without first reading research tables or application code?
 
-The new version 0.5.0 separates **Start here**, **Explore pitches**, **Watch motion**,
+Version 0.5.0 separates **Start here**, **Explore pitches**, **Watch motion**,
 **Study results**, and **Methods & collaboration**. Only the active view is
 rendered. The opening pairs a verified marker example with the research question
 and saved findings. Interactive charts, keyboard-accessible recorded-pitch
@@ -84,8 +84,9 @@ video synchronization, or external validation. Its scientific definitions and
 models remain those of Phases 1 and 2.
 
 The [experience notes](PHASE3_EXPERIENCE.md) describe the scope and release checks.
-Use [PHASE3_UPGRADE_WINDOWS.md](PHASE3_UPGRADE_WINDOWS.md) to update the existing
-repository and website. The new experience is local until pushed and rebuilt.
+The code was published at `edf5c05`. Historical upgrade instructions remain in
+[PHASE3_UPGRADE_WINDOWS.md](PHASE3_UPGRADE_WINDOWS.md). A source commit alone does
+not independently verify a particular deployment or remote CI run.
 
 The [collaboration guide](COLLABORATION.md) offers a proposed path from a
 non-sensitive research introduction to independently authorized data and an
@@ -97,41 +98,92 @@ observations, read the uncertain elbow finding, locate methods, and understand
 the contact/data-use boundaries. This presentation milestone does not complete
 the next scientific validation milestone.
 
-## 6. Phase 4: external or temporal validation — proposed
+## 6. Phase 4: motion, athlete reports, and a new-data workflow — implemented locally
 
-**Question:** Do the fixed definitions and model generalize to a genuinely new
-cohort or later assessment sessions?
+**Question:** Can a visitor inspect measured movement and source-derived
+measurements, take away a readable report, and understand how an authorized new
+dataset would be evaluated?
 
-Obtain an appropriately licensed dataset and document instrumentation, units,
-population, and signal-convention compatibility before analysis. Freeze the
-model specification before viewing evaluation outcomes. Keep athlete identities
-separated across development and evaluation; distinguish new sessions from new
-athletes. Revisit permissions before professional-team or commercial use.
+Version 0.6.0 adds:
 
-**Done when:** provenance, permission, cohort shift, missingness, and external
-errors are reported, including declines. The current one-session-per-athlete
-sample cannot supply future-session validation. No external cohort is claimed.
+- An [interactive motion lab](MOTION_LAB.md) using the three prepared marker
+  examples and released traces, with independent controls and explicit clock
+  limitations.
+- [Athlete research reports](ATHLETE_REPORTS.md) as self-contained printable
+  HTML and source-attributed downloads. Reports describe available recorded
+  pitches; they do not establish longitudinal progress or stable consistency.
+- A [local new-data adapter and audit](NEW_DATA_GUIDE.md) with explicit column
+  mapping, units, definitions, signs, grouping, provenance, and permission review.
+- A [two-stage external-evaluation workflow](EXTERNAL_VALIDATION.md): freeze
+  fixed development models and preprocessing, then evaluate a new-athlete cohort
+  without fitting or tuning against it. Numerical JSON artifacts avoid executable
+  model deserialization.
+- **Athlete reports** and **New-data lab** views alongside the existing guided
+  site. The public app accepts no confidential athlete-file uploads.
 
-## 7. Study time-resolved mechanics with verified alignment — proposed
+The Phase 1/2 cohort, comparisons, and uncertainty scope remain unchanged.
+External-evaluation tools are an implemented capability, not evidence that a new
+cohort has been evaluated or that the models generalize. No independent external
+result, future-session validation, injury prediction, or professional-team
+partnership is included.
 
-**Question:** What temporal relationships can released marker and processed
-signals support beyond isolated peaks?
+**Release checks:** source/error identity matching, preserved missingness,
+printable/escaped reports, valid unit conversions, strict prepared-data and model
+hashes, athlete-overlap rejection, frozen prediction equivalence, no
+external-evaluation fitting, and desktop/phone usability. The source-clock audit
+must retain unverified alignment rather than invent synchronized event frames.
 
-Begin with the three verified examples. Specify anatomical frames, events,
-signal signs, filtering, sampling, and analysis windows. Resolve the documented
-shoulder-velocity convention and establish a marker/signal clock mapping before
-adding synchronized overlays or event-frame labels. Matching published peak
-values does not independently replicate inverse dynamics.
+Use [PHASE4_UPGRADE_WINDOWS.md](PHASE4_UPGRADE_WINDOWS.md) to update the existing
+repository and website. Phase 4 remains local until pushed and rebuilt. A tagged
+release or DOI remains a separate publication step.
 
-Only add camera analysis when recording rights, calibration, pitch identity, and
-synchronization are established. No video coverage is assumed for all study
+## 7. Complete an external-validation study — proposed scientific milestone
+
+**Question:** Do the fixed measurement definitions and models generalize to a
+genuinely new athlete cohort?
+
+Obtain an appropriately licensed independent dataset. Document instrumentation,
+units, population, processing, signal conventions, and the athlete identity
+crosswalk before evaluation. Record the operator's permission and measurement
+review; software cannot independently certify legal authority or equivalence.
+Freeze the model/protocol using development data before inspecting external
+outcomes. Keep the evaluation cohort out of fitting, tuning, and model selection.
+
+The Phase 4 workflow implements descriptive new-athlete evaluation. Report all
+fixed models, target-specific eligible counts, pooled and equal-athlete errors,
+missingness, and covariate differences, including unfavorable findings. Source
+identity overlap and dataset reuse checks help, but differently namespaced IDs
+still require an independently reviewed identity crosswalk.
+
+**Done when:** actual authorized inputs, frozen provenance, eligibility,
+measurement compatibility, cohort shift, predictions, and external errors are
+reported. That study has not occurred in this release. Future-session or temporal
+validation asks a different question and needs its own protocol; the current
+one-session-per-athlete OBP sample cannot supply it.
+
+## 8. Establish marker/signal alignment and time-resolved mechanics — proposed
+
+**Question:** What temporal relationships can the released signals support beyond
+individual peaks and separate inspection controls?
+
+The Phase 4 lab makes the existing three examples inspectable. It does not
+establish a shared clock. Specify anatomical frames, event definitions, signs,
+filtering, sampling, and analysis windows. Resolve the documented shoulder signal
+convention and establish a source-supported marker/signal time mapping before
+adding synchronized cursors, overlays, or event-frame labels. Matching sample
+counts, rates, or published peaks is insufficient and does not independently
+replicate inverse dynamics.
+
+Add camera analysis only when recording rights, calibration, pitch identity, and
+synchronization are established. No camera coverage is assumed for all study
 pitches, and no MLB footage acquisition is planned. Video landmarks alone cannot
 be relabeled as internal joint moments or injury scores.
 
-**Done when:** quantities and alignment have been validated and uncertainty is
-reported. The Phase 2 statistical extension does not complete these checks.
+**Done when:** the quantities and time mapping are validated with their
+uncertainty and provenance. Interactive rendering alone does not complete that
+scientific validation.
 
-## 8. Consider broader model development — proposed
+## 9. Consider broader model development — proposed
 
 Change model complexity only for a stated scientific question and a defensible
 evaluation design. Tuning or model selection requires nested athlete-grouped

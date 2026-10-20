@@ -30,7 +30,17 @@ def test_hosted_demo_reads_verified_snapshot_without_fetching_or_fitting(monkeyp
     assert app.selectbox(key="explorer_pitch").value
     app.radio(key="app_page").set_value("Watch motion").run()
     assert not app.exception, [item.value for item in app.exception]
+    assert app.selectbox(key="lab_motion_pitch").value
+    app.radio(key="motion_view").set_value("Video & measurement lessons").run()
     assert len(app.get("video")) == 2
+    app.radio(key="app_page").set_value("Athlete reports").run()
+    assert not app.exception, [item.value for item in app.exception]
+    assert app.selectbox(key="report_athlete").value
+    assert len(app.get("download_button")) >= 3
+    app.radio(key="app_page").set_value("New-data lab").run()
+    assert not app.exception, [item.value for item in app.exception]
+    assert any("external study pending" in item.value for item in app.info)
+    assert not app.get("file_uploader")
     app.radio(key="app_page").set_value("Study results").run()
     assert not app.exception, [item.value for item in app.exception]
     if (ROOT / "assets/demo/reports/phase2/run_metadata.json").is_file():

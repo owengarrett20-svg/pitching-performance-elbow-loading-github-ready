@@ -1,4 +1,4 @@
-# Reproducing the study and guided research site
+# Reproducing the study, motion/reporting lab, and local new-data tools
 
 The reproducible unit is the code revision, `uv.lock`, `source_manifest.json`,
 analysis plans, and saved evaluation specifications. A screenshot or running
@@ -216,7 +216,8 @@ PY
 nonsecret `PITCHING_REPORT_DIR` to select another report folder. The hosted entry
 point, `streamlit_app.py`, reads the committed `assets/demo` snapshot and verifies
 its files before display. Neither dashboard downloads data or fits models during
-browser interactions. Phase 2 cohort scores, intervals, and partition sensitivity
+browser interactions. The new-data audit/freeze/evaluate commands are separate,
+explicit local workflows; the public site does not accept athlete-file uploads. Phase 2 cohort scores, intervals, and partition sensitivity
 do not change with sidebar filters; the athlete-detail table follows the selected
 athletes without recomputing their full-eligible-pitch errors.
 
@@ -231,15 +232,17 @@ uv run --frozen streamlit run streamlit_app.py
 The exporter verifies producing code, source manifest, lockfile, Phase 2 plan,
 and output hashes before export. Commit the snapshot and manifest together.
 The hosted reader does not modify the snapshot. Phase 2 version 0.4.0 has been
-pushed to the connected branch. The prepared Phase 3 version 0.5.0 update remains
-local until pushed and rebuilt; creating local files does not update the public
-app. See [PHASE3_UPGRADE_WINDOWS.md](PHASE3_UPGRADE_WINDOWS.md) and
+pushed to the connected branch, followed by Phase 3 version 0.5.0 at `edf5c05`.
+The prepared Phase 4 version 0.6.0 update remains local until pushed and rebuilt;
+creating local files does not update the public app. See
+[PHASE4_UPGRADE_WINDOWS.md](PHASE4_UPGRADE_WINDOWS.md) and
 [GITHUB_PUBLISH.md](GITHUB_PUBLISH.md) for upgrade and deployment guidance.
 
 ## Guided views and interactive release checks
 
-Phase 3 uses five routes: **Start here**, **Explore pitches**, **Watch motion**,
-**Study results**, and **Methods & collaboration**. Only the active route is
+Phase 4 retains **Start here**, **Explore pitches**, **Watch motion**,
+**Study results**, and **Methods & collaboration**, and adds **Athlete reports**
+and **New-data lab**. Only the active route is
 rendered. The default study view uses average absolute prediction error per
 athlete; the detailed mode retains all planned contrasts and the saved audit.
 
@@ -267,7 +270,83 @@ The [experience notes](PHASE3_EXPERIENCE.md) and
 boundaries. The public introduction link accepts a non-sensitive description
 only; it does not create an authorized channel for player files or supply a
 confidential upload service. New data require permission, compatible definitions,
-a reviewed adapter, and a separately frozen external evaluation plan.
+a reviewed mapping, and a separately frozen external evaluation plan. The
+implemented local tools assist those checks; they do not establish external
+validity or authorize confidential transfer through the public site.
+
+## Motion inspection and downloadable reports
+
+The [motion lab](MOTION_LAB.md) reads the prepared marker and trace assets offline.
+Its frame and processed-signal controls are independent: no source-supported
+clock relationship has been verified. Check pitch and athlete identity, file
+hashes, source units, selected indices, missing markers, and the actual displayed
+sample before interpreting a view. Matching source grids or extrema is not
+synchronization or an independent inverse-dynamics replication.
+
+[Athlete reports](ATHLETE_REPORTS.md) use the selected athlete's available
+recorded rows. HTML is self-contained and printable through the browser's
+**Print → Save as PDF**. Preserve the embedded source/terms and metadata with
+redistributed material. Target/focal missing values stay missing. A report may
+include saved primary combined-model errors only when the verified source
+identities and observations match. It does not refit a model or recompute a
+confidence interval for one athlete. The source's few pitches from one released
+session cannot establish long-term consistency or development.
+
+## Local new-data audit and frozen external evaluation
+
+The local workflow is deliberately separate from the public OBP reference
+snapshot. Templates contain definitions and placeholders, not invented athlete
+measurements. Before entering actual data, review rights, population, collection
+protocol, identifier namespace, source units, signed coordinate conventions, and
+whether each measurement actually matches the canonical definition. An explicit
+operator declaration records that review; it is not independent legal or
+instrument validation.
+
+See [NEW_DATA_GUIDE.md](NEW_DATA_GUIDE.md) for the complete mapping format and
+[EXTERNAL_VALIDATION.md](EXTERNAL_VALIDATION.md) for the freeze/evaluate protocol.
+The command sequence is:
+
+```bash
+# Use actual independently authorized files after reviewing both guides.
+uv run --frozen pitching new-data audit --csv local_studies/development.csv --mapping local_studies/development_mapping.json --output local_studies/development_prepared
+uv run --frozen pitching external freeze --prepared local_studies/development_prepared --protocol local_studies/external_protocol.json --output local_studies/frozen_models
+
+# Prepare and evaluate the independent new-athlete cohort after freezing.
+uv run --frozen pitching new-data audit --csv local_studies/evaluation.csv --mapping local_studies/evaluation_mapping.json --output local_studies/evaluation_prepared
+uv run --frozen pitching external evaluate --prepared local_studies/evaluation_prepared --bundle local_studies/frozen_models --output local_studies/external_results
+```
+
+These paths are examples of local filenames, not bundled example data. Review and
+complete the mapping/protocol templates first. Source columns must be mapped
+explicitly; supported unit conversions do not authorize automatic sign reversal,
+renaming an event-specific value as a peak, or substituting an external moment
+for an internal moment. Missing targets remain unobserved and are excluded
+separately by outcome. Invalid numeric values and grouping conflicts stop the
+audit rather than being silently repaired.
+
+Prepared artifacts bind canonical data, mapping, provenance, and audit outputs
+with checksums. The freeze stage learns imputation/scaling and fixed mean/ridge
+models only from development observations. Its numerical JSON bundle records
+parameters and provenance without executable deserialization. External evaluation
+reads that frozen state and does not fit, tune, or select models using evaluation
+outcomes. Known athlete/pitch overlap and reused inputs are rejected; cross-dataset
+identity equivalence still needs an independently reviewed crosswalk. Namespace
+changes cannot certify independence.
+
+Metrics are descriptive errors for the supplied evaluation cohort. Undefined R²
+remains undefined, target-specific missingness changes eligibility, and pooled
+pitch metrics differ from equal-athlete metrics. Covariate summaries describe
+observed differences rather than proving or correcting transferability. No
+external confidence interval, prospective performance, causal intervention, or
+injury probability is implied.
+
+Keep inputs, identity mappings, frozen model bundles, and outputs in the approved
+environment under ignored `local_studies/`. A source path or filename can itself
+be confidential. Do not copy these artifacts into `assets/demo`, attach them to
+public issues, or publish them merely because they passed software checks.
+OBP-derived model bundles and outputs retain the original data-use restrictions;
+independently authorized new data require their own permissions and agreed terms.
+The workflow is implemented, but this release contains no actual external study.
 
 No new cloud environment, MATLAB/Octave project, or additional Git worktree is
-needed to reproduce this Python study.
+needed to reproduce the existing Python study.

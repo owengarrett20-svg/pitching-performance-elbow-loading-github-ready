@@ -3,9 +3,9 @@
 A reproducible Python biomechanics research project exploring pitching performance, rotational kinematics, and internal elbow joint loading using Driveline’s OpenBiomechanics Project.
 
 **Author:** Owen Garrett  
-**Status:** Version 0.5.0 — a guided, interactive research showcase built on the completed Phase 1 and Phase 2 analyses.
+**Status:** Version 0.6.0 — an interactive motion and reporting lab with local new-data auditing and a frozen external-evaluation workflow.
 
-Phase 2 has been pushed to the public repository. Phase 3 adds a clearer opening story, recorded-pitch exploration, and a research-collaboration introduction. This version reaches the existing public dashboard after the update is pushed and Streamlit rebuilds; the scientific comparisons are unchanged.
+Phase 3 has been pushed to the public repository at `edf5c05`. Phase 4 adds motion inspection, downloadable athlete reports, and tools for an independently authorized new-data study. This version reaches the existing public dashboard after the update is pushed and Streamlit rebuilds. The Phase 1/2 scientific comparisons are unchanged; no independent external dataset has been evaluated in this release.
 
 [Open the live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) · [Study summary](docs/STUDY_SUMMARY.md) · [Phase 2 results](docs/PHASE2_RESULTS.md) · [Research roadmap](docs/ROADMAP.md) · [Automated checks](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready/actions)
 
@@ -55,17 +55,23 @@ This is an independent research portfolio project and does not imply endorsement
 
 ## Explore the dashboard
 
-![Phase 3 opening view with research question, exploration controls, and a measured-marker replay](docs/images/dashboard-overview.png)
+![Phase 4 interactive measured-marker lab with rotatable 3D view, source coordinates, and replay controls](docs/images/motion-lab.png)
 
-*Local Phase 3 preview. [Phone-width preview](docs/images/dashboard-mobile.png).
-The marker replay is derived from OBP and retains the data terms above.*
+*Local Phase 4 preview. [Opening view](docs/images/dashboard-overview.png) ·
+[Phone-width opening](docs/images/dashboard-mobile.png) ·
+[Athlete reports](docs/images/athlete-reports.png) ·
+[Phone-width report](docs/images/athlete-reports-mobile.png) ·
+[New-data lab](docs/images/new-data-lab.png).
+Measured-marker views and source-derived report previews retain the data terms above.*
 
-The [live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) provides:
+This release provides seven views. The [existing live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) receives the additions after the update is pushed and rebuilt:
 
 - **Start here:** the research question, a genuine marker replay, and the main finding in plain language.
 - **Explore pitches:** hoverable and clickable charts, keyboard-accessible recorded-pitch selection, athlete averages, A/B observation comparisons, and source-attributed CSV downloads.
-- **Watch motion:** the three prepared measured-marker examples, paused-frame inspection, processed traces, and expandable measurement lessons.
+- **Watch motion:** an interactive 3D measured-marker lab, frame and trace inspection, source-clock limitations, and the existing replay and measurement lessons.
+- **Athlete reports:** self-contained, printable HTML reports and source-attributed downloads describing the selected athlete's available recorded pitches and verified saved errors.
 - **Study results:** a readable average-error comparison, outcome and model controls, prediction errors, and the detailed research audit.
+- **New-data lab:** local audit and frozen-evaluation instructions, reviewed mapping/protocol templates, and explicit readiness requirements. It does not accept athlete-file uploads.
 - **Methods & collaboration:** the author and evaluation process, data-quality reports, definitions, and a public introduction route for a future authorized study.
 
 Athlete identifiers are pseudonymous source identifiers. Repeated pitches from one athlete are clustered observations.
@@ -78,13 +84,23 @@ In **Explore pitches**, a point can represent either one recorded pitch or an at
 
 Recorded selections can be shared through a page address such as `?page=explore&pitch=1623_3`. URL values are checked against actual recorded identifiers. Prepared motion is shown only for matching pitch and athlete identities; the address reflects the replay actually displayed.
 
-Read the [Phase 3 experience notes](docs/PHASE3_EXPERIENCE.md) or [Windows upgrade guide](docs/PHASE3_UPGRADE_WINDOWS.md) to install the update. The existing repository and Streamlit URL are retained.
+Read the [Windows Phase 4 upgrade guide](docs/PHASE4_UPGRADE_WINDOWS.md) to install this update while retaining the existing repository and Streamlit URL. The [Phase 3 experience notes](docs/PHASE3_EXPERIENCE.md) preserve the earlier presentation milestone.
+
+### Motion, reports, and new-data tools
+
+The [motion lab](docs/MOTION_LAB.md) uses the three prepared measured-marker examples and their released processed traces. Marker and signal controls remain independent because their clock relationship has not been verified. Matching sample rates, lengths, or peak values does not establish synchronization or reproduce inverse dynamics.
+
+[Athlete research reports](docs/ATHLETE_REPORTS.md) describe the recorded sample in physical units, preserve missing values, and include saved held-out errors only when source identities and measurements match. The source has one released session and a few pitches per athlete; a report does not establish longitudinal development, stable consistency, technique quality, or injury risk. Save the downloaded HTML directly, or use the browser's **Print → Save as PDF**.
+
+The [new-data guide](docs/NEW_DATA_GUIDE.md) explains local column mapping, units, definitions, sign conventions, provenance, and permission declarations. The [external-evaluation guide](docs/EXTERNAL_VALIDATION.md) separates development-model freezing from evaluation on a new-athlete cohort. It uses safe numerical JSON artifacts and frozen preprocessing rather than executable model deserialization.
+
+**Workflow readiness is separate from scientific evidence:** these tools are implemented for a future appropriately authorized study. This release contains no new external-cohort result, external-performance claim, prospective forecast, or injury outcome.
 
 ### Interested in a research collaboration?
 
 Start with a focused question, measurement definitions, units, collection protocol, and approximate cohort/session counts. The [collaboration guide](docs/COLLABORATION.md) describes a proposed evaluation process for independently authorized data.
 
-The site's introduction link opens a **public GitHub issue**. Share only a non-sensitive project introduction there. Agree a private communication channel, data rights, and an approved analysis environment before any athlete-data transfer. This public demonstration provides no confidential upload service and makes no claim of an existing team partnership or external benchmark.
+The site's introduction link opens a **public GitHub issue**. Share only a non-sensitive project introduction there. Agree a private communication channel, data rights, and an approved analysis environment before any athlete-data transfer. The local new-data tools do not create a confidential public upload service, team partnership, or completed external benchmark.
 
 OBP's professional-sports/financial-analysis affiliation restriction still applies. The original software's MIT license does not grant permission to use OBP material in team work.
 
@@ -148,7 +164,7 @@ uv run --frozen pitching phase2
 
 The analysis downloads nine small CSV/documentation/license files totaling less than 0.4 MB. Neither analysis phase requires large C3D archives or camera footage.
 
-Generated analysis outputs are written to `reports/`. Downloaded source files are cached under `data/raw/`. These working directories are excluded from Git.
+Generated OBP analysis outputs are written to `reports/`. Downloaded source files are cached under `data/raw/`. New-data studies should stay under ignored `local_studies/`, outside the public reference snapshot. Keep source files, identity mappings, model bundles, and evaluation outputs within the approved local or organizational environment. These working directories are excluded from Git; review files before any commit or publication.
 
 See [reproducibility notes](docs/REPRODUCIBILITY.md) and the [Windows guide](START_HERE_WINDOWS.md) for additional setup information.
 
@@ -324,14 +340,14 @@ Read the [complete Phase 2 report](docs/PHASE2_RESULTS.md), [analysis plan](docs
 
 The **Watch motion** view includes three prepared study examples with recorded speeds of 69.5, 85.3, and 94.4 mph.
 
-### Measured marker animations
+### Interactive marker lab and measured animations
 
-The animations are derived from released C3D skin-marker observations and linked to study pitches through source metadata.
+The lab and animations use released C3D skin-marker observations linked to study pitches through source metadata. The lab adds a rotatable 3D view and independent inspection of marker frames and processed signals. Its source audit does not claim a verified marker–signal time mapping.
 
 They include:
 
-- Half-speed playback.
-- A paused-frame inspector.
+- Interactive marker inspection alongside the existing half-speed replay.
+- A paused-frame inspector and explicit marker-frame sampling information.
 - Source and preparation provenance.
 - Explanations of the limits of marker-based visualization.
 
@@ -378,6 +394,9 @@ The repository includes tests for:
 - Hosted reference-snapshot integrity.
 - Allowlisted share links, recorded-pitch selection, filter/selection state, observed A/B arithmetic, athlete-average units, and readable verified findings.
 - Non-sensitive collaboration links and clear data-use boundaries.
+- Athlete report missingness, source/error matching, HTML escaping, and printable downloads.
+- New-data schema, deterministic unit conversion, grouping, permission declarations, and artifact integrity.
+- Frozen numerical model predictions, absence of evaluation-time fitting, overlap rejection, and descriptive external-error calculations.
 
 Synthetic test fixtures are labeled and never enter the reported research results.
 
@@ -414,7 +433,7 @@ Two entry points support different workflows:
 - **`streamlit_app.py`:** reads the committed, verified reference snapshot in `assets/demo`.
 - **`app.py`:** reads locally regenerated reports.
 
-Neither entry point downloads source data, fits models, or bootstraps data during a browser interaction. Altair supports the interactive charts; its runtime version is pinned alongside the analysis dependencies.
+Neither entry point downloads source data, fits models, or bootstraps data during a browser interaction. New-data auditing and external-model freezing/evaluation run through explicit local CLI commands. They do not run from the hosted public dashboard. Altair supports the interactive charts; its runtime version is pinned alongside the analysis dependencies.
 
 To deliberately refresh the published reference snapshot after an analysis change:
 
@@ -436,6 +455,9 @@ See the [publication and deployment guide](docs/GITHUB_PUBLISH.md) for maintenan
 - Marker-based kinematics and inverse-dynamics moments depend on filtering, segment models, coordinate conventions, and soft-tissue artifact.
 - Individual peaks do not reconstruct movement sequencing.
 - No injury outcomes or validated clinical thresholds are available.
+- Downloadable athlete reports describe a few recorded pitches and cannot establish long-term consistency or development.
+- New-data permission/definition declarations record the operator's review; software cannot independently establish legal authority, measurement equivalence, or identity crosswalks.
+- The external-evaluation workflow is implemented, but no authorized independent cohort has been evaluated in this release.
 - No causal effect of changing mechanics is estimated.
 - Camera coverage and synchronization are not assumed.
 - Phase 2 intervals condition on fixed out-of-fold errors and exclude full model-training uncertainty; they do not establish external-population coverage.
@@ -444,9 +466,9 @@ See the [publication and deployment guide](docs/GITHUB_PUBLISH.md) for maintenan
 
 ## Next research extensions
 
-Predictor-group comparisons, conditional athlete-level intervals, and full-refit partition sensitivity are now implemented. The following remain proposed work:
+Predictor-group comparisons, conditional athlete-level intervals, full-refit partition sensitivity, the motion/reporting lab, and a local audit/frozen-evaluation workflow are implemented. Scientific extensions still require their own data and evidence:
 
-1. **Evaluate generalization:** obtain an appropriately licensed external or longitudinal cohort and freeze the specification before evaluation.
+1. **Complete an external study:** obtain an appropriately licensed independent cohort, document measurement compatibility and athlete identities, freeze the development specification, then run and report the evaluation. The current toolkit targets new athletes; future-session validation needs a separately justified protocol.
 2. **Study broader uncertainty:** design and justify any full-pipeline resampling rather than relabeling the fixed-prediction intervals.
 3. **Investigate time-resolved mechanics:** resolve signal conventions and verify timing before synchronized analyses.
 4. **Extend models carefully:** use nested athlete-grouped validation if tuning or model selection is introduced.
@@ -467,8 +489,9 @@ assets/
   traces/                 Prepared processed-signal examples
   lessons/                Instructional video and supporting assets
 
-analysis/                 Frozen machine-readable Phase 2 plan
-docs/                     Methods, Phase 2 results, licensing, and roadmap
+analysis/                 Phase 2 plan and external-evaluation protocol template
+schemas/                  New-data mapping/dictionary templates; no invented athlete rows
+docs/                     Methods, results, feature guides, licensing, and roadmap
 scripts/                  Asset preparation and deployment exporters
 src/pitching/             Research workflows, guided views, and interactive charts
 tests/                    Unit, integration, and dashboard tests
@@ -484,6 +507,7 @@ CONTRIBUTING.md           Contribution guidance
 
 data/raw/                 Local source cache; ignored by Git
 reports/                  Local Phase 1 and phase2/ reports; ignored by Git
+local_studies/            Authorized new-data inputs/bundles/results; ignored by Git
 ```
 
 ## Contributing

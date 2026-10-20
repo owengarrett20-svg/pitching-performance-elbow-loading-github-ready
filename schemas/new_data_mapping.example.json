@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "dataset": {
+    "name": "EDIT_dataset_name",
+    "population": "EDIT_population_and_pitch_types",
+    "collection_protocol": "EDIT_instrumentation_frames_filters_events_and_sampling",
+    "athlete_id_namespace": "EDIT_stable_identity_namespace",
+    "rights": {
+      "authorized": false,
+      "basis": "EDIT_data_owner_permission_and_permitted_analysis_scope"
+    }
+  },
+  "columns": {
+    "session_pitch": {
+      "source": "pitch_id",
+      "unit": "identifier",
+      "definition": "unique_pitch_identifier",
+      "definition_confirmed": false
+    },
+    "user": {
+      "source": "athlete_id",
+      "unit": "identifier",
+      "definition": "stable_pseudonymous_athlete_identifier",
+      "definition_confirmed": false
+    },
+    "session": {
+      "source": "session_id",
+      "unit": "identifier",
+      "definition": "unique_assessment_session_identifier",
+      "definition_confirmed": false
+    },
+    "age_yrs": {
+      "source": "age_yrs",
+      "unit": "years",
+      "definition": "age_at_assessment",
+      "definition_confirmed": false
+    },
+    "session_mass_kg": {
+      "source": "session_mass_kg",
+      "unit": "kg",
+      "definition": "body_mass_at_assessment",
+      "definition_confirmed": false
+    },
+    "session_height_m": {
+      "source": "session_height_m",
+      "unit": "m",
+      "definition": "body_height_at_assessment",
+      "definition_confirmed": false
+    },
+    "max_shoulder_internal_rotational_velo": {
+      "source": "max_shoulder_internal_rotational_velo",
+      "unit": "deg/s",
+      "definition": "peak_internal_shoulder_rotation_angular_velocity",
+      "definition_confirmed": false,
+      "sign_convention": "EDIT_native_and_required_sign_convention",
+      "canonical_sign_confirmed": false
+    },
+    "max_rotation_hip_shoulder_separation": {
+      "source": "max_rotation_hip_shoulder_separation",
+      "unit": "deg",
+      "definition": "peak_thorax_pelvis_separation_angle",
+      "definition_confirmed": false,
+      "sign_convention": "EDIT_native_and_required_sign_convention",
+      "canonical_sign_confirmed": false
+    },
+    "max_torso_rotational_velo": {
+      "source": "max_torso_rotational_velo",
+      "unit": "deg/s",
+      "definition": "peak_torso_axial_rotation_angular_velocity",
+      "definition_confirmed": false,
+      "sign_convention": "EDIT_native_and_required_sign_convention",
+      "canonical_sign_confirmed": false
+    },
+    "pitch_speed_mph": {
+      "source": "pitch_speed_mph",
+      "unit": "mph",
+      "definition": "recorded_pitch_speed",
+      "definition_confirmed": false
+    },
+    "elbow_varus_moment": {
+      "source": "elbow_varus_moment",
+      "unit": "N*m",
+      "definition": "peak_internal_net_elbow_varus_moment",
+      "definition_confirmed": false,
+      "sign_convention": "EDIT_native_and_required_sign_convention",
+      "canonical_sign_confirmed": false
+    }
+  }
+}

@@ -90,10 +90,14 @@ camera-to-signal synchronization.
 
 ### 3. Agree an adapter and freeze the evaluation
 
-The current command-line workflow is pinned to the released OBP source and its
-recorded sample. It is not a general team-data importer. A new dataset requires a
-separately reviewed adapter and analysis plan. Preserve the original study's
-checksums and specification while defining that extension.
+The original study workflow remains pinned to the released OBP source and its
+recorded sample. The separate [new-data adapter](NEW_DATA_GUIDE.md) now supports
+an explicit reviewed mapping for authorized local development and external
+datasets. It checks units, measurement declarations, identifiers, and missingness
+before the [freeze/evaluate workflow](EXTERNAL_VALIDATION.md). This local tooling
+does not establish permission or provide confidential hosting. Preserve the
+original study's checksums and specification while defining the new study.
+Every new study still needs a separately reviewed adapter and analysis plan.
 
 Validate join cardinality, units, grouping, missingness, and inclusion rules before
 model fitting. Keep transformations inside training folds. Set athlete, session,
