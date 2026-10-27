@@ -10,6 +10,7 @@ dist/
 /data/
 /reports/
 /local_studies/
+/local_applications/
 .streamlit/secrets.toml
 .env
 .env.*
