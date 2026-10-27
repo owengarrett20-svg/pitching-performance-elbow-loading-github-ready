@@ -6,6 +6,7 @@ from collections.abc import Iterable
 
 PAGES = (
     "Start here",
+    "Research brief",
     "Explore pitches",
     "Watch motion",
     "Athlete reports",
@@ -14,7 +15,9 @@ PAGES = (
     "Methods & collaboration",
 )
 PAGE_SLUGS = dict(
-    zip(PAGES, ("start", "explore", "motion", "reports", "study", "new-data", "methods"))
+    zip(
+        PAGES, ("start", "research", "explore", "motion", "reports", "study", "new-data", "methods")
+    )
 )
 SLUG_PAGES = {slug: page for page, slug in PAGE_SLUGS.items()}
 

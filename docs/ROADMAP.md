@@ -56,8 +56,9 @@ would require a separately justified design and explicit full-pipeline refitting
 
 ## 4. Publish and archive the research release — partially complete
 
-Phase 2 version 0.4.0 (`a2f339e`) and Phase 3 version 0.5.0 (`edf5c05`) have
-been pushed to the existing public repository. Their source and prepared snapshot
+Phase 2 version 0.4.0 (`a2f339e`), Phase 3 version 0.5.0 (`edf5c05`), and
+Phase 4 version 0.6.0 (`ad4cd71`) have been pushed to the existing public
+repository. Their source and prepared snapshot
 are available through the connected branch. Check the published Actions run and the rebuilt app when reviewing a
 release; a Git push alone does not independently verify those services.
 
@@ -98,7 +99,7 @@ observations, read the uncertain elbow finding, locate methods, and understand
 the contact/data-use boundaries. This presentation milestone does not complete
 the next scientific validation milestone.
 
-## 6. Phase 4: motion, athlete reports, and a new-data workflow — implemented locally
+## 6. Phase 4: motion, athlete reports, and a new-data workflow — published code
 
 **Question:** Can a visitor inspect measured movement and source-derived
 measurements, take away a readable report, and understand how an authorized new
@@ -133,11 +134,50 @@ hashes, athlete-overlap rejection, frozen prediction equivalence, no
 external-evaluation fitting, and desktop/phone usability. The source-clock audit
 must retain unverified alignment rather than invent synchronized event frames.
 
-Use [PHASE4_UPGRADE_WINDOWS.md](PHASE4_UPGRADE_WINDOWS.md) to update the existing
-repository and website. Phase 4 remains local until pushed and rebuilt. A tagged
-release or DOI remains a separate publication step.
+The code is published at `ad4cd71`; historical instructions remain in
+[PHASE4_UPGRADE_WINDOWS.md](PHASE4_UPGRADE_WINDOWS.md). A source push does not
+independently verify remote CI or deployment. A tagged release or DOI remains a
+separate publication step.
 
-## 7. Complete an external-validation study — proposed scientific milestone
+## 7. Phase 5: source-linked exploration and an auditable portfolio — implemented locally
+
+**Question:** Can a reviewer select an observed pitch, inspect its actual source
+motion and markers, compare another delivery, and assess the project's research
+claims and contribution record?
+
+Version 0.7.0 adds a [searchable pitch workspace](PITCH_WORKSPACE.md) with a
+selectable source table, A/B replays, marker-set inspection, associated values,
+and checked paired links. The [verified catalog](PITCH_CATALOG.md) provides
+measured-marker arrays for all 411 study pitches from the official C3D archive.
+Original label aliases and missing observations remain explicit; this expands
+inspectable motion, not camera coverage or scientific validation. The existing
+three MP4/processed-trace examples remain a separate subset. Starting two trials
+from their own first samples does not establish event alignment.
+
+The [research brief](RESEARCH_BRIEF.md) derives cohort counts, model results,
+contrasts, and evidence limits from verified artifacts. The
+[measurement audit](MEASUREMENT_VERIFICATION.md) checks twelve selected released
+scalar summaries against three released traces. Source-scalar agreement is not
+an independent reconstruction of inverse dynamics or validation of all quantities
+in all pitches. Existing Phase 1/2 findings and their uncertainty scope remain
+unchanged.
+
+The [PhD application guide](PHD_APPLICATION_GUIDE.md) and
+[contribution record](CONTRIBUTIONS_AND_AI.md) describe an independent AI-assisted
+research software project. Personal framing, interface review, AI implementation,
+agent-executed checks, and personally completed method review stay distinct.
+Private CV/application drafts are outside the public repository. The project is
+not presented as a publication, independent biomechanical validation, or a
+completed external study.
+
+**Release checks:** correct source IDs after table sorting/searching, repeated
+A/B selections and URL changes, unavailable/corrupt evidence without substitution,
+marker-label and missingness preservation, safe offline exports, truthful brief
+failure states, desktop/phone interaction, and a clean historical bundle upgrade.
+Use [PHASE5_UPGRADE_WINDOWS.md](PHASE5_UPGRADE_WINDOWS.md) for installation.
+Phase 5 remains local until pushed and rebuilt.
+
+## 8. Phase 6: complete an external-validation study — proposed scientific milestone
 
 **Question:** Do the fixed measurement definitions and models generalize to a
 genuinely new athlete cohort?
@@ -161,13 +201,13 @@ reported. That study has not occurred in this release. Future-session or tempora
 validation asks a different question and needs its own protocol; the current
 one-session-per-athlete OBP sample cannot supply it.
 
-## 8. Establish marker/signal alignment and time-resolved mechanics — proposed
+## 9. Establish marker/signal alignment and time-resolved mechanics — proposed
 
 **Question:** What temporal relationships can the released signals support beyond
 individual peaks and separate inspection controls?
 
-The Phase 4 lab makes the existing three examples inspectable. It does not
-establish a shared clock. Specify anatomical frames, event definitions, signs,
+The marker catalog expands inspectable motion and the three detailed trace
+examples remain available. Neither establishes a shared clock. Specify anatomical frames, event definitions, signs,
 filtering, sampling, and analysis windows. Resolve the documented shoulder signal
 convention and establish a source-supported marker/signal time mapping before
 adding synchronized cursors, overlays, or event-frame labels. Matching sample
@@ -183,7 +223,7 @@ be relabeled as internal joint moments or injury scores.
 uncertainty and provenance. Interactive rendering alone does not complete that
 scientific validation.
 
-## 9. Consider broader model development — proposed
+## 10. Consider broader model development — proposed
 
 Change model complexity only for a stated scientific question and a defensible
 evaluation design. Tuning or model selection requires nested athlete-grouped

@@ -16,7 +16,6 @@ import altair as alt
 import numpy as np
 import pandas as pd
 import streamlit as st
-import streamlit.components.v1 as components
 
 from pitching.trace_examples import SIGNALS
 from pitching.trace_viewer import interval_peak, load_trace_example
@@ -363,7 +362,7 @@ def _render_trace_lab(project_root: Path, entry: dict, arrays: dict[str, np.ndar
         args=(frame, signal["column"], key, start, stop),
         key="lab_trace_peak",
     )
-    index = st.slider("Processed trace sample", 0, len(frame) - 1, 0, key=key)
+    index = st.slider("Processed trace sample", 0, len(frame) - 1, key=key)
     value = float(frame[signal["column"]].iloc[index])
     text = f"{value:.3f} {signal['unit']}" if np.isfinite(value) else "missing"
     st.caption(
@@ -405,11 +404,17 @@ def render_motion_lab(
         "point-of-interest value. These are measured skin markers and processed source signals."
     )
     try:
-        directory, manifest = load_motion_manifest(project_root)
+        use_catalog = (project_root / "assets/pitch_catalog/manifest.json").is_file()
+        if use_catalog:
+            from pitching.pitch_catalog import load_pitch_catalog
+
+            directory, manifest = load_pitch_catalog(project_root)
+        else:
+            directory, manifest = load_motion_manifest(project_root)
         entries = matching_examples(frame, manifest["examples"])
         if not entries:
             st.info(
-                "No prepared recording matches both pitch and athlete in the current filters. Clear the filters to inspect the three examples."
+                "No prepared recording matches both pitch and athlete in the current filters. Clear the filters to inspect the available source recordings."
             )
             return None
         by_id = {item["session_pitch"]: item for item in entries}
@@ -432,8 +437,15 @@ def render_motion_lab(
             key=key,
         )
         entry = by_id[chosen]
-        archive = verified_asset(directory, entry["frames_file"], entry["frames_sha256"], ".npz")
-        arrays = load_marker_frames(archive, entry["n_frames"])
+        if use_catalog:
+            from pitching.pitch_catalog import load_catalog_frames
+
+            arrays = load_catalog_frames(directory, entry)
+        else:
+            archive = verified_asset(
+                directory, entry["frames_file"], entry["frames_sha256"], ".npz"
+            )
+            arrays = load_marker_frames(archive, entry["n_frames"])
     except (OSError, ValueError, KeyError, TypeError) as error:
         st.warning(f"The prepared motion lab cannot be displayed: {error}")
         return None
@@ -443,7 +455,11 @@ def render_motion_lab(
         "independent controls; no ball-release frame or synchronized cursor is inferred."
     )
     document = marker_viewer_html(arrays, entry)
-    components.html(document, height=820, scrolling=True)
+    st.iframe(
+        document,
+        height="content",
+        alt=f"Interactive measured-marker replay for pitch {chosen}",
+    )
     st.download_button(
         "Download this interactive marker replay (HTML)",
         data=document,

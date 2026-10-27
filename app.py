@@ -366,6 +366,15 @@ def _initialize_location(frame: pd.DataFrame) -> None:
         st.session_state["_last_query_page"] = query_page
     if st.session_state["app_page"] not in PAGES:
         st.session_state["app_page"] = PAGES[0]
+    query_compare = st.query_params.get("compare")
+    if query_compare != st.session_state.get("_last_query_compare"):
+        _, comparison = resolve_location("explore", query_compare, frame["session_pitch"])
+        st.session_state["active_comparison"] = comparison
+        st.session_state["_last_query_compare"] = query_compare
+        if comparison is not None:
+            for key in ("level_filter", "athlete_filter"):
+                st.session_state[f"saved_{key}"] = []
+                st.session_state.pop(key, None)
     if query_pitch != st.session_state.get("_last_query_pitch"):
         st.session_state["active_pitch"] = pitch
         st.session_state["_last_query_pitch"] = query_pitch
@@ -395,7 +404,9 @@ def main(report_dir_override: Path | None = None, bundled_demo: bool = False) ->
         unsafe_allow_html=True,
     )
     st.title("Pitching Performance and Elbow Loading")
-    st.caption("Explore recorded movement, compare prediction errors, and follow the evidence.")
+    st.caption(
+        "Find a recorded pitch, inspect its movement and measurements, and follow the evidence."
+    )
     report_dir = (
         Path(
             report_dir_override
@@ -461,18 +472,43 @@ def main(report_dir_override: Path | None = None, bundled_demo: bool = False) ->
             from pitching.research_story import render_start
 
             render_start(frame, PROJECT_ROOT, report_dir, navigate)
-        elif page == "Explore pitches":
-            from pitching.pitch_explorer import render_pitch_explorer
+        elif page == "Research brief":
+            from pitching.research_brief import render_research_brief
 
+            render_research_brief(PROJECT_ROOT, report_dir)
+        elif page == "Explore pitches":
             if subset.empty:
                 _selected_counts(subset, len(frame))
                 st.info("No pitches match both sidebar filters. Clear a selection to continue.")
                 return
-            chosen = render_pitch_explorer(
-                subset,
-                full_frame=frame,
-                selected_pitch_id=st.session_state.get("active_pitch"),
+            explore_view = st.radio(
+                "Explore view",
+                ["Find & compare pitches", "Charts & associations"],
+                key="explore_view",
+                horizontal=True,
             )
+            if explore_view == "Find & compare pitches":
+                from pitching.pitch_workspace import render_pitch_workspace
+
+                selection = render_pitch_workspace(
+                    subset,
+                    PROJECT_ROOT,
+                    selected_pitch_id=st.session_state.get("active_pitch"),
+                    comparison_pitch_id=st.session_state.get("active_comparison"),
+                )
+                chosen = None if selection is None else selection.primary
+                if selection is not None:
+                    st.session_state["active_comparison"] = selection.comparison
+                    st.session_state["_last_query_compare"] = selection.comparison
+                    st.query_params["compare"] = selection.comparison
+            else:
+                from pitching.pitch_explorer import render_pitch_explorer
+
+                chosen = render_pitch_explorer(
+                    subset,
+                    full_frame=frame,
+                    selected_pitch_id=st.session_state.get("active_pitch"),
+                )
             if chosen is not None:
                 st.session_state["active_pitch"] = chosen
                 st.session_state["_last_query_pitch"] = chosen

@@ -1,4 +1,4 @@
-# Reproducing the study, motion/reporting lab, and local new-data tools
+# Reproducing the study, source-linked workspace, and research brief
 
 The reproducible unit is the code revision, `uv.lock`, `source_manifest.json`,
 analysis plans, and saved evaluation specifications. A screenshot or running
@@ -231,20 +231,28 @@ uv run --frozen streamlit run streamlit_app.py
 
 The exporter verifies producing code, source manifest, lockfile, Phase 2 plan,
 and output hashes before export. Commit the snapshot and manifest together.
-The hosted reader does not modify the snapshot. Phase 2 version 0.4.0 has been
-pushed to the connected branch, followed by Phase 3 version 0.5.0 at `edf5c05`.
-The prepared Phase 4 version 0.6.0 update remains local until pushed and rebuilt;
-creating local files does not update the public app. See
-[PHASE4_UPGRADE_WINDOWS.md](PHASE4_UPGRADE_WINDOWS.md) and
+The hosted reader does not modify the snapshot. Published history includes
+Phase 2 (`a2f339e`), Phase 3 (`edf5c05`), and Phase 4 (`ad4cd71`). Phase 5
+version 0.7.0 remains local until pushed and rebuilt; creating local files does
+not update the public app. See
+[PHASE5_UPGRADE_WINDOWS.md](PHASE5_UPGRADE_WINDOWS.md) and
 [GITHUB_PUBLISH.md](GITHUB_PUBLISH.md) for upgrade and deployment guidance.
 
 ## Guided views and interactive release checks
 
-Phase 4 retains **Start here**, **Explore pitches**, **Watch motion**,
-**Study results**, and **Methods & collaboration**, and adds **Athlete reports**
-and **New-data lab**. Only the active route is
-rendered. The default study view uses average absolute prediction error per
-athlete; the detailed mode retains all planned contrasts and the saved audit.
+Phase 5 provides **Start here**, **Research brief**, **Explore pitches**,
+**Watch motion**, **Athlete reports**, **Study results**, **New-data lab**, and
+**Methods & collaboration**. Only the active route renders. The default explorer
+is **Find & compare pitches**; existing plots remain under **Charts &
+associations**. The default study view uses equal-athlete average absolute error;
+its detailed mode retains all planned contrasts and the saved audit.
+
+The [workspace](PITCH_WORKSPACE.md) maps one table selection to its source pitch
+ID after stable server-side ordering. Search filters use literal terms and
+explicit identifier prefixes; source values are not modified. A/B selections
+return actual displayed identities to the router. Empty results clear the replay
+panes, stale table events cannot override a new selection, and corrupt or
+unavailable recordings are labeled instead of replaced by another pitch.
 
 Explorer charts use observed measurements. In athlete-average mode, each point
 averages complete selected-axis pitch pairs for one athlete; it is not an
@@ -253,14 +261,15 @@ B-minus-A differences from two actual recorded rows and retains missing values.
 Filters change the displayed observations and athlete-detail tables, not the
 full-cohort study comparisons or conditional intervals.
 
-A link such as `?page=explore&pitch=1623_3` names a view and a recorded pitch.
+A link such as `?page=explore&pitch=1623_3&compare=2916_4` names a view and two recorded pitches.
 The router allowlists view names and checks identifiers against the analysis
 rows. Motion links identify the example actually displayed; unavailable replays
 are explained instead of being silently paired with another pitch's metrics.
 
-Application checks should cover an opening visit, both study outcomes, chart and
-dropdown selection, consecutive selection changes, athlete-average mode, filters,
-recorded-pitch links, and stale-result handling. Check desktop and phone-width
+Application checks should cover an opening visit, research-brief downloads, both
+study outcomes, table sorting/search/selection, chart and dropdown selection,
+consecutive A/B changes, athlete-average mode, filters, paired links, missing or
+corrupt recordings, and stale-result handling. Check desktop and phone-width
 layouts for clipped text, chart rendering, keyboard/touch selection, and page
 overflow. Browser layout review complements the automated unit and Streamlit
 checks; it is not an external scientific validation.
@@ -273,6 +282,73 @@ confidential upload service. New data require permission, compatible definitions
 a reviewed mapping, and a separately frozen external evaluation plan. The
 implemented local tools assist those checks; they do not establish external
 validity or authorize confidential transfer through the public site.
+
+## Reproduce the marker catalog and selected source-summary audit
+
+The [catalog](PITCH_CATALOG.md) binds all 411 study pitches to exact metadata
+filenames and athlete IDs in the official, checksum-verified C3D archive. The
+prepared arrays total approximately 25 MB and are included for offline viewing.
+Their rates, frames, raw marker labels, aliases, and missingness are recorded.
+Source `Skeleton_001_` aliases in three single-subject trials retain their raw
+labels and one-to-one display mapping without coordinate changes. Multi-subject
+namespaces and collisions are refused. The 63 missing source points in pitch
+`1668_3` yield eleven missing downsampled points, retained as NaN.
+
+Repreparation is optional and requires the motion extra plus an existing,
+permitted official archive. It does not download an archive automatically. Use a
+new output directory to preserve the included release catalog:
+
+```bash
+uv sync --frozen --extra dev --extra motion
+uv run --frozen python scripts/prepare_pitch_catalog.py --archive data/visual-source/pitching_c3d.zip --output-dir local_studies/rebuilt-marker-catalog
+```
+
+Do not change expected source hashes to accept a different archive. The catalog
+preparer checks the source archive and released analysis before producing arrays.
+The runtime loader verifies source identities and selected-asset bytes, labels,
+time grids, and missingness. Preparing arrays does not reconstruct anatomical
+frames, joint centers, moments, or a common event clock. Simultaneous playback
+starts each trial from its own origin and supplies no event alignment.
+
+The [measurement audit](MEASUREMENT_VERIFICATION.md) separately checks four
+released scalar POIs against the corresponding released trace maxima for the
+three original detailed examples. Twelve successful checks establish selected
+source-summary reproduction only. The prepared traces retain boundary gaps:
+two shoulder-velocity samples, two torso-velocity samples, and four elbow-moment
+samples per trial; hip-separation samples are observed. These are distinct from
+missingness in the scalar analysis table. No gap is filled to make a check pass.
+Missing/corrupt evidence is failed or unavailable rather than a complete audit.
+
+## Export the source-bound research brief
+
+The [research brief](RESEARCH_BRIEF.md) derives counts, primary equal-athlete
+errors, both outcome contrasts, evidence scope, and provenance from the verified
+reference snapshot. It performs no fitting, bootstrap, or source download.
+Use a new output directory:
+
+```bash
+uv run --frozen python scripts/export_research_brief.py --output-dir reports/research-brief
+```
+
+To use a completed local OBP reproduction explicitly:
+
+```bash
+uv run --frozen python scripts/export_research_brief.py --reports-dir reports --output-dir local_studies/public-brief
+```
+
+The exporter writes responsive two-page HTML, Markdown, provenance JSON,
+measurement-reproduction and evidence-summary CSVs, and a hash manifest. Print
+HTML with the browser's **Print → Save as PDF**. Static release copies under
+`docs/research_brief/` must correspond to the published reference snapshot.
+Source-derived briefs retain the source data terms.
+
+The [contribution record](CONTRIBUTIONS_AND_AI.md) distinguishes user framing,
+requirements, deployment, and interface review from substantial AI implementation,
+method drafting, and agent-executed checks. Tests and generated artifacts do not
+establish personal completion of every method or independent biomechanical
+validation. Follow the [application guide](PHD_APPLICATION_GUIDE.md); private CVs
+and tailored drafts stay outside the repository or under ignored
+`local_applications/`, never in public exports.
 
 ## Motion inspection and downloadable reports
 

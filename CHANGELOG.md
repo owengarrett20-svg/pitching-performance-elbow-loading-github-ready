@@ -3,7 +3,18 @@
 These entries describe local project development. They do not establish that a
 version has been published as a GitHub release or archived with a DOI.
 
-## 0.6.0 — Phase 4 motion, reports, and new-data workflow; publication pending
+## 0.7.0 — Phase 5 source-linked workspace and research brief; publication pending
+
+- Add a searchable, selectable recorded-pitch table with side-by-side marker replays, marker-set inspection, associated values, and checked A/B share links.
+- Retain the existing association charts and athlete-average view separately from the default comparison workspace.
+- Prepare source-linked measured-marker arrays for all 411 study pitches from the verified official archive; retain raw label aliases, source identity, and missing observations.
+- Keep the original three MP4/processed-trace examples distinct from catalog coverage and camera footage; simultaneous playback does not establish event alignment.
+- Add a source-derived research brief with HTML, Markdown, provenance, and an explicit twelve-check selected source-scalar reproduction audit.
+- Distinguish software/source reproduction, internal held-out prediction, independent biomechanical validation, and an unperformed external study.
+- Document contributions, substantial AI implementation assistance, application wording boundaries, and private handling of CV-specific drafts.
+- Preserve the Phase 1/2 sample, models, numerical findings, uncertainty scope, and source data restrictions.
+
+## 0.6.0 — Phase 4 code published to the connected branch
 
 - Add an interactive measured-marker lab with independent marker and processed-signal inspection; retain unverified timing and source-convention limits.
 - Add source-attributed athlete reports as self-contained printable HTML, with missingness-aware summaries and strictly matched saved held-out errors.
@@ -13,6 +24,7 @@ version has been published as a GitHub release or archived with a DOI.
 - Add Athlete reports and New-data lab views without introducing a public athlete-file uploader.
 - Preserve the existing Phase 1/2 findings, retrospective estimand, conditional intervals, uncertain elbow finding, and source data-use restrictions.
 - Document the existing-history bundle upgrade and missing-download checks before fetching.
+- Publish the Phase 4 update at commit `ad4cd71`; this does not establish a tagged release, DOI, or independently verified deployment.
 
 ## 0.5.0 — Phase 3 code published to the connected branch
 

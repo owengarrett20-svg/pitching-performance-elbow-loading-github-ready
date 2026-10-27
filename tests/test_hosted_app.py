@@ -27,7 +27,14 @@ def test_hosted_demo_reads_verified_snapshot_without_fetching_or_fitting(monkeyp
     assert any("Reference demonstration" in item.value for item in app.caption)
     app.radio(key="app_page").set_value("Explore pitches").run()
     assert not app.exception, [item.value for item in app.exception]
+    assert app.selectbox(key="workspace_primary_pitch").value
+    assert app.selectbox(key="workspace_compare_pitch").value
+    app.radio(key="explore_view").set_value("Charts & associations").run()
     assert app.selectbox(key="explorer_pitch").value
+    app.radio(key="app_page").set_value("Research brief").run()
+    assert not app.exception, [item.value for item in app.exception]
+    assert not app.error, [item.value for item in app.error]
+    assert len(app.get("download_button")) >= 3
     app.radio(key="app_page").set_value("Watch motion").run()
     assert not app.exception, [item.value for item in app.exception]
     assert app.selectbox(key="lab_motion_pitch").value

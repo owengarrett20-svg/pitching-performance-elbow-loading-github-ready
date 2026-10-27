@@ -1,10 +1,13 @@
 # Motion and measurement lab
 
-The **Watch motion → Interactive lab** view makes three recorded OBP examples
-inspectable without downloading source archives or running a reconstruction.
-It uses the existing checksum-verified measured-marker arrays and released
-processed signals. No pose estimator, new filtering, model fitting, or inverse
-dynamics runs when the page opens.
+The **Watch motion → Interactive lab** view uses the verified measured-marker
+catalog, prepared for all 411 released study pitches in Phase 5. The original
+three prepared examples remain a fallback when that catalog is absent, and are
+the only pitches with the bundled detailed processed traces and MP4 clips.
+No source archive is downloaded and no reconstruction, filtering, model fitting,
+or inverse dynamics runs when the page opens. The
+[source catalog guide](PITCH_CATALOG.md) records coverage, missingness, and the
+three explicitly documented source-label namespace aliases.
 
 ## What can be inspected
 
@@ -14,10 +17,12 @@ dynamics runs when the page opens.
 | `1623_3` | `970` | 85.3 mph | 806 | 135 |
 | `2916_4` | `1596` | 94.4 mph | 406 | 68 |
 
-These examples illustrate low, near-median, and high recorded speeds in the
-released cohort. They are selected illustrations, not a representative sample
-or an experiment comparing three pitching techniques. Most of the 411 study
-pitches have no prepared replay.
+The table lists the three original detailed trace/MP4 examples, illustrating
+low, near-median, and high recorded speeds in the released cohort. They are
+selected illustrations, not a representative sample or an experiment comparing
+three pitching techniques. The expanded catalog provides playable marker
+animations for all 411 pitches, while camera footage and detailed trace coverage
+remain separate questions.
 
 The viewer checks the exact pitch **and** athlete against the selected analysis
 rows. It returns the actual displayed pitch ID to the dashboard so the page

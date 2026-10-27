@@ -2,15 +2,15 @@
 
 A reproducible Python biomechanics research project exploring pitching performance, rotational kinematics, and internal elbow joint loading using Driveline’s OpenBiomechanics Project.
 
-**Author:** Owen Garrett  
-**Status:** Version 0.6.0 — an interactive motion and reporting lab with local new-data auditing and a frozen external-evaluation workflow.
+**Author:** Owen Garrett · [contribution and AI-assistance record](docs/CONTRIBUTIONS_AND_AI.md)
 
-Phase 3 has been pushed to the public repository at `edf5c05`. Phase 4 adds motion inspection, downloadable athlete reports, and tools for an independently authorized new-data study. This version reaches the existing public dashboard after the update is pushed and Streamlit rebuilds. The Phase 1/2 scientific comparisons are unchanged; no independent external dataset has been evaluated in this release.
+**Status:** Version 0.7.0 — a source-linked pitch comparison workspace and a concise, auditable research portfolio.
+
+Phase 4 is published in the public repository at `ad4cd71`. Phase 5 links searchable observations to two recorded marker replays, their marker sets, and associated measurements. A source-bound research brief explains what the existing analysis does and does not establish. This version reaches the existing dashboard after it is pushed and Streamlit rebuilds; the Phase 1/2 scientific findings are unchanged and no independent external cohort has been evaluated.
 
 [Open the live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) · [Study summary](docs/STUDY_SUMMARY.md) · [Phase 2 results](docs/PHASE2_RESULTS.md) · [Research roadmap](docs/ROADMAP.md) · [Automated checks](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready/actions)
 
-[Phase 4 release verification](docs/PHASE4_VALIDATION.md) records local test,
-browser, and reproducibility evidence; publication and deployment remain separate.
+For a short review, start with the [two-page research brief (PDF)](docs/research_brief/research-brief.pdf), [study results](docs/PHASE2_RESULTS.md), and [contribution record](docs/CONTRIBUTIONS_AND_AI.md). The [PhD application guide](docs/PHD_APPLICATION_GUIDE.md) explains appropriate project descriptions and evidence limits. [Release verification](docs/PHASE5_VALIDATION.md) records local checks; publication, peer review, and external scientific validation remain separate.
 
 ## Research question
 
@@ -67,10 +67,11 @@ This is an independent research portfolio project and does not imply endorsement
 [New-data lab](docs/images/new-data-lab.png).
 Measured-marker views and source-derived report previews retain the data terms above.*
 
-This release provides seven views. The [existing live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) receives the additions after the update is pushed and rebuilt:
+This release provides eight views. The [existing live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) receives the additions after the update is pushed and rebuilt:
 
 - **Start here:** the research question, a genuine marker replay, and the main finding in plain language.
-- **Explore pitches:** hoverable and clickable charts, keyboard-accessible recorded-pitch selection, athlete averages, A/B observation comparisons, and source-attributed CSV downloads.
+- **Research brief:** a concise source-derived case study, evidence boundaries, contribution record, and downloadable HTML/Markdown/provenance.
+- **Explore pitches:** search the recorded-pitch table and select a row to inspect side-by-side marker replays, source markers, and associated measurements. Charts and athlete averages remain available under **Charts & associations**.
 - **Watch motion:** an interactive 3D measured-marker lab, frame and trace inspection, source-clock limitations, and the existing replay and measurement lessons.
 - **Athlete reports:** self-contained, printable HTML reports and source-attributed downloads describing the selected athlete's available recorded pitches and verified saved errors.
 - **Study results:** a readable average-error comparison, outcome and model controls, prediction errors, and the detailed research audit.
@@ -83,21 +84,29 @@ Dashboard filters change displayed pitch subsets and athlete-detail tables witho
 
 Only the active view is rendered. The opening keeps research tables behind deliberate navigation, while the full methods and uncertain findings remain available.
 
-In **Explore pitches**, a point can represent either one recorded pitch or an athlete average. An athlete average summarizes paired observed pitches and is not a single delivery or a time-averaged motion trace. A/B comparisons calculate differences between measured observations; they do not simulate a mechanics change, rank technique quality, or prescribe an intervention. Missing measurements remain missing.
+The default **Explore pitches → Find & compare pitches** workspace uses a selectable source table. Search an exact identifier with `pitch 1623_3` or `athlete 970`, or use literal free-text/numeric terms. Pitch A follows the selected row; Pitch B can be another observation in the filtered table. A no-result search clears the replay panes. Keyboard/touch selectors provide an alternative to table selection. Both panes retain their exact pitch and athlete IDs; unavailable or corrupt motion is explained without substituting another recording.
 
-Recorded selections can be shared through a page address such as `?page=explore&pitch=1623_3`. URL values are checked against actual recorded identifiers. Prepared motion is shown only for matching pitch and athlete identities; the address reflects the replay actually displayed.
+Under **Charts & associations**, a point can represent either one recorded pitch or an athlete average. An athlete average summarizes paired observed pitches and is not a single delivery or a time-averaged motion trace. A/B comparisons calculate differences between measured observations; they do not simulate a mechanics change, rank technique quality, or prescribe an intervention. Missing measurements remain missing.
 
-Read the [Windows Phase 4 upgrade guide](docs/PHASE4_UPGRADE_WINDOWS.md) to install this update while retaining the existing repository and Streamlit URL. The [Phase 3 experience notes](docs/PHASE3_EXPERIENCE.md) preserve the earlier presentation milestone.
+Recorded comparisons can be shared through a page address such as `?page=explore&pitch=1623_3&compare=2916_4`. URL values are checked against actual recorded identifiers. Prepared motion is shown only for matching pitch and athlete identities; the address reflects the replay actually displayed.
+
+Read the [Windows Phase 5 upgrade guide](docs/PHASE5_UPGRADE_WINDOWS.md) to install this update while retaining the existing repository and Streamlit URL. The [workspace guide](docs/PITCH_WORKSPACE.md) describes search and selection behavior; the [Phase 3 experience notes](docs/PHASE3_EXPERIENCE.md) preserve the earlier presentation milestone.
 
 ### Motion, reports, and new-data tools
 
-The [motion lab](docs/MOTION_LAB.md) uses the three prepared measured-marker examples and their released processed traces. Marker and signal controls remain independent because their clock relationship has not been verified. Matching sample rates, lengths, or peak values does not establish synchronization or reproduce inverse dynamics.
+The [verified marker catalog](docs/PITCH_CATALOG.md) provides a playable measured-marker replay for all 411 study pitches, matched to source pitch and athlete identities. The [motion lab](docs/MOTION_LAB.md) uses that catalog, with the original three examples retained as a fallback. Detailed processed traces and MP4 animations remain available for the original three examples. Marker and signal controls stay independent because their clock relationship has not been verified. Starting two recordings from their own first samples is a playback convenience, not alignment to foot plant, ball release, or a common movement phase. Matching rates, lengths, or peaks does not establish synchronization or reproduce inverse dynamics.
 
 [Athlete research reports](docs/ATHLETE_REPORTS.md) describe the recorded sample in physical units, preserve missing values, and include saved held-out errors only when source identities and measurements match. The source has one released session and a few pitches per athlete; a report does not establish longitudinal development, stable consistency, technique quality, or injury risk. Save the downloaded HTML directly, or use the browser's **Print → Save as PDF**.
 
 The [new-data guide](docs/NEW_DATA_GUIDE.md) explains local column mapping, units, definitions, sign conventions, provenance, and permission declarations. The [external-evaluation guide](docs/EXTERNAL_VALIDATION.md) separates development-model freezing from evaluation on a new-athlete cohort. It uses safe numerical JSON artifacts and frozen preprocessing rather than executable model deserialization.
 
 **Workflow readiness is separate from scientific evidence:** these tools are implemented for a future appropriately authorized study. This release contains no new external-cohort result, external-performance claim, prospective forecast, or injury outcome.
+
+### What the research brief verifies
+
+The [research brief](docs/RESEARCH_BRIEF.md) reads the verified cohort and saved Phase 2 findings. The [measurement audit](docs/MEASUREMENT_VERIFICATION.md) explicitly checks four released signal maxima against four released POIs in each of three prepared trace examples: twelve selected source-summary checks. It preserves missing boundary samples. Passing those checks reproduces released scalar summaries; it does not independently validate source filtering, anatomical frames, inverse dynamics, timing, or every quantity in all 411 pitches.
+
+The project is an independent **AI-assisted research software portfolio**. Project framing, interface review, implementation assistance, agent-executed tests, and personally completed method review are documented separately. A source repository or passing test suite does not establish that an applicant personally wrote or independently replicated every method. Tailored CV/application drafts and the uploaded CV remain outside this public repository.
 
 ### Interested in a research collaboration?
 
@@ -341,7 +350,7 @@ Read the [complete Phase 2 report](docs/PHASE2_RESULTS.md), [analysis plan](docs
 
 ## Motion examples and measurement explanations
 
-The **Watch motion** view includes three prepared study examples with recorded speeds of 69.5, 85.3, and 94.4 mph.
+The [catalog](docs/PITCH_CATALOG.md) links all 411 study pitches to measured-marker arrays from the checksum-verified official C3D archive. It preserves source identities, coordinates, sampling, missingness, and transformations. The three original MP4/processed-trace examples have recorded speeds of 69.5, 85.3, and 94.4 mph.
 
 ### Interactive marker lab and measured animations
 
@@ -358,9 +367,9 @@ These are marker animations rather than camera recordings or independently valid
 
 ### Processed signal traces
 
-Released angle, angular-velocity, and moment traces are linked to the same three example pitches.
+Released angle, angular-velocity, and moment traces are linked to the original three example pitches. These detailed traces are a separate evidence subset from the full marker catalog.
 
-The viewer allows selection of a time interval and comparison of its maximum with the published POI value. Four full-trace maxima agree numerically with the corresponding POI values for these examples. This agreement does not independently validate the upstream kinematic or inverse-dynamics pipeline.
+The viewer allows selection of a time interval and comparison of its maximum with the published POI value. For each of the three examples, four full-trace maxima agree numerically with the corresponding POI values: twelve selected source-summary checks in total. This agreement does not independently validate the upstream kinematic or inverse-dynamics pipeline.
 
 The native shoulder-velocity signal is preserved. A documented ambiguity between generic upstream angle signs and the released velocity convention remains unresolved.
 
@@ -488,13 +497,15 @@ The [research roadmap](docs/ROADMAP.md) defines questions and completion criteri
 
 assets/
   demo/                   Verified reference reports
-  motion/                 Prepared measured-marker examples
+  motion/                 Original three measured-marker/MP4 examples
+  pitch_catalog/          Source-linked marker arrays for the study pitches
   traces/                 Prepared processed-signal examples
   lessons/                Instructional video and supporting assets
 
 analysis/                 Phase 2 plan and external-evaluation protocol template
 schemas/                  New-data mapping/dictionary templates; no invented athlete rows
-docs/                     Methods, results, feature guides, licensing, and roadmap
+docs/                     Methods, evidence, feature guides, licensing, and roadmap
+  research_brief/         Generated public research brief and provenance
 scripts/                  Asset preparation and deployment exporters
 src/pitching/             Research workflows, guided views, and interactive charts
 tests/                    Unit, integration, and dashboard tests
@@ -511,6 +522,7 @@ CONTRIBUTING.md           Contribution guidance
 data/raw/                 Local source cache; ignored by Git
 reports/                  Local Phase 1 and phase2/ reports; ignored by Git
 local_studies/            Authorized new-data inputs/bundles/results; ignored by Git
+local_applications/       Private application drafts, if used; ignored by Git
 ```
 
 ## Contributing

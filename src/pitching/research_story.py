@@ -250,10 +250,10 @@ def render_start(
         )
         st.markdown(f"**{len(frame):,} recorded pitches · {frame.user.nunique():,} athletes**")
         st.button(
-            "Open the 3D motion lab",
+            "Read the research brief",
             on_click=navigate,
-            args=("Watch motion",),
-            key="story_open_motion",
+            args=("Research brief",),
+            key="story_open_brief",
             width="stretch",
         )
         st.caption("Owen Garrett · Mechanical engineering & biomechanics research")
