@@ -1,0 +1,9 @@
+evidence,status,interpretation
+Source provenance / join,Passed source audit,Pinned files; one-to-one pitch join; recorded missingness.
+Released scalar reproduction,12/12 source checks passed,Finite maxima of supplied traces compared with supplied POIs; not new ground truth.
+Within-source prediction,Athlete-held-out assessment,5 shared athlete-grouped folds; learned preprocessing stays in training folds.
+Software behavior,See release verification,"Automated and browser checks exercise integrity, missingness, grouping, and frozen evaluation."
+Independent inverse dynamics,Not performed,Joint moments are released source outputs; no independent dynamics reconstruction.
+External cohort validation,Not performed,Local freeze/evaluate tooling is implemented; no independent cohort has been supplied.
+Marker–signal synchronization,Unverified,A matching sample grid does not establish a shared time origin or camera alignment.
+Injury / causal intervention,Outside scope,"No injury outcomes, tissue-specific forces, or causal mechanics intervention."

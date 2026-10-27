@@ -58,14 +58,15 @@ This is an independent research portfolio project and does not imply endorsement
 
 ## Explore the dashboard
 
-![Phase 4 interactive measured-marker lab with rotatable 3D view, source coordinates, and replay controls](docs/images/motion-lab.png)
+![Phase 5 side-by-side measured-marker replays linked to exact recorded pitch and athlete identities](docs/images/pitch-workspace.png)
 
-*Local Phase 4 preview. [Opening view](docs/images/dashboard-overview.png) ·
+*Local Phase 5 browser previews. [Opening view](docs/images/dashboard-overview.png) ·
 [Phone-width opening](docs/images/dashboard-mobile.png) ·
-[Athlete reports](docs/images/athlete-reports.png) ·
-[Phone-width report](docs/images/athlete-reports-mobile.png) ·
-[New-data lab](docs/images/new-data-lab.png).
-Measured-marker views and source-derived report previews retain the data terms above.*
+[Phone-width pitch workspace](docs/images/pitch-workspace-mobile.png) ·
+[Research brief](docs/images/research-brief.png).
+The existing [athlete reports](docs/images/athlete-reports.png) and
+[dedicated motion lab](docs/images/motion-lab.png) remain available.
+Measured-marker views and source-derived previews retain the data terms above.*
 
 This release provides eight views. The [existing live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) receives the additions after the update is pushed and rebuilt:
 
