@@ -97,8 +97,8 @@ connected repository while retaining its history.
 
 ## Reading the result
 
-Start with [PHASE2_RESULTS.md](PHASE2_RESULTS.md), then inspect the
-[frozen analysis plan](PHASE2_ANALYSIS_PLAN.md).
+Start with [PHASE2_RESULTS.md](../PHASE2_RESULTS.md), then inspect the
+[frozen analysis plan](../PHASE2_ANALYSIS_PLAN.md).
 
 The selected kinematic summaries improve observed speed prediction in this
 cohort. Their incremental value for elbow moment beyond age, mass, and height
@@ -107,4 +107,4 @@ fixed held-out errors, rather than full model-training uncertainty. No injury,
 causal, or external-validation claim follows from this update.
 
 OBP data and derivatives retain the upstream restrictions in
-[LICENSING.md](LICENSING.md).
+[LICENSING.md](../LICENSING.md).

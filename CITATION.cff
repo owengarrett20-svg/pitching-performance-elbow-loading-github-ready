@@ -7,7 +7,7 @@ message: >-
   the separate terms described in docs/LICENSING.md.
 type: software
 title: "Pitching Performance and Elbow Loading"
-version: "0.7.1"
+version: "0.8.0"
 repository-code: "https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready"
 url: "https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/"
 authors:

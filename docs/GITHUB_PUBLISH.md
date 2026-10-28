@@ -3,13 +3,11 @@
 The project now has a
 [published repository](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready)
 and a [live reference dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/).
-Phase 4 is published at commit `ad4cd71`. To add Phase 5 version 0.7.0 to
-that project, use [PHASE5_UPGRADE_WINDOWS.md](PHASE5_UPGRADE_WINDOWS.md) with
-`pitching-phase5-update.bundle`. Confirm the file exists and passes
-`git bundle verify` before fetching; stop on a failed fetch rather than merging
-an older `FETCH_HEAD`. Keep the repository, remote, and Streamlit address.
-The initial-publication instructions below remain useful for a new copy or
-permitted fork; earlier upgrade guides remain as historical records.
+Streamlit Community Cloud rebuilds the dashboard from `main` after each push.
+To publish a change, commit it in the connected clone, run the tests, push
+`main`, then confirm the GitHub **Actions** run and the Streamlit rebuild. The
+initial-publication instructions below remain useful for a new copy or permitted
+fork; earlier bundle-based upgrade guides are kept in [archive](archive/README.md).
 
 The Streamlit message **“The app's code is not connected to a remote GitHub repository”** means that the folder running on your computer has not been published to GitHub. A downloaded ZIP is a source copy; it does not establish a remote repository.
 
@@ -92,7 +90,7 @@ report/brief downloads, and shared links. A successful local run does not
 establish that remote CI or deployment passed. A tagged release and archival DOI
 remain separate steps; add a DOI only if an archival service actually issues one.
 
-Read [PHASE3_EXPERIENCE.md](PHASE3_EXPERIENCE.md) for the earlier interaction
+Read [PHASE3_EXPERIENCE.md](archive/PHASE3_EXPERIENCE.md) for the earlier interaction
 milestone, [MOTION_LAB.md](MOTION_LAB.md) for measurement inspection, and
 [ATHLETE_REPORTS.md](ATHLETE_REPORTS.md) for report scope. The
 [new-data guide](NEW_DATA_GUIDE.md) and
@@ -108,7 +106,7 @@ OBP data-use permissions.
 
 The [research brief](RESEARCH_BRIEF.md),
 [contribution/AI-assistance record](CONTRIBUTIONS_AND_AI.md), and
-[PhD application guide](PHD_APPLICATION_GUIDE.md) distinguish a software portfolio
+PhD application guide (kept with private application materials) distinguish a software portfolio
 from a publication or completed independent validation. The generated public
 brief can be committed under `docs/research_brief/`; preserve its provenance,
 source terms, and evidence scope. Check that it matches the published reference

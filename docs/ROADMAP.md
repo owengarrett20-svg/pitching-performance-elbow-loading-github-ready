@@ -84,9 +84,9 @@ The interface introduces no new data, injury score, mechanics intervention,
 video synchronization, or external validation. Its scientific definitions and
 models remain those of Phases 1 and 2.
 
-The [experience notes](PHASE3_EXPERIENCE.md) describe the scope and release checks.
+The [experience notes](archive/PHASE3_EXPERIENCE.md) describe the scope and release checks.
 The code was published at `edf5c05`. Historical upgrade instructions remain in
-[PHASE3_UPGRADE_WINDOWS.md](PHASE3_UPGRADE_WINDOWS.md). A source commit alone does
+[PHASE3_UPGRADE_WINDOWS.md](archive/PHASE3_UPGRADE_WINDOWS.md). A source commit alone does
 not independently verify a particular deployment or remote CI run.
 
 The [collaboration guide](COLLABORATION.md) offers a proposed path from a
@@ -135,11 +135,11 @@ external-evaluation fitting, and desktop/phone usability. The source-clock audit
 must retain unverified alignment rather than invent synchronized event frames.
 
 The code is published at `ad4cd71`; historical instructions remain in
-[PHASE4_UPGRADE_WINDOWS.md](PHASE4_UPGRADE_WINDOWS.md). A source push does not
+[PHASE4_UPGRADE_WINDOWS.md](archive/PHASE4_UPGRADE_WINDOWS.md). A source push does not
 independently verify remote CI or deployment. A tagged release or DOI remains a
 separate publication step.
 
-## 7. Phase 5: source-linked exploration and an auditable portfolio — implemented locally
+## 7. Phase 5: source-linked exploration and an auditable portfolio — published
 
 **Question:** Can a reviewer select an observed pitch, inspect its actual source
 motion and markers, compare another delivery, and assess the project's research
@@ -162,7 +162,7 @@ an independent reconstruction of inverse dynamics or validation of all quantitie
 in all pitches. Existing Phase 1/2 findings and their uncertainty scope remain
 unchanged.
 
-The [PhD application guide](PHD_APPLICATION_GUIDE.md) and
+The PhD application guide (kept with private application materials) and
 [contribution record](CONTRIBUTIONS_AND_AI.md) describe an independent AI-assisted
 research software project. Personal framing, interface review, AI implementation,
 agent-executed checks, and personally completed method review stay distinct.
@@ -174,8 +174,25 @@ completed external study.
 A/B selections and URL changes, unavailable/corrupt evidence without substitution,
 marker-label and missingness preservation, safe offline exports, truthful brief
 failure states, desktop/phone interaction, and a clean historical bundle upgrade.
-Use [PHASE5_UPGRADE_WINDOWS.md](PHASE5_UPGRADE_WINDOWS.md) for installation.
-Phase 5 remains local until pushed and rebuilt.
+Phase 5 was published at `102ec49`; version 0.7.1 (`443f6cf`) added chart-point
+selection, A/B swap, within-athlete stepping, and cohort percentiles to the workspace.
+
+## 7a. Pitcher-versus-pitch variation — implemented in 0.8.0
+
+**Question:** How much speed and elbow-moment variation lies between rather than
+within pitchers, and does the speed–moment slope differ within a session and
+across pitchers?
+
+The [variation analysis](ATHLETE_VARIATION.md) scales elbow moment by body weight
+× height, reports ICC(1) variance shares, and contrasts pooled within-athlete with
+between-athlete-mean slopes using a seeded athlete-cluster bootstrap. It is
+exploratory, specified after the data had been explored, and reported with a
+college-only sensitivity subset. It does not identify causal effects of throwing
+harder, and the narrow within-session speed range limits extrapolation.
+
+**Natural next step:** test whether the within-pitcher relationship holds over
+larger, deliberate velocity changes in an independently authorized cohort with
+repeated sessions, ideally alongside wearable or markerless measurement.
 
 ## 8. Phase 6: complete an external-validation study — proposed scientific milestone
 

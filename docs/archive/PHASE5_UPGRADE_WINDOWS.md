@@ -113,9 +113,9 @@ application rebuild succeeds.
 
 ## 5. Use the project accurately in applications
 
-Read [PHD_APPLICATION_GUIDE.md](PHD_APPLICATION_GUIDE.md),
-[CONTRIBUTIONS_AND_AI.md](CONTRIBUTIONS_AND_AI.md), and
-[RESEARCH_BRIEF.md](RESEARCH_BRIEF.md). Describe an independent AI-assisted
+Read PHD_APPLICATION_GUIDE.md (kept with private application materials),
+[CONTRIBUTIONS_AND_AI.md](../CONTRIBUTIONS_AND_AI.md), and
+[RESEARCH_BRIEF.md](../RESEARCH_BRIEF.md). Describe an independent AI-assisted
 research software project and your actual contributions, rather than a
 publication or personally completed validation that has not happened. Keep
 CV-specific drafts and the uploaded CV outside the public repository. Follow
@@ -123,4 +123,4 @@ each program's rules for links, supplemental material, and AI assistance.
 
 The software is MIT; source-derived arrays, reports, and documents retain OBP's
 CC BY-NC-SA 4.0 terms plus its professional-sports/financial-analysis affiliation
-restriction. Review [LICENSING.md](LICENSING.md) before reuse.
+restriction. Review [LICENSING.md](../LICENSING.md) before reuse.

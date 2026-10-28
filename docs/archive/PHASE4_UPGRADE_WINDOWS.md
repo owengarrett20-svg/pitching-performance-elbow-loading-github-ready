@@ -117,8 +117,8 @@ The address remains:
 ## Use the research tools separately
 
 Viewing the public reference app does not require running these tools. For a
-new study, begin with [NEW_DATA_GUIDE.md](NEW_DATA_GUIDE.md), then
-[EXTERNAL_VALIDATION.md](EXTERNAL_VALIDATION.md). Review rights, identifiers,
+new study, begin with [NEW_DATA_GUIDE.md](../NEW_DATA_GUIDE.md), then
+[EXTERNAL_VALIDATION.md](../EXTERNAL_VALIDATION.md). Review rights, identifiers,
 units, definitions, signs, and protocol before preparing data. Keep authorized
 inputs and outputs in the approved environment under ignored `local_studies/`;
 do not publish them with the reference snapshot.
@@ -130,4 +130,4 @@ including to models or reports derived from those data. The original software's
 MIT license does not grant restricted data rights.
 
 For development checks and the unchanged OBP analysis, follow
-[REPRODUCIBILITY.md](REPRODUCIBILITY.md).
+[REPRODUCIBILITY.md](../REPRODUCIBILITY.md).

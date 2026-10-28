@@ -3,6 +3,16 @@
 These entries describe local project development. They do not establish that a
 version has been published as a GitHub release or archived with a DOI.
 
+## 0.8.0 — Pitcher-versus-pitch variation and a reviewer-first repository
+
+- Add **Study results → Pitcher vs. pitch variation**: elbow moment scaled by body weight × height, ICC(1) variance shares, and pooled within-athlete versus between-athlete-mean speed slopes with 5,000 seeded athlete-cluster bootstrap resamples.
+- Document the exploratory status, methods, results, college-only sensitivity subset, and limits in `docs/ATHLETE_VARIATION.md`, with tests that recover exact synthetic slopes, match one-way ANOVA ICC, exclude incomplete pitches, and check the documented numbers against the computation.
+- Lead the README with the research questions, key findings, and figure; add markerless/wearable measurement validation as a future extension.
+- Replace the bundle-based Windows guide with a clone-and-run guide; move earlier phase scopes, upgrade guides, and Phase 4 validation into `docs/archive/`.
+- Remove the PhD application guide from the public repository; it is kept with private application materials.
+- State recurring workspace caveats once instead of repeating them in several captions.
+- Preserve the Phase 1/2 sample, models, findings, research brief outputs, and source data restrictions.
+
 ## 0.7.1 — Phase 5.1 direct pitch picking
 
 - Add a clickable chart to Find & compare pitches: choose any two of the five focal measurements, click a point to open that exact recorded pitch, and see Pitch A and Pitch B labeled among the searched rows.

@@ -1,20 +1,26 @@
 # Pitching Performance and Elbow Loading
 
-A reproducible Python biomechanics research project exploring pitching performance, rotational kinematics, and internal elbow joint loading using Driveline’s OpenBiomechanics Project.
+Reproducible analysis of **411 fastballs from 100 pitchers** in Driveline's open OpenBiomechanics dataset. It asks two questions. Do rotational measures predict pitch speed and elbow loading for pitchers a model has never seen? And is elbow loading mostly a stable pitcher trait or a pitch-to-pitch change?
 
-**Author:** Owen Garrett · [contribution and AI-assistance record](docs/CONTRIBUTIONS_AND_AI.md)
+**[Open the live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/)** · [Two-page research brief (PDF)](docs/research_brief/research-brief.pdf) · [Study summary](docs/STUDY_SUMMARY.md) · [Pitcher vs. pitch variation](docs/ATHLETE_VARIATION.md) · [Automated checks](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready/actions)
 
-**Status:** Version 0.7.1 — a source-linked pitch comparison workspace and a concise, auditable research portfolio.
+**Author:** Owen Garrett · [contribution and AI-assistance record](docs/CONTRIBUTIONS_AND_AI.md) · Version 0.8.0
 
-Phase 5 (0.7.0) is published at `102ec49`. It links searchable observations to two recorded marker replays, their marker sets, and associated measurements, and adds a source-bound research brief explaining what the existing analysis does and does not establish. Version 0.7.1 makes the workspace more direct: click a table row *or* a chart point to fill Pitch A or Pitch B, swap them, step through one athlete's other pitches, and read each value's percentile within the study sample. The Phase 1/2 scientific findings are unchanged and no independent external cohort has been evaluated.
+## Key findings
 
-[Open the live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) · [Study summary](docs/STUDY_SUMMARY.md) · [Phase 2 results](docs/PHASE2_RESULTS.md) · [Research roadmap](docs/ROADMAP.md) · [Automated checks](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready/actions)
+1. **Rotation adds information about speed.** For held-out athletes, adding peak shoulder internal rotation velocity, hip–shoulder separation, and torso rotation velocity to age, mass, and height lowered equal-athlete speed error by 0.39 mph (95% conditional interval 0.03–0.75 mph). For elbow moment, the 0.30 N·m improvement was uncertain; its interval includes zero.
+2. **Pitchers differ far more than pitches do.** About 98% of speed variance and 92% of body-size-scaled elbow-moment variance lie between pitchers. Within a session, speed varies by about 0.6 mph.
+3. **Faster pitches carry more scaled elbow moment, within and between pitchers.** Within one pitcher's session, +1 mph is associated with +0.072 %BW·H (95% interval 0.027–0.116), about 1.1% of the cohort mean. The between-pitcher slope (0.061) was not distinguishable from it.
 
-For a short review, start with the [two-page research brief (PDF)](docs/research_brief/research-brief.pdf), [study results](docs/PHASE2_RESULTS.md), and [contribution record](docs/CONTRIBUTIONS_AND_AI.md). The [PhD application guide](docs/PHD_APPLICATION_GUIDE.md) explains appropriate project descriptions and evidence limits. [Release verification](docs/PHASE5_VALIDATION.md) records local checks; publication, peer review, and external scientific validation remain separate.
+These are retrospective associations in a mostly collegiate cohort. Internal net elbow varus moment is a joint-loading measure, not UCL force or injury probability, and the dataset has no injury outcomes. The [research brief](docs/research_brief/research-brief.pdf) and [release verification](docs/PHASE5_VALIDATION.md) record what has and has not been checked; peer review and external validation remain separate.
+
+![Scaled elbow moment against pitch speed: grey points are pitches, orange lines each pitcher's own fit, dashed line the fit across pitcher means](docs/images/athlete_variation.png)
 
 ## Research question
 
 Do completed-pitch rotational summaries add predictive information beyond age, body mass, and height for pitch speed and peak internal elbow varus moment in held-out athletes?
+
+A follow-on exploratory analysis asks how much speed and elbow-moment variation lies between rather than within pitchers, and whether the speed–moment slope differs within a session and across pitchers ([details](docs/ATHLETE_VARIATION.md)).
 
 Phase 1 established the data audit and combined baseline. Phase 2 compares fixed predictor groups and quantifies conditional error contrasts. Its plan was committed before the new comparisons, after the Phase 1 results had been viewed. This is an exploratory follow-on, not a preregistered or independent confirmatory study.
 
@@ -68,14 +74,14 @@ The existing [athlete reports](docs/images/athlete-reports.png) and
 [dedicated motion lab](docs/images/motion-lab.png) remain available.
 Measured-marker views and source-derived previews retain the data terms above.*
 
-This release provides eight views. The [existing live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) receives the additions after the update is pushed and rebuilt:
+The [live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) provides eight views:
 
 - **Start here:** the research question, a genuine marker replay, and the main finding in plain language.
 - **Research brief:** a concise source-derived case study, evidence boundaries, contribution record, and downloadable HTML/Markdown/provenance.
-- **Explore pitches:** search the recorded-pitch table and select a row to inspect side-by-side marker replays, source markers, and associated measurements. Charts and athlete averages remain available under **Charts & associations**.
+- **Explore pitches:** search the recorded-pitch table, then click a row or a chart point to open Pitch A or Pitch B and inspect side-by-side marker replays, source markers, measurements, and cohort percentiles. Charts and athlete averages remain available under **Charts & associations**.
 - **Watch motion:** an interactive 3D measured-marker lab, frame and trace inspection, source-clock limitations, and the existing replay and measurement lessons.
 - **Athlete reports:** self-contained, printable HTML reports and source-attributed downloads describing the selected athlete's available recorded pitches and verified saved errors.
-- **Study results:** a readable average-error comparison, outcome and model controls, prediction errors, and the detailed research audit.
+- **Study results:** a readable average-error comparison, the pitcher-versus-pitch variation analysis, prediction errors, and the detailed research audit.
 - **New-data lab:** local audit and frozen-evaluation instructions, reviewed mapping/protocol templates, and explicit readiness requirements. It does not accept athlete-file uploads.
 - **Methods & collaboration:** the author and evaluation process, data-quality reports, definitions, and a public introduction route for a future authorized study.
 
@@ -85,13 +91,13 @@ Dashboard filters change displayed pitch subsets and athlete-detail tables witho
 
 Only the active view is rendered. The opening keeps research tables behind deliberate navigation, while the full methods and uncertain findings remain available.
 
-The default **Explore pitches → Find & compare pitches** workspace uses a selectable source table. Search an exact identifier with `pitch 1623_3` or `athlete 970`, or use literal free-text/numeric terms. Pitch A follows the selected row; Pitch B can be another observation in the filtered table. A no-result search clears the replay panes. Keyboard/touch selectors provide an alternative to table selection. Both panes retain their exact pitch and athlete IDs; unavailable or corrupt motion is explained without substituting another recording.
+The default **Explore pitches → Find & compare pitches** workspace uses a selectable source table. Search an exact identifier with `pitch 1623_3` or `athlete 970`, or use literal free-text/numeric terms. A row or chart click fills Pitch A or Pitch B, as chosen; Pitch B can be any observation in the filtered table. Swap A and B, or step Pitch B through Pitch A's athlete's other pitches. A no-result search clears the replay panes. Keyboard/touch selectors provide an alternative to table selection. Both panes retain their exact pitch and athlete IDs; unavailable or corrupt motion is explained without substituting another recording.
 
 Under **Charts & associations**, a point can represent either one recorded pitch or an athlete average. An athlete average summarizes paired observed pitches and is not a single delivery or a time-averaged motion trace. A/B comparisons calculate differences between measured observations; they do not simulate a mechanics change, rank technique quality, or prescribe an intervention. Missing measurements remain missing.
 
 Recorded comparisons can be shared through a page address such as `?page=explore&pitch=1623_3&compare=2916_4`. URL values are checked against actual recorded identifiers. Prepared motion is shown only for matching pitch and athlete identities; the address reflects the replay actually displayed.
 
-Read the [Windows Phase 5 upgrade guide](docs/PHASE5_UPGRADE_WINDOWS.md) to install this update while retaining the existing repository and Streamlit URL. The [workspace guide](docs/PITCH_WORKSPACE.md) describes search and selection behavior; the [Phase 3 experience notes](docs/PHASE3_EXPERIENCE.md) preserve the earlier presentation milestone.
+The [workspace guide](docs/PITCH_WORKSPACE.md) describes search and selection behavior. Earlier phase scopes and upgrade guides are kept in [docs/archive](docs/archive/README.md).
 
 ### Motion, reports, and new-data tools
 
@@ -485,7 +491,8 @@ Predictor-group comparisons, conditional athlete-level intervals, full-refit par
 2. **Study broader uncertainty:** design and justify any full-pipeline resampling rather than relabeling the fixed-prediction intervals.
 3. **Investigate time-resolved mechanics:** resolve signal conventions and verify timing before synchronized analyses.
 4. **Extend models carefully:** use nested athlete-grouped validation if tuning or model selection is introduced.
-5. **Archive a checked release:** publish the actual version and citation metadata after updating the repository and hosted app; add a DOI only if issued by an archival service.
+5. **Validate accessible measurement:** compare markerless video (for example two-camera capture) or wearable elbow-torque estimates against marker-based kinematics and inverse-dynamics moments on the same independently authorized throws.
+6. **Archive a checked release:** publish the actual version and citation metadata after updating the repository and hosted app; add a DOI only if issued by an archival service.
 
 The [research roadmap](docs/ROADMAP.md) defines questions and completion criteria for these extensions.
 

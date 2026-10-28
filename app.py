@@ -601,7 +601,12 @@ def main(report_dir_override: Path | None = None, bundled_demo: bool = False) ->
         elif page == "Study results":
             mode = st.radio(
                 "Study depth",
-                ["What changed?", "Prediction errors", "Detailed audit"],
+                [
+                    "What changed?",
+                    "Pitcher vs. pitch variation",
+                    "Prediction errors",
+                    "Detailed audit",
+                ],
                 key="study_mode",
                 horizontal=True,
             )
@@ -609,6 +614,10 @@ def main(report_dir_override: Path | None = None, bundled_demo: bool = False) ->
                 from pitching.research_story import render_study_story
 
                 render_study_story(report_dir)
+            elif mode == "Pitcher vs. pitch variation":
+                from pitching.athlete_variation import render_athlete_variation
+
+                render_athlete_variation(frame)
             elif mode == "Prediction errors":
                 _selected_counts(subset, len(frame))
                 if subset.empty:

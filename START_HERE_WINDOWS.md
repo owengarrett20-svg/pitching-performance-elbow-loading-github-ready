@@ -1,18 +1,22 @@
-# Open the Phase 5 pitching research workspace on Windows
+# Run the pitching research dashboard on Windows
 
-**Updating your existing GitHub-connected project?** Use
-[the Phase 5 upgrade guide](docs/PHASE5_UPGRADE_WINDOWS.md). It verifies
-`pitching-phase5-update.bundle` before fetching, then preserves your history,
-GitHub remote, and existing Streamlit address. Phase 4 is published at `ad4cd71`;
-version 0.7.0 adds source-linked comparison and a research brief while retaining
-the existing scientific findings.
+The hosted dashboard needs no installation:
+<https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/>.
+Use these steps to run the same reference app on your own computer.
 
-## Preview a fresh source copy
+## 1. Get the code and run it
 
-1. Stop Streamlit with **Ctrl+C** in its terminal.
-2. Extract `pitching-performance-elbow-loading-phase5.zip` into a **new folder**.
-3. In VS Code, open the folder containing `app.py`, `streamlit_app.py`, `assets`, and this file.
-4. Open a PowerShell terminal. Run each command separately and stop if one fails:
+Install [Git](https://git-scm.com/download/win) and
+[uv](https://docs.astral.sh/uv/getting-started/installation/). Then, in PowerShell,
+run each command separately and stop if one fails:
+
+```powershell
+git clone https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready.git
+```
+
+```powershell
+cd pitching-performance-elbow-loading-github-ready
+```
 
 ```powershell
 uv sync --frozen
@@ -22,77 +26,45 @@ uv sync --frozen
 uv run --frozen streamlit run streamlit_app.py
 ```
 
-Open the **Local URL** printed by Streamlit. Viewing the reference application
-requires no raw archive download, MATLAB, FFmpeg, model fitting, or optional
-motion-processing dependency. Prepared marker arrays and reference reports are
-included. The source ZIP has no Git history or configured remote; the bundle is
-the update route for your existing connected project.
+Open the **Local URL** that Streamlit prints. Prepared marker arrays and verified
+reference reports are included, so viewing needs no raw-data download, MATLAB,
+FFmpeg, or model fitting. Stop the app with **Ctrl+C**.
 
-## Start with one recorded comparison
+To update an existing clone later, run `git pull` from its folder, then
+`uv sync --frozen`.
 
-1. Select **Explore pitches → Find & compare pitches**.
-2. Search `pitch 1623_3` or `athlete 970`, or enter literal free-text/numeric terms.
-3. Select a table row to make it **Pitch A**. The Pitch A selector also works with a keyboard or touch screen.
-4. Choose **Pitch B**. Inspect each pane's source pitch and athlete, play or rotate the marker replays, and read their associated measurements and marker sets.
-5. Copy the address to share the selected IDs. A paired link looks like `?page=explore&pitch=1623_3&compare=2916_4`.
+## 2. Try one comparison
 
-The catalog contains source-linked marker replays for all 411 study pitches.
-These are measured skin-marker animations, not camera footage or a validated
-joint-center skeleton. Starting both from their own first samples does not align
-foot plant, ball release, or processed signals. Missing coordinates stay missing.
-Unavailable or corrupt evidence is identified rather than replaced by another
-pitch's motion. A search with no matches clears the comparison panes.
+1. Open **Explore pitches → Find & compare pitches**.
+2. Search `athlete 970` or `pitch 1623_3`, or open **Chart · pick a point**.
+3. With **Pitch A** selected under *A row or chart click opens*, click a row or a point.
+   Switch to **Pitch B** and click another.
+4. Play or rotate the two measured-marker replays, then read the measurements and
+   cohort percentiles below them. **Swap A and B** and
+   **B: next pitch by athlete …** change the pair in one click.
+5. Copy the browser address to share the pair, for example
+   `?page=explore&pitch=1623_3&compare=2916_4`.
 
-## Eight focused views
+Replays show measured skin markers, not camera footage. Each keeps its own clock,
+so starting both together does not align foot plant or ball release.
 
-- **Start here:** the question, source example, and main finding.
-- **Research brief:** source-derived methods/results, evidence limits, contribution record, and downloadable documents.
-- **Explore pitches:** searchable A/B workspace or the existing **Charts & associations** view.
-- **Watch motion:** source marker inspection; detailed traces and MP4 clips remain available for the original three examples.
-- **Athlete reports:** printable HTML, observations, and provenance for the selected athlete's recorded pitches.
-- **Study results:** fixed full-cohort errors, conditional intervals, and detailed audit.
-- **New-data lab:** blank templates and local audit/freeze/evaluate instructions for an authorized new study.
-- **Methods & collaboration:** definitions, data quality, limitations, and a non-sensitive public introduction route.
+## 3. Read the research
 
-Sidebar filters change observations, not the full-cohort model contrasts or
-intervals. Athlete reports describe a few pitches from one released assessment;
-they do not establish long-term consistency or development.
+- [Two-page research brief (PDF)](docs/research_brief/research-brief.pdf)
+- [Study summary](docs/STUDY_SUMMARY.md) and [Phase 2 results](docs/PHASE2_RESULTS.md)
+- [Pitcher vs. pitch variation](docs/ATHLETE_VARIATION.md) — also under
+  **Study results → Pitcher vs. pitch variation** in the app
+- [Contribution and AI-assistance record](docs/CONTRIBUTIONS_AND_AI.md)
 
-## Use the project in an application
+To regenerate every result from the pinned source files, follow
+[REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md). The
+[new-data audit](docs/NEW_DATA_GUIDE.md) and
+[external-evaluation workflow](docs/EXTERNAL_VALIDATION.md) run locally on
+independently authorized data; no external cohort has been scored.
 
-Read the [PhD application guide](docs/PHD_APPLICATION_GUIDE.md),
-[contribution/AI-assistance record](docs/CONTRIBUTIONS_AND_AI.md), and
-[research-brief guide](docs/RESEARCH_BRIEF.md). The brief can be opened or printed
-to PDF; attach it only where the program permits that format. This is an
-independent AI-assisted research software project, not a publication or a
-completed external/independent biomechanical validation study. Private CV and
-application drafts remain outside the public repository.
+## Data terms
 
-## Reproduce the research or evaluate new data
-
-The original [study summary](docs/STUDY_SUMMARY.md),
-[Phase 2 results](docs/PHASE2_RESULTS.md), and
-[analysis plan](docs/PHASE2_ANALYSIS_PLAN.md) remain unchanged. Use
-[REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md) for the pipeline and source hashes.
-The [catalog guide](docs/PITCH_CATALOG.md) describes optional archive-based
-repreparation; it is unnecessary for viewing the included arrays.
-
-The [new-data audit](docs/NEW_DATA_GUIDE.md) and
-[external-evaluation workflow](docs/EXTERNAL_VALIDATION.md) run locally with
-approved inputs. They are implemented tools; no external cohort has been scored
-in this release. Keep private data and identity mappings in the agreed
-environment, separate from the public snapshot.
-
-## Publish to the same website
-
-Keep the existing repository
-[owengarrett20-svg/pitching-performance-elbow-loading-github-ready](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready)
-and deployment: `main`, `streamlit_app.py`, Python 3.12. Follow
-[PHASE5_UPGRADE_WINDOWS.md](docs/PHASE5_UPGRADE_WINDOWS.md), push after previewing,
-and check Actions plus Streamlit rebuild logs. Local files do not update the
-public site automatically.
-
-OBP-derived arrays, reports, and documents retain the source terms, including
-the professional-sports/financial-analysis affiliation restriction. The original
-software's MIT license does not grant those data rights. Read
+The software is MIT-licensed. OpenBiomechanics data and everything derived from
+it, including arrays, reports, figures, and documents, keep CC BY-NC-SA 4.0 plus
+the professional-sports/financial-analysis affiliation restriction. Read
 [LICENSING.md](docs/LICENSING.md) before reuse.

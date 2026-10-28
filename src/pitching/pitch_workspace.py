@@ -398,7 +398,7 @@ section{min-width:0}h2{font-size:16px;margin:0 0 8px}iframe{display:block;width:
 .empty{border:1px dashed #aec4ce;border-radius:9px;padding:22px;min-height:220px;line-height:1.6}
 @media(max-width:760px){.panes{grid-template-columns:1fr}}
 </style></head><body><div class="tools"><button id="start-both">Start available replays from their own starts</button><button id="pause-both">Pause both</button></div>
-<p class="note">Measured skin-marker animations, not camera footage. Each replay uses its own C3D clock. Starting them together does not align foot plant, ball release, or processed signals. Each player also has independent controls.</p>
+<p class="note">Measured skin markers, not camera footage. Each replay keeps its own clock, so starting both together does not align foot plant or ball release.</p>
 <div class="panes">__PANES__</div><script>
 const frames=()=>Array.from(document.querySelectorAll('iframe'));
 function resizeFrame(frame){try{const body=frame.contentDocument.body;if(body)frame.style.height=Math.ceil(body.getBoundingClientRect().height+4)+'px'}catch(error){}}
@@ -638,8 +638,7 @@ def render_pitch_workspace(
             st.caption(
                 f"{plotted:,} of {len(visible):,} searched pitches have both values. "
                 f"Hover for details; click a point to open it as {target}. "
-                "Scroll to zoom, drag to pan, double-click to reset. "
-                "A and B are labeled. Associations here are not causal effects."
+                "Scroll to zoom, drag to pan, double-click to reset."
             )
     chart_pick = selected_pitch_from_event(chart_event, visible_ids)
     if chart_pick != st.session_state.get("_workspace_last_chart_pick"):
@@ -714,11 +713,9 @@ def render_pitch_workspace(
     if not {primary, comparison} <= set(cohort.session_pitch):
         cohort = table
     st.caption(
-        "Differences are B minus A. These are observed summaries, not the predicted effect "
-        "of a mechanics change. Peaks may occur at different instants. "
-        f"Percentiles place each value among the {len(cohort):,} recorded study pitches "
-        "with that measurement observed (ties count half); they describe this sample, "
-        "not performance grades or injury risk."
+        f"B − A differences and percentiles among the {len(cohort):,} recorded study pitches "
+        "describe these observations. They are not effects of a mechanics change, grades, "
+        "or risk scores, and the five peaks can occur at different instants."
     )
     observed = compare_recorded_pitches(table, primary, comparison)
     observed["percentile_a"] = list(cohort_percentiles(cohort, primary).values())
@@ -827,10 +824,6 @@ def render_pitch_workspace(
                         st.info(f"The matching clip is unavailable: {error}")
         except (OSError, ValueError, KeyError) as error:
             st.info(f"The original clip catalog is unavailable: {error}")
-    st.caption(
-        f"Source: Driveline OpenBiomechanics Project · [Full data terms]({DATA_TERMS}). "
-        "Joint moment is a net loading measure, not an injury probability or ligament force."
-    )
     st.session_state["_workspace_returned_primary"] = primary
     st.session_state["_workspace_returned_comparison"] = comparison
     return selection

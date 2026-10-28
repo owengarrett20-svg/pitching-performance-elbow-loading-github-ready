@@ -235,7 +235,7 @@ The hosted reader does not modify the snapshot. Published history includes
 Phase 2 (`a2f339e`), Phase 3 (`edf5c05`), and Phase 4 (`ad4cd71`). Phase 5
 version 0.7.0 remains local until pushed and rebuilt; creating local files does
 not update the public app. See
-[PHASE5_UPGRADE_WINDOWS.md](PHASE5_UPGRADE_WINDOWS.md) and
+[PHASE5_UPGRADE_WINDOWS.md](archive/PHASE5_UPGRADE_WINDOWS.md) and
 [GITHUB_PUBLISH.md](GITHUB_PUBLISH.md) for upgrade and deployment guidance.
 
 ## Guided views and interactive release checks
@@ -274,7 +274,7 @@ layouts for clipped text, chart rendering, keyboard/touch selection, and page
 overflow. Browser layout review complements the automated unit and Streamlit
 checks; it is not an external scientific validation.
 
-The [experience notes](PHASE3_EXPERIENCE.md) and
+The [experience notes](archive/PHASE3_EXPERIENCE.md) and
 [collaboration guide](COLLABORATION.md) state the presentation and data-use
 boundaries. The public introduction link accepts a non-sensitive description
 only; it does not create an authorized channel for player files or supply a
@@ -346,7 +346,7 @@ The [contribution record](CONTRIBUTIONS_AND_AI.md) distinguishes user framing,
 requirements, deployment, and interface review from substantial AI implementation,
 method drafting, and agent-executed checks. Tests and generated artifacts do not
 establish personal completion of every method or independent biomechanical
-validation. Follow the [application guide](PHD_APPLICATION_GUIDE.md); private CVs
+validation. Follow the application guide (kept with private application materials); private CVs
 and tailored drafts stay outside the repository or under ignored
 `local_applications/`, never in public exports.
 

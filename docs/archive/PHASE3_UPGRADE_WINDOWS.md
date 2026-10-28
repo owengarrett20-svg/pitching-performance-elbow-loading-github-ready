@@ -91,10 +91,10 @@ uv run --frozen pitching fetch
 uv run --frozen pytest -q
 ```
 
-For a full analysis rebuild, follow [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
+For a full analysis rebuild, follow [REPRODUCIBILITY.md](../REPRODUCIBILITY.md).
 Do not regenerate or relabel research results just to change the presentation.
 OBP's professional-sports affiliation exclusion still applies to these data;
 the original software's MIT license does not grant restricted data rights.
-See [COLLABORATION.md](COLLABORATION.md) for the next scientific milestone:
+See [COLLABORATION.md](../COLLABORATION.md) for the next scientific milestone:
 an appropriately authorized external or longitudinal validation study with a
 frozen evaluation protocol.
