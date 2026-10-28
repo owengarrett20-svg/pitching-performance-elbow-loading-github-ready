@@ -495,6 +495,7 @@ def main(report_dir_override: Path | None = None, bundled_demo: bool = False) ->
                     PROJECT_ROOT,
                     selected_pitch_id=st.session_state.get("active_pitch"),
                     comparison_pitch_id=st.session_state.get("active_comparison"),
+                    full_frame=frame,
                 )
                 chosen = None if selection is None else selection.primary
                 if selection is not None:

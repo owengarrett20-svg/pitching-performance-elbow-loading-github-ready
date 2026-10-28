@@ -25,8 +25,17 @@ impute missing observations, or rank technique. Identifier strings and playing
 levels are retained from the selected source table. Several rows may belong to
 one athlete and are not independent athlete observations.
 
-Click a table row to open **Pitch A**. Keyboard and touch users can use the Pitch
-A selector instead. **Pitch B** can be any pitch in the sidebar-filtered source
+**A row or chart click opens** chooses which pane the next click fills. Click a
+table row, or switch to **Chart · pick a point** and click any plotted pitch, to
+open it as **Pitch A** or **Pitch B**. The chart plots the searched rows on any
+two of the five focal measurements, labels the current A and B points, omits
+pitches missing either selected value, and supports hover, zoom, and pan. The
+table shows all five focal measurements, playing level, and a **Selected** column
+marking A and B. **Swap A and B** exchanges the panes; if the old Pitch B is
+hidden by the current search, the search is cleared so Pitch A is never silently
+replaced. **B: next pitch by athlete …** cycles Pitch B through Pitch A's
+athlete's other recorded pitches to show within-athlete variation. Keyboard and
+touch users can use the Pitch A and Pitch B selectors instead. **Pitch B** can be any pitch in the sidebar-filtered source
 table, including one outside the current free-text search. Selecting the same
 pitch twice is allowed and explicitly labeled. A search with no matching rows
 removes the replay panes; it does not silently retain the previous recording.
@@ -80,6 +89,12 @@ difference missing. These observations do not estimate an intervention effect.
 Peaks need not occur at the same instant. Peak separation is not specifically
 separation at foot plant, and internal net moment is not ligament force or
 injury probability.
+
+Each value also shows a **cohort percentile**: the mid-rank position among the
+study pitches with that measurement observed (values below count fully; ties
+count half). It uses the full study table, not the sidebar or search subset.
+A missing value has no percentile. Percentiles describe position within this
+sample; they are not performance grades, normative references, or risk scores.
 
 The marker panel lists the recorded labels, display groups, and observed/missing
 prepared-sample counts. Original source labels appear beside display labels;

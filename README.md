@@ -4,9 +4,9 @@ A reproducible Python biomechanics research project exploring pitching performan
 
 **Author:** Owen Garrett · [contribution and AI-assistance record](docs/CONTRIBUTIONS_AND_AI.md)
 
-**Status:** Version 0.7.0 — a source-linked pitch comparison workspace and a concise, auditable research portfolio.
+**Status:** Version 0.7.1 — a source-linked pitch comparison workspace and a concise, auditable research portfolio.
 
-Phase 4 is published in the public repository at `ad4cd71`. Phase 5 links searchable observations to two recorded marker replays, their marker sets, and associated measurements. A source-bound research brief explains what the existing analysis does and does not establish. This version reaches the existing dashboard after it is pushed and Streamlit rebuilds; the Phase 1/2 scientific findings are unchanged and no independent external cohort has been evaluated.
+Phase 5 (0.7.0) is published at `102ec49`. It links searchable observations to two recorded marker replays, their marker sets, and associated measurements, and adds a source-bound research brief explaining what the existing analysis does and does not establish. Version 0.7.1 makes the workspace more direct: click a table row *or* a chart point to fill Pitch A or Pitch B, swap them, step through one athlete's other pitches, and read each value's percentile within the study sample. The Phase 1/2 scientific findings are unchanged and no independent external cohort has been evaluated.
 
 [Open the live dashboard](https://pitching-performance-elbow-loading-app-ready-bpn9pb4j3udcqxo9k.streamlit.app/) · [Study summary](docs/STUDY_SUMMARY.md) · [Phase 2 results](docs/PHASE2_RESULTS.md) · [Research roadmap](docs/ROADMAP.md) · [Automated checks](https://github.com/owengarrett20-svg/pitching-performance-elbow-loading-github-ready/actions)
 

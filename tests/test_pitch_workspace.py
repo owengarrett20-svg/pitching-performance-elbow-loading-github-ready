@@ -13,11 +13,15 @@ from pitching.pitch_workspace import (
     DATA_TERMS,
     WorkspaceSelection,
     _verified_replay,
+    cohort_percentiles,
     comparison_replay_html,
     load_workspace_catalog,
+    next_athlete_pitch,
     pitch_from_table_event,
     search_pitch_rows,
     selected_observations_json,
+    selection_roles,
+    workspace_chart,
     workspace_table,
 )
 
@@ -255,3 +259,105 @@ render_pitch_workspace(table,root,'1623_3','2916_4')
     assert any("measurements differ" in item.value for item in app.warning)
     assert not app.get("video")
     assert any("No verified matching MP4" in item.value for item in app.info)
+
+
+def test_cohort_percentiles_use_mid_ranks_and_leave_missing_values_unranked(observed):
+    first = cohort_percentiles(observed, "test-a[1]")
+    # Speeds 84.0, 85.3, 90.0: one value below plus half of its own tie.
+    assert first["pitch_speed_mph"] == pytest.approx(100 * 1.5 / 3)
+    # Elbow moments exclude the missing observation rather than treating it as zero.
+    assert first["elbow_varus_moment"] == pytest.approx(100 * 0.5 / 2)
+    assert cohort_percentiles(observed, "test-a2")["elbow_varus_moment"] is None
+    assert cohort_percentiles(observed, "test-b1")["pitch_speed_mph"] == pytest.approx(
+        100 * 2.5 / 3
+    )
+    with pytest.raises(ValueError, match="not in the reference cohort"):
+        cohort_percentiles(observed, "absent-pitch")
+
+
+def test_same_athlete_cycling_never_returns_pitch_a_or_another_athlete(observed):
+    assert next_athlete_pitch(observed, "test-a[1]", "test-b1") == "test-a2"
+    assert next_athlete_pitch(observed, "test-a[1]", "test-a2") == "test-a2"
+    assert next_athlete_pitch(observed, "test-b1", "test-a2") is None
+    assert next_athlete_pitch(observed, "absent-pitch", None) is None
+
+
+def test_selection_roles_mark_a_b_and_identical_pairs():
+    selection = WorkspaceSelection("one", "two")
+    assert selection_roles(["one", "two", "three"], selection) == ["A", "B", ""]
+    assert selection_roles(["one"], WorkspaceSelection("one", "one")) == ["A & B"]
+
+
+def test_workspace_chart_offers_one_point_selection_and_omits_incomplete_pairs(observed):
+    chart = workspace_chart(
+        observed,
+        "pitch_speed_mph",
+        "elbow_varus_moment",
+        WorkspaceSelection("test-a[1]", "test-b1"),
+    )
+    spec = chart.to_dict()
+    params = {param["name"]: param for param in spec["params"]}
+    assert params["pitch_pick"]["select"]["fields"] == ["session_pitch"]
+    plotted = next(iter(spec["datasets"].values()))
+    assert {row["session_pitch"] for row in plotted} == {"test-a[1]", "test-b1"}
+    assert {row["session_pitch"]: row["role"] for row in plotted} == {
+        "test-a[1]": "A",
+        "test-b1": "B",
+    }
+    missing = observed.assign(elbow_varus_moment=np.nan)
+    assert (
+        workspace_chart(
+            missing,
+            "pitch_speed_mph",
+            "elbow_varus_moment",
+            WorkspaceSelection("test-a2", "test-b1"),
+        )
+        is None
+    )
+    with pytest.raises(ValueError, match="declared"):
+        workspace_chart(
+            observed, "user", "pitch_speed_mph", WorkspaceSelection("test-a2", "test-b1")
+        )
+
+
+def test_same_athlete_and_swap_controls_keep_actual_source_identities():
+    app = _app()
+    app.button(key="workspace_same_athlete").click().run()
+    assert not app.exception, [item.value for item in app.exception]
+    assert app.selectbox(key="workspace_compare_pitch").value == "1623_1"
+    app.button(key="workspace_same_athlete").click().run()
+    assert app.selectbox(key="workspace_compare_pitch").value == "1623_2"
+    app.button(key="workspace_swap").click().run()
+    assert not app.exception, [item.value for item in app.exception]
+    assert app.text[-1].value == "actual=1623_2|1623_3"
+
+
+def test_swap_reveals_a_pitch_hidden_by_search_instead_of_substituting_another():
+    app = _app()
+    app.text_input(key="workspace_search").set_value("athlete 970").run()
+    assert app.selectbox(key="workspace_compare_pitch").value == "2916_4"
+    app.button(key="workspace_swap").click().run()
+    assert not app.exception, [item.value for item in app.exception]
+    assert app.text_input(key="workspace_search").value == ""
+    assert app.text[-1].value == "actual=2916_4|1623_3"
+
+
+def test_measurement_table_reports_percentiles_against_the_supplied_full_cohort():
+    script = f"""
+from pathlib import Path
+import pandas as pd
+from pitching.pitch_workspace import render_pitch_workspace
+root=Path({str(ROOT)!r})
+table=pd.read_csv(root/'assets/demo/reports/analysis.csv',dtype={{'session_pitch':str,'user':str}})
+subset=table.loc[table.user.isin(table.loc[table.session_pitch.isin(['1623_3','2916_4']),'user'])]
+render_pitch_workspace(subset,root,'1623_3','2916_4',full_frame=table)
+"""
+    app = AppTest.from_string(script, default_timeout=30).run()
+    assert not app.exception, [item.value for item in app.exception]
+    measured = next(item.value for item in app.dataframe if "A percentile" in item.value)
+    assert any("among the 411 recorded study pitches" in item.value for item in app.caption)
+    full = pd.read_csv(
+        ROOT / "assets/demo/reports/analysis.csv", dtype={"user": str, "session_pitch": str}
+    )
+    expected = cohort_percentiles(full, "1623_3")["pitch_speed_mph"]
+    assert measured["A percentile"].iloc[0] == pytest.approx(expected)

@@ -15,12 +15,20 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+import altair as alt
 import numpy as np
 import pandas as pd
 import streamlit as st
 
 from pitching.motion_lab import MEASUREMENT_NOTES, marker_regions, marker_viewer_html
-from pitching.pitch_explorer import DATA_TERMS, MEASURES, SOURCE_COMMIT, compare_recorded_pitches
+from pitching.pitch_explorer import (
+    DATA_TERMS,
+    MEASURES,
+    SOURCE_COMMIT,
+    compare_recorded_pitches,
+    measure_label,
+    selected_pitch_from_event,
+)
 from pitching.video_lab import (
     MotionAssetError,
     load_marker_frames,
@@ -166,11 +174,172 @@ def pitch_from_table_event(event: Any, displayed_ids: Sequence[str]) -> str | No
     return displayed_ids[index] if 0 <= index < len(displayed_ids) else None
 
 
+def cohort_percentiles(cohort: pd.DataFrame, identifier: str) -> dict[str, float | None]:
+    """Mid-rank percentile of one observed pitch among observed cohort values.
+
+    Ties count half. A missing value has no percentile; missing cohort values are
+    excluded rather than treated as zero. This is a descriptive position in this
+    sample, not a performance grade or risk category.
+    """
+    table = workspace_table(cohort)
+    match = table.loc[table.session_pitch.eq(identifier)]
+    if match.empty:
+        raise ValueError(f"Source pitch {identifier} is not in the reference cohort")
+    row = match.iloc[0]
+    result: dict[str, float | None] = {}
+    for name in MEASURES:
+        values = table[name].dropna()
+        value = row[name]
+        if pd.isna(value) or values.empty:
+            result[name] = None
+            continue
+        below = float((values < value).sum())
+        tied = float((values == value).sum())
+        result[name] = 100.0 * (below + 0.5 * tied) / len(values)
+    return result
+
+
+def next_athlete_pitch(table: pd.DataFrame, primary: str, current: str | None) -> str | None:
+    """Cycle through the same athlete's other recorded pitches, never returning Pitch A."""
+    rows = workspace_table(table)
+    athlete = rows.loc[rows.session_pitch.eq(primary), "user"]
+    if athlete.empty:
+        return None
+    siblings = sorted(
+        identifier
+        for identifier in rows.loc[rows.user.eq(athlete.iloc[0]), "session_pitch"]
+        if identifier != primary
+    )
+    if not siblings:
+        return None
+    if current in siblings:
+        return siblings[(siblings.index(current) + 1) % len(siblings)]
+    return siblings[0]
+
+
+def selection_roles(identifiers: Sequence[str], selection: WorkspaceSelection) -> list[str]:
+    """Label each displayed source row as A, B, both, or unselected."""
+    roles = []
+    for identifier in identifiers:
+        role = [
+            side
+            for side, chosen in (("A", selection.primary), ("B", selection.comparison))
+            if identifier == chosen
+        ]
+        roles.append(" & ".join(role))
+    return roles
+
+
+ROLE_COLORS = {"A": "#C96C2D", "B": "#6B4FA0", "A & B": "#8A3B12", "": "#007C91"}
+
+
+def workspace_chart(
+    visible: pd.DataFrame, x: str, y: str, selection: WorkspaceSelection
+) -> alt.Chart | None:
+    """Clickable scatter of the searched rows; A and B are drawn on top and labeled."""
+    if x not in MEASURES or y not in MEASURES:
+        raise ValueError("Choose one of the five declared biomechanical measurements")
+    table = workspace_table(visible)
+    plotted = table.loc[table[x].notna() & table[y].notna()].copy()
+    if plotted.empty:
+        return None
+    plotted["role"] = selection_roles(plotted.session_pitch.tolist(), selection)
+    plotted["layer"] = plotted.role.map(lambda role: 1 if role else 0)
+    fields = list(dict.fromkeys([x, y, *MEASURES]))
+    tooltips = [
+        alt.Tooltip("session_pitch:N", title="Pitch ID"),
+        alt.Tooltip("user:N", title="Athlete ID"),
+    ]
+    if "playing_level" in plotted:
+        tooltips.append(alt.Tooltip("playing_level:N", title="Playing level"))
+    tooltips += [
+        alt.Tooltip(f"{name}:Q", title=measure_label(name), format=".1f") for name in fields
+    ]
+    tooltips.append(alt.Tooltip("role:N", title="Selected as"))
+    columns = ["session_pitch", "user", "role", "layer", *fields]
+    if "playing_level" in plotted:
+        columns.append("playing_level")
+    pick = alt.selection_point(
+        name="pitch_pick", fields=["session_pitch"], toggle=False, empty=False
+    )
+    domain = list(ROLE_COLORS)
+    base = alt.Chart(plotted[columns]).encode(
+        x=alt.X(f"{x}:Q", title=measure_label(x), scale=alt.Scale(zero=False)),
+        y=alt.Y(f"{y}:Q", title=measure_label(y), scale=alt.Scale(zero=False)),
+    )
+    points = (
+        base.mark_circle(stroke="white", strokeWidth=0.6)
+        .encode(
+            color=alt.Color(
+                "role:N",
+                scale=alt.Scale(domain=domain, range=[ROLE_COLORS[name] for name in domain]),
+                legend=None,
+            ),
+            size=alt.condition("datum.layer > 0", alt.value(230), alt.value(70)),
+            opacity=alt.condition("datum.layer > 0", alt.value(1.0), alt.value(0.55)),
+            order=alt.Order("layer:Q"),
+            tooltip=tooltips,
+        )
+        .add_params(pick)
+    )
+    labels = (
+        base.transform_filter("datum.layer > 0")
+        .mark_text(align="left", dx=10, dy=-10, fontSize=13, fontWeight="bold")
+        .encode(
+            text="role:N",
+            color=alt.Color(
+                "role:N",
+                scale=alt.Scale(domain=domain, range=[ROLE_COLORS[name] for name in domain]),
+                legend=None,
+            ),
+        )
+    )
+    return (
+        alt.layer(points.interactive(name="workspace_zoom"), labels)
+        .properties(height=380)
+        .configure_axis(labelFontSize=12, titleFontSize=13, titlePadding=12, gridOpacity=0.18)
+        .configure_view(stroke=None)
+    )
+
+
 def _reset_table_selection() -> None:
     st.session_state["_workspace_table_generation"] = (
         st.session_state.get("_workspace_table_generation", 0) + 1
     )
     st.session_state["_workspace_last_table_pick"] = None
+
+
+def _reset_chart_selection() -> None:
+    st.session_state["_workspace_chart_generation"] = (
+        st.session_state.get("_workspace_chart_generation", 0) + 1
+    )
+    st.session_state["_workspace_last_chart_pick"] = None
+
+
+def _apply_pick(identifier: str, target: str) -> None:
+    key = "workspace_compare_pitch" if target == "Pitch B" else "workspace_primary_pitch"
+    st.session_state[key] = identifier
+
+
+def _swap_pitches() -> None:
+    primary = st.session_state.get("workspace_primary_pitch")
+    comparison = st.session_state.get("workspace_compare_pitch")
+    if primary is None or comparison is None:
+        return
+    # Pitch A must be a searched row. Reveal the full table rather than letting
+    # the visible-row fallback silently substitute a different recording.
+    if comparison not in st.session_state.get("_workspace_visible_ids", []):
+        st.session_state["workspace_search"] = ""
+        st.session_state["workspace_replays_only"] = False
+    st.session_state["workspace_primary_pitch"] = comparison
+    st.session_state["workspace_compare_pitch"] = primary
+    _reset_table_selection()
+    _reset_chart_selection()
+
+
+def _compare_with(identifier: str | None) -> None:
+    if identifier is not None:
+        st.session_state["workspace_compare_pitch"] = identifier
 
 
 def _label(table: pd.DataFrame, identifier: str) -> str:
@@ -313,12 +482,14 @@ def render_pitch_workspace(
     project_root: Path,
     selected_pitch_id: str | None = None,
     comparison_pitch_id: str | None = None,
+    full_frame: pd.DataFrame | None = None,
 ) -> WorkspaceSelection | None:
     """Search a source table, select an observed pitch, and inspect both exact recordings."""
     st.subheader("Find a pitch. Inspect its motion and measurements.")
     st.write(
         "Search by pitch, athlete, session, playing level, or a displayed measurement. "
-        "Select a table row to open Pitch A; choose a second recorded pitch for comparison."
+        "Click a table row or chart point to open Pitch A or Pitch B, then compare their "
+        "marker replays, marker sets, and recorded measurements side by side."
     )
     table = workspace_table(frame)
     if table.empty:
@@ -370,46 +541,113 @@ def render_pitch_workspace(
         st.session_state["_workspace_last_table_pick"] = None
         return None
     visible_ids = visible.session_pitch.tolist()
+    st.session_state["_workspace_visible_ids"] = visible_ids
     if st.session_state.get("workspace_primary_pitch") not in visible_ids:
         st.session_state["workspace_primary_pitch"] = visible_ids[0]
         _reset_table_selection()
+    if st.session_state.get("workspace_compare_pitch") not in all_ids:
+        current = st.session_state["workspace_primary_pitch"]
+        candidates = [identifier for identifier in catalog if identifier != current]
+        candidates += [identifier for identifier in all_ids if identifier != current]
+        st.session_state["workspace_compare_pitch"] = next(iter(candidates), current)
+    current = WorkspaceSelection(
+        st.session_state["workspace_primary_pitch"], st.session_state["workspace_compare_pitch"]
+    )
+    target = st.radio(
+        "A row or chart click opens",
+        ["Pitch A", "Pitch B"],
+        key="workspace_pick_target",
+        horizontal=True,
+        help="Choose which pane the next table-row or chart-point click fills.",
+    )
+    table_tab, chart_tab = st.tabs(["Table", "Chart · pick a point"])
     digest = hashlib.sha256(json.dumps(visible_ids).encode()).hexdigest()[:12]
     generation = st.session_state.get("_workspace_table_generation", 0)
-    shown = visible[
-        ["session_pitch", "user", "pitch_speed_mph", "elbow_varus_moment", "replay_available"]
-    ].rename(
-        columns={
-            "session_pitch": "Pitch ID",
-            "user": "Athlete",
-            "pitch_speed_mph": "Speed (mph)",
-            "elbow_varus_moment": "Elbow moment (N·m)",
-            "replay_available": "Marker replay",
-        }
-    )
-    event = st.dataframe(
-        shown,
-        hide_index=True,
-        width="stretch",
-        height=245,
-        on_select="rerun",
-        selection_mode="single-row",
-        key=f"workspace_table_{digest}_{generation}",
-        column_config={
-            "Speed (mph)": st.column_config.NumberColumn(format="%.1f"),
-            "Elbow moment (N·m)": st.column_config.NumberColumn(format="%.1f"),
-        },
-    )
+    columns = {
+        "selected": "Selected",
+        "session_pitch": "Pitch ID",
+        "user": "Athlete",
+        "playing_level": "Level",
+        "pitch_speed_mph": "Speed (mph)",
+        "elbow_varus_moment": "Elbow moment (N·m)",
+        "max_shoulder_internal_rotational_velo": "Shoulder IR (deg/s)",
+        "max_rotation_hip_shoulder_separation": "Hip–shoulder sep. (deg)",
+        "max_torso_rotational_velo": "Torso rot. (deg/s)",
+        "replay_available": "Marker replay",
+    }
+    shown = visible.assign(selected=selection_roles(visible_ids, current))
+    shown = shown[[name for name in columns if name in shown]].rename(columns=columns)
+    with table_tab:
+        event = st.dataframe(
+            shown,
+            hide_index=True,
+            width="stretch",
+            height=300,
+            on_select="rerun",
+            selection_mode="single-row",
+            key=f"workspace_table_{digest}_{generation}",
+            column_config={
+                "Selected": st.column_config.TextColumn(width="small"),
+                "Speed (mph)": st.column_config.NumberColumn(format="%.1f"),
+                "Elbow moment (N·m)": st.column_config.NumberColumn(format="%.1f"),
+                "Shoulder IR (deg/s)": st.column_config.NumberColumn(format="%.0f"),
+                "Hip–shoulder sep. (deg)": st.column_config.NumberColumn(format="%.1f"),
+                "Torso rot. (deg/s)": st.column_config.NumberColumn(format="%.0f"),
+            },
+        )
+        st.caption(
+            f"Click a row to open it as {target}. Click a column header to sort. "
+            "The selectors below also work with a keyboard or touch."
+        )
     picked = pitch_from_table_event(event, visible_ids)
     if picked != st.session_state.get("_workspace_last_table_pick"):
-        if picked is not None:
-            st.session_state["workspace_primary_pitch"] = picked
         st.session_state["_workspace_last_table_pick"] = picked
-    st.caption("Click a row to inspect it. The selectors below also work with a keyboard or touch.")
-    if st.session_state.get("workspace_compare_pitch") not in all_ids:
-        primary = st.session_state["workspace_primary_pitch"]
-        candidates = [identifier for identifier in catalog if identifier != primary]
-        candidates += [identifier for identifier in all_ids if identifier != primary]
-        st.session_state["workspace_compare_pitch"] = next(iter(candidates), primary)
+        if picked is not None:
+            _apply_pick(picked, target)
+            _reset_table_selection()
+            st.rerun()
+    with chart_tab:
+        axis_x, axis_y = st.columns(2)
+        chart_x = axis_x.selectbox(
+            "Horizontal measurement",
+            list(MEASURES),
+            format_func=measure_label,
+            key="workspace_chart_x",
+        )
+        chart_y = axis_y.selectbox(
+            "Vertical measurement",
+            list(MEASURES),
+            index=1,
+            format_func=measure_label,
+            key="workspace_chart_y",
+        )
+        chart = workspace_chart(visible, chart_x, chart_y, current)
+        chart_event = None
+        if chart is None:
+            st.info("No searched pitches have both selected measurements.")
+        else:
+            chart_generation = st.session_state.get("_workspace_chart_generation", 0)
+            chart_event = st.altair_chart(
+                chart,
+                key=f"workspace_chart_{digest}_{chart_generation}",
+                on_select="rerun",
+                selection_mode="pitch_pick",
+                width="stretch",
+            )
+            plotted = int((visible[chart_x].notna() & visible[chart_y].notna()).sum())
+            st.caption(
+                f"{plotted:,} of {len(visible):,} searched pitches have both values. "
+                f"Hover for details; click a point to open it as {target}. "
+                "Scroll to zoom, drag to pan, double-click to reset. "
+                "A and B are labeled. Associations here are not causal effects."
+            )
+    chart_pick = selected_pitch_from_event(chart_event, visible_ids)
+    if chart_pick != st.session_state.get("_workspace_last_chart_pick"):
+        st.session_state["_workspace_last_chart_pick"] = chart_pick
+        if chart_pick is not None:
+            _apply_pick(chart_pick, target)
+            _reset_chart_selection()
+            st.rerun()
     first, second = st.columns(2)
     primary = first.selectbox(
         "Pitch A · selected observation",
@@ -425,6 +663,25 @@ def render_pitch_workspace(
         key="workspace_compare_pitch",
     )
     selection = WorkspaceSelection(primary, comparison)
+    athlete = table.loc[table.session_pitch.eq(primary), "user"].iloc[0]
+    sibling = next_athlete_pitch(table, primary, comparison)
+    swap, same_athlete = st.columns(2)
+    swap.button(
+        "⇄ Swap A and B",
+        key="workspace_swap",
+        on_click=_swap_pitches,
+        disabled=primary == comparison,
+        width="stretch",
+    )
+    same_athlete.button(
+        f"B: next pitch by athlete {athlete}",
+        key="workspace_same_athlete",
+        on_click=_compare_with,
+        args=(sibling,),
+        disabled=sibling is None,
+        help="Within-athlete variation: cycle Pitch B through this athlete's other recorded pitches.",
+        width="stretch",
+    )
     if primary == comparison:
         st.info("Both panes identify the same recorded pitch. Choose another Pitch B to compare.")
     recordings: list[tuple[dict[str, np.ndarray], dict] | None] = []
@@ -453,23 +710,48 @@ def render_pitch_workspace(
         key="workspace_replay_download",
     )
     st.markdown("#### The measurements attached to these exact pitches")
+    cohort = table if full_frame is None else workspace_table(full_frame)
+    if not {primary, comparison} <= set(cohort.session_pitch):
+        cohort = table
     st.caption(
         "Differences are B minus A. These are observed summaries, not the predicted effect "
-        "of a mechanics change. Peaks may occur at different instants."
+        "of a mechanics change. Peaks may occur at different instants. "
+        f"Percentiles place each value among the {len(cohort):,} recorded study pitches "
+        "with that measurement observed (ties count half); they describe this sample, "
+        "not performance grades or injury risk."
     )
     observed = compare_recorded_pitches(table, primary, comparison)
+    observed["percentile_a"] = list(cohort_percentiles(cohort, primary).values())
+    observed["percentile_b"] = list(cohort_percentiles(cohort, comparison).values())
+    observed = observed[
+        ["measure", "unit", "pitch_a", "percentile_a", "pitch_b", "percentile_b"]
+        + ["difference_b_minus_a"]
+    ]
     st.dataframe(
         observed.rename(
             columns={
                 "measure": "Recorded measurement",
                 "unit": "Unit",
                 "pitch_a": f"A · {primary}",
+                "percentile_a": "A percentile",
                 "pitch_b": f"B · {comparison}",
+                "percentile_b": "B percentile",
                 "difference_b_minus_a": "B − A",
             }
         ),
         hide_index=True,
         width="stretch",
+        column_config={
+            f"A · {primary}": st.column_config.NumberColumn(format="%.1f"),
+            f"B · {comparison}": st.column_config.NumberColumn(format="%.1f"),
+            "B − A": st.column_config.NumberColumn(format="%+.1f"),
+            "A percentile": st.column_config.ProgressColumn(
+                format="%.0f", min_value=0, max_value=100
+            ),
+            "B percentile": st.column_config.ProgressColumn(
+                format="%.0f", min_value=0, max_value=100
+            ),
+        },
     )
     st.download_button(
         "Download selected observations and source terms (JSON)",

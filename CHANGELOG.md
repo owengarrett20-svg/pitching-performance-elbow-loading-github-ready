@@ -3,6 +3,16 @@
 These entries describe local project development. They do not establish that a
 version has been published as a GitHub release or archived with a DOI.
 
+## 0.7.1 — Phase 5.1 direct pitch picking
+
+- Add a clickable chart to Find & compare pitches: choose any two of the five focal measurements, click a point to open that exact recorded pitch, and see Pitch A and Pitch B labeled among the searched rows.
+- Let a table-row or chart-point click fill either Pitch A or Pitch B, so both comparison pitches can be chosen without dropdowns.
+- Show all five focal measurements, playing level, and an A/B marker in the searchable table.
+- Add Swap A and B, and a within-athlete control that cycles Pitch B through Pitch A's athlete's other recorded pitches.
+- Add mid-rank cohort percentiles for both pitches; missing values receive no percentile and the wording keeps percentiles descriptive.
+- Correct the Charts & associations caption that still described three prepared marker replays.
+- Preserve the Phase 1/2 sample, models, numerical findings, research brief outputs, and source data restrictions.
+
 ## 0.7.0 — Phase 5 source-linked workspace and research brief; publication pending
 
 - Add a searchable, selectable recorded-pitch table with side-by-side marker replays, marker-set inspection, associated values, and checked A/B share links.

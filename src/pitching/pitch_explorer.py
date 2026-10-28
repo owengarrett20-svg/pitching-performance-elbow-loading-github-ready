@@ -392,7 +392,7 @@ def render_pitch_explorer(
         width="stretch",
     )
     st.caption(
-        "Peak hip–shoulder separation differs from separation at foot plant. Prepared marker replays exist for three study pitches; camera coverage is not assumed."
+        "Peak hip–shoulder separation differs from separation at foot plant. Find & compare pitches opens measured-marker replays for any recorded study pitch; camera footage is not assumed."
     )
     with st.expander("Recorded values and source download"):
         displayed = ["session_pitch", "user", *MEASURES]
